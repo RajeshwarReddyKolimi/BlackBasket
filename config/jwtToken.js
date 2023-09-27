@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
-const generateKey = (id) => {
-    return jwt.sign({ id }, "abcdef", { expiresIn: "3d" });
+const dotenv = require("dotenv").config();
+const generateToken = (id) => {
+    return jwt.sign({ id }, process.env.JWT_KEY, { expiresIn: "1d" });
 };
 
-module.exports = { generateKey };
+module.exports = { generateToken };
