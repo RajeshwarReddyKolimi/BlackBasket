@@ -6,6 +6,8 @@ const PORT = process.env.PORT || 3000;
 const authRouter = require("./routes/authRoutes");
 const productRouter = require("./routes/productRoutes");
 const blogRouter = require("./routes/blogRoutes");
+const productCategoryRouter = require("./routes/productCategoryRoutes");
+const blogCategoryRouter = require("./routes/blogCategoryRoutes");
 const bodyParser = require("body-parser");
 const { default: mongoose } = require("mongoose");
 const { notFound, errorHandler } = require("./middleware/errorHandler");
@@ -22,6 +24,8 @@ app.use(cookieParser());
 app.use("/api/user", authRouter);
 app.use("/api/product", productRouter);
 app.use("/api/blog", blogRouter);
+app.use("/api/productCategory", productCategoryRouter);
+app.use("/api/blogCategory", blogCategoryRouter);
 
 app.use(notFound);
 app.use(errorHandler);
