@@ -1,4 +1,5 @@
 const Product = require("../models/productModel.js");
+const User = require("../models/userModel.js");
 const asyncHandler = require("express-async-handler");
 const slugify = require("slugify");
 const createProduct = asyncHandler(async (req, res) => {
@@ -102,10 +103,60 @@ const getAllProducts = asyncHandler(async (req, res) => {
     }
 });
 
+const addToWishlist = asyncHandler(async (req, res) => {
+    const { _id } = req.user;
+    const { productId } = req.body;
+    try {
+        const user = await User.findById(_id);
+        const alreadyAdded = user.wishlist.find(
+            (_id) => _id.toString() === productId.toString()
+        );
+        if (alreadyAdded) {
+            let user = await User.findByIdAndUpdate(
+                _id,
+                {
+                    $pull: { wishlist: productId },
+                },
+                { new: true }
+            );
+            res.json(user);
+        } else {
+            let user = await User.findByIdAndUpdate(
+                _id,
+                {
+                    $push: { wishlist: productId },
+                },
+                { new: true }
+            );
+            res.json(user);
+        }
+    } catch (error) {
+        throw new Error(error);
+    }
+});
+
+const updateRating = asyncHandler(async (req, res) => {
+    const { _id } = req.user;
+    const { star, productId } = req.body;
+    try {
+        const product = await Product.findById(productId);
+        let alreadyRated = product.ratings.find(
+            (userId) => userId.postedby.toString() === _id.toString()
+        );
+        if (alreadyRated) {
+        } else {
+            // const
+        }
+    } catch (error) {
+        throw new Error(error);
+    }
+});
+
 module.exports = {
     createProduct,
     getAProduct,
     getAllProducts,
     updateProduct,
     deleteProduct,
+    addToWishlist,
 };

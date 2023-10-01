@@ -52,6 +52,10 @@ const productSchema = new mongoose.Schema(
                 },
             },
         ],
+        totalrating: {
+            type: String,
+            default: 0,
+        },
     },
     { timestamps: true }
 );
