@@ -25,10 +25,7 @@ const userSchema = new mongoose.Schema(
             type: String,
             default: "User",
         },
-        cart: {
-            type: Array,
-            default: [],
-        },
+        cart: [],
         address: {
             type: String,
         },
