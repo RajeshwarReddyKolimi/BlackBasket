@@ -150,17 +150,21 @@ const addToCart = asyncHandler(async (req, res) => {
     const { productId } = req.body;
     try {
         let user = await User.findById(_id);
-        const existingCartItem = user.cart.find(
+        const existingCartItem = user.cart.items.find(
             (cartItem) => cartItem.product.toString() === productId
         );
         if (existingCartItem) {
             existingCartItem.quantity += 1;
         } else {
-            user.cart.push({ product: productId, quantity: 1 });
+            user.cart.items.push({ product: productId, quantity: 1 });
         }
-        user = await user.save();
-        await user.populate("cart.product");
-
+        await user.save();
+        let total = user.cart.totalPrice;
+        const product = await Product.findById(productId);
+        total += product.price;
+        user.cart.totalPrice = total;
+        await user.save();
+        await user.populate("cart.items.product");
         res.json(user.cart);
     } catch (error) {
         throw new Error(error);

@@ -25,16 +25,19 @@ const userSchema = new mongoose.Schema(
             type: String,
             default: "User",
         },
-        cart: [
-            {
-                product: {
-                    type: mongoose.Schema.Types.ObjectId,
-                    ref: "Product",
-                    unique: true,
+        cart: {
+            items: [
+                {
+                    product: {
+                        type: mongoose.Schema.Types.ObjectId,
+                        ref: "Product",
+                        unique: true,
+                    },
+                    quantity: Number,
                 },
-                quantity: Number,
-            },
-        ],
+            ],
+            totalPrice: { type: Number, default: 0 },
+        },
         cartSize: {
             type: Number,
             default: 0,
@@ -64,9 +67,8 @@ const userSchema = new mongoose.Schema(
 );
 
 userSchema.pre("save", async function (next) {
-    this.cartSize = this.cart.length;
+    this.cartSize = this.cart.items.length;
     this.wishlistSize = this.wishlist.length;
-    console.log(this.wishlist.length);
     if (!this.isModified("password")) {
         next();
     }

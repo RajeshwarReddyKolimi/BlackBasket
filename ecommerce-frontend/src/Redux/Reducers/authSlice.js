@@ -32,10 +32,10 @@ const userSlice = createSlice({
         },
     },
     extraReducers: (builder) => {
-        builder.addCase(userLogin.pending, (state, action) => {
-            state.loginStatus = false;
+        const setLoadingState = (state) => {
             state.errorMessage = "Loading";
-        });
+        };
+        builder.addCase(userLogin.pending, setLoadingState);
         builder.addCase(userLogin.fulfilled, (state, action) => {
             state.loginStatus = true;
             state.userData = action.payload;
@@ -56,11 +56,7 @@ const userSlice = createSlice({
             state.userData = {};
             state.loginStatus = false;
         });
-        builder.addCase(getUserDetails.pending, (state, action) => {
-            state.errorMessage = "Loading";
-            state.loginStatus = true;
-            state.userData = action.payload;
-        });
+        builder.addCase(getUserDetails.pending, setLoadingState);
         builder.addCase(getUserDetails.fulfilled, (state, action) => {
             state.errorMessage = "";
             state.loginStatus = true;
@@ -71,42 +67,40 @@ const userSlice = createSlice({
             state.userData = {};
             state.loginStatus = false;
         });
-        builder.addCase(removeFromCart.pending, (state, action) => {
-            state.errorMessage = "Loading";
-        });
+        builder.addCase(removeFromCart.pending, setLoadingState);
         builder.addCase(removeFromCart.fulfilled, (state, action) => {
             state.errorMessage = "";
             state.userData.cart = action.payload;
-            state.userData.cartSize = action.payload.length;
+            state.userData.cartSize = action.payload.items
+                ? action.payload.items.length
+                : 0;
         });
         builder.addCase(removeFromCart.rejected, (state, action) => {
             state.errorMessage = "Cannot Remove from Cart";
         });
-        builder.addCase(addToCart.pending, (state, action) => {
-            state.errorMessage = "Loading";
-        });
+        builder.addCase(addToCart.pending, setLoadingState);
         builder.addCase(addToCart.fulfilled, (state, action) => {
             state.errorMessage = "";
             state.userData.cart = action.payload;
-            state.userData.cartSize = state.userData.cart.length;
-        });
-        builder.addCase(getCart.pending, (state, action) => {
-            state.errorMessage = "Loading";
-        });
-        builder.addCase(getCart.fulfilled, (state, action) => {
-            state.errorMessage = "";
-            state.userData.cart = action.payload;
-            state.userData.cartSize = state.userData.cart.length;
-        });
-        builder.addCase(getCart.rejected, (state, action) => {
-            state.errorMessage = "Cannot Get Cart";
+            state.userData.cartSize = action.payload.items
+                ? action.payload.items.length
+                : 0;
         });
         builder.addCase(addToCart.rejected, (state, action) => {
             state.errorMessage = "Cannot Add to Cart";
         });
-        builder.addCase(toWishlist.pending, (state, action) => {
-            state.errorMessage = "Loading";
+        builder.addCase(getCart.pending, setLoadingState);
+        builder.addCase(getCart.fulfilled, (state, action) => {
+            state.errorMessage = "";
+            state.userData.cart = action.payload;
+            state.userData.cartSize = action.payload.items
+                ? action.payload.items.length
+                : 0;
         });
+        builder.addCase(getCart.rejected, (state, action) => {
+            state.errorMessage = "Cannot Get Cart";
+        });
+        builder.addCase(toWishlist.pending, setLoadingState);
         builder.addCase(toWishlist.fulfilled, (state, action) => {
             state.errorMessage = "";
             state.userData.wishlist = action.payload;
@@ -115,9 +109,7 @@ const userSlice = createSlice({
         builder.addCase(toWishlist.rejected, (state, action) => {
             state.errorMessage = "Cannot Wishlist";
         });
-        builder.addCase(getWishlist.pending, (state, action) => {
-            state.errorMessage = "Loading";
-        });
+        builder.addCase(getWishlist.pending, setLoadingState);
         builder.addCase(getWishlist.fulfilled, (state, action) => {
             state.errorMessage = "";
             state.userData.wishlist = action.payload;

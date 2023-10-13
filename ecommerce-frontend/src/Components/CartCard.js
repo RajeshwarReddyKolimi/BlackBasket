@@ -19,6 +19,7 @@ function CartCard(props) {
             <h2>{item.product.title}</h2>
             <h3>{item.product.price}</h3>
             <h4>{item.product._id}</h4>
+            <h4>{item.quantity}</h4>
             <button onClick={removeCart}>Remove from Cart</button>
             <button onClick={wishlist}>Wishlist</button>
         </div>

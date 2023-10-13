@@ -7,6 +7,8 @@ import store from "./Redux/store";
 import Products from "./Components/Products";
 import Cart from "./Components/Cart";
 import Wishlist from "./Components/Wishlist";
+import Checkout from "./Components/Checkout";
+import Payment from "./Components/Payment";
 function App() {
     return (
         <Provider store={store}>
@@ -17,6 +19,8 @@ function App() {
                         <Route path="/products" element={<Products />} />
                         <Route path="/cart" element={<Cart />} />
                         <Route path="/wishlist" element={<Wishlist />} />
+                        <Route path="/checkout" element={<Checkout />} />
+                        <Route path="/payment" element={<Payment />} />
                     </Routes>
                 </BrowserRouter>
             </div>

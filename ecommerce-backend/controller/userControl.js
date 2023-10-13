@@ -272,8 +272,9 @@ const getWishlist = asyncHandler(async (req, res) => {
 const getUserCart = asyncHandler(async (req, res) => {
     const { _id } = req.user;
     try {
-        const findUser = await User.findById(_id).populate("cart.product");
-        res.json(findUser.cart);
+        const user = await User.findById(_id).populate("cart.items.product");
+
+        res.json(user.cart);
     } catch (error) {
         throw new Error(error);
     }
@@ -284,19 +285,26 @@ const removeFromCart = asyncHandler(async (req, res) => {
     const { productId } = req.body;
     validateMongodbId(productId);
     try {
-        const findUser = await User.findByIdAndUpdate(
-            _id,
-            {
-                $pull: {
-                    cart: { product: productId },
-                },
-            },
-            { new: true }
+        const user = await User.findById(_id);
+        const deletedItems = user.cart.items.filter(
+            (item) => item.product.toString() === productId.toString()
         );
-        await findUser.save();
-        await findUser.populate("cart.product");
 
-        res.json(findUser.cart);
+        let totalReducedPrice = 0;
+        for (const deletedItem of deletedItems) {
+            const product = await Product.findById(deletedItem.product);
+            totalReducedPrice += product.price * deletedItem.quantity;
+        }
+
+        user.cart.items = user.cart.items.filter(
+            (item) => item.product.toString() !== productId.toString()
+        );
+
+        user.cart.totalPrice -= totalReducedPrice;
+
+        await user.save();
+        await user.populate("cart.items.product");
+        res.json(user.cart);
     } catch (error) {
         throw new Error(error);
     }
