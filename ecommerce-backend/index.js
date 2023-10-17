@@ -4,6 +4,7 @@ const app = express();
 const dotenv = require("dotenv").config();
 const PORT = process.env.PORT || 3000;
 const authRouter = require("./routes/authRoutes");
+const adminRouter = require("./routes/adminRoutes");
 const productRouter = require("./routes/productRoutes");
 const blogRouter = require("./routes/blogRoutes");
 const productCategoryRouter = require("./routes/productCategoryRoutes");
@@ -32,6 +33,7 @@ app.use(
 app.use(cookieParser());
 
 app.use("/api/user", authRouter);
+app.use("/api/admin", adminRouter);
 app.use("/api/product", productRouter);
 app.use("/api/blog", blogRouter);
 app.use("/api/productCategory", productCategoryRouter);

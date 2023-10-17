@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { NavLink } from "react-router-dom";
-import Products from "./Products";
-import { getUserDetails, userLogout } from "../Redux/Thunks/userThunks";
+import { NavLink, Navigate } from "react-router-dom";
+import Products from "../Products/Products";
+import { getUserDetails, userLogout } from "../../Redux/Thunks/userThunks";
 
 function Dashboard() {
     const dispatch = useDispatch();
-    const loginStatus = useSelector((state) => state.user.loginStatus);
+    const isUserLogged = useSelector((state) => state.user.isUserLogged);
     const errorMessage = useSelector((state) => state.user.errorMessage);
 
     useEffect(() => {
@@ -20,6 +20,7 @@ function Dashboard() {
     function logout() {
         dispatch(userLogout());
     }
+    if (!isUserLogged) return <Navigate to="/" replace />;
     return (
         <div>
             <h1>Welcome {data && data.firstName && data.firstName}</h1>

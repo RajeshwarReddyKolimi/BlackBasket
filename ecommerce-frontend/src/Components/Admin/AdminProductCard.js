@@ -1,14 +1,19 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { addToCart, toWishlist } from "../Redux/Thunks/userThunks";
-function ProductCard(props) {
+import { addToCart, toWishlist } from "../../Redux/Thunks/userThunks";
+import {
+    createProduct,
+    deleteProduct,
+    updateProduct,
+} from "../../Redux/Thunks/productThunks";
+function AdminProductCard(props) {
     const { item } = props;
     const dispatch = useDispatch();
-    function addCart() {
-        dispatch(addToCart(item._id));
+    function update() {
+        dispatch(updateProduct(item._id));
     }
-    function wishlist() {
-        dispatch(toWishlist(item._id));
+    function deleteProd() {
+        dispatch(deleteProduct(item._id));
     }
     return (
         <div className="container-sm border border-dark mx-2">
@@ -19,10 +24,10 @@ function ProductCard(props) {
             <h2>{item.title}</h2>
             <h3>{item.price}</h3>
             <h4>{item._id}</h4>
-            <button onClick={addCart}>Add to Cart</button>
-            <button onClick={wishlist}>Wishlist</button>
+            <button onClick={update}>Update</button>
+            <button onClick={deleteProd}>Delete</button>
         </div>
     );
 }
 
-export default ProductCard;
+export default AdminProductCard;

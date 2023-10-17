@@ -11,26 +11,29 @@ const {
     deleteImages,
     addToCart,
 } = require("../controller/productControl");
-const { isAdmin, authMiddleware } = require("../middleware/authMiddleware");
+const { adminAuth, userAuth } = require("../middleware/authMiddleware");
 const { uploadPhoto, productImgResize } = require("../middleware/uploadImages");
 const router = express.Router();
 
-router.post("/", authMiddleware, isAdmin, createProduct);
+router.post("/", adminAuth, createProduct); //
+
 router.put(
     "/upload",
-    authMiddleware,
-    isAdmin,
+    userAuth,
+    adminAuth,
     uploadPhoto.array("images", 10),
     productImgResize,
     uploadImages
 );
-router.put("/wishlist", authMiddleware, addToWishlist);
-router.put("/addToCart", authMiddleware, addToCart);
-router.put("/rating", authMiddleware, updateRating);
-router.put("/:id", authMiddleware, isAdmin, updateProduct);
-router.get("/:id", getAProduct);
-router.get("/", getAllProducts);
-router.delete("/:id", authMiddleware, isAdmin, deleteProduct);
-router.delete("/deleteImage/:id", authMiddleware, isAdmin, deleteImages);
+router.put("/wishlist", userAuth, addToWishlist); //
+router.put("/cart", userAuth, addToCart); //
+router.put("/rating", userAuth, updateRating); //
+router.put("/:id", adminAuth, updateProduct); //
+
+router.get("/:id", getAProduct); //
+router.get("/", getAllProducts); //
+
+router.delete("/:id", adminAuth, deleteProduct); //
+router.delete("/deleteImage/:id", adminAuth, deleteImages);
 
 module.exports = router;

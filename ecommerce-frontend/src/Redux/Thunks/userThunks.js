@@ -1,236 +1,207 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios"; // Import Axios
 
-const cookie = document.cookie
-    .split(";")
-    .find((cookie) => cookie.startsWith("refreshToken="));
-const token = cookie.split("=")[1];
+async function findToken() {
+    const cookie = document.cookie
+        .split(";")
+        .find((cookie) => cookie.startsWith("refreshToken="));
+    let token = "";
+    if (cookie) token = cookie.split("=")[1];
+    return token;
+}
 
-export const userLogin = createAsyncThunk(
-    "/login",
+export const userSignup = createAsyncThunk(
+    "/signup",
     async (credentials, { dispatch, rejectWithValue }) => {
         try {
-            const response = await fetch(
-                "http://localhost:4000/api/user/login",
+            const response = await axios.post(
+                "http://localhost:4000/api/user/register",
                 {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        email: credentials.email,
-                        password: credentials.password,
-                    }),
+                    email: credentials.email,
+                    password: credentials.password,
+                    firstName: credentials.firstName,
+                    lastName: credentials.lastName,
                 }
             );
-
-            if (!response.ok) {
-                throw new Error(
-                    `Failed to log in: ${response.status} ${response.statusText}`
-                );
-            }
-            const res = await response.json();
-            document.cookie = `refreshToken=${res.token}; path=/; expires=Wed, 21 Oct 2023 07:28:00 GMT;`;
-            return res;
+            return response.data;
         } catch (error) {
             console.error("Fetch error:", error);
             return rejectWithValue(error.message);
         }
     }
 );
-export const userLogout = createAsyncThunk(
-    "/logout",
-    async (_, { dispatch, getState }) => {
+
+export const userLogin = createAsyncThunk(
+    "/login",
+    async (credentials, { dispatch, rejectWithValue }) => {
         try {
-            const response = await fetch(
-                "http://localhost:4000/api/user/logout",
+            const response = await axios.post(
+                "http://localhost:4000/api/user/login",
                 {
-                    method: "GET",
-                    credentials: "include",
+                    email: credentials.email,
+                    password: credentials.password,
                 }
             );
-
-            if (!response.ok) {
-                throw new Error(
-                    `Failed to log out: ${response.status} ${response.statusText}`
-                );
-            }
-            return;
+            return response.data;
         } catch (error) {
             console.error("Fetch error:", error);
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
+export const userLogout = createAsyncThunk(
+    "/logout",
+    async (_, { dispatch, rejectWithValue }) => {
+        try {
+            const response = await axios.get(
+                "http://localhost:4000/api/user/logout",
+                {
+                    withCredentials: true, // Include credentials
+                }
+            );
+            return response.data;
+        } catch (error) {
+            console.error("Fetch error:", error);
+            return rejectWithValue(error.message);
         }
     }
 );
 
 export const getUserDetails = createAsyncThunk(
     "/getUserDetails",
-    async (_, { dispatch, getState }) => {
+    async (_, { dispatch, rejectWithValue }) => {
         try {
-            const response = await fetch(
-                "http://localhost:4000/api/user/getUserDetails",
+            const response = await axios.get(
+                "http://localhost:4000/api/user/details",
                 {
-                    method: "GET",
-                    credentials: "include",
+                    withCredentials: true, // Include credentials
                 }
             );
-
-            if (!response.ok) {
-                throw new Error(
-                    `Failed to fetch Details: ${response.status} ${response.statusText}`
-                );
-            }
-            const res = await response.json();
-            return res;
+            return response.data;
         } catch (error) {
             console.error("Fetch error:", error);
-        }
-    }
-);
-
-export const getCart = createAsyncThunk(
-    "/getCart",
-    async (_, { dispatch, getState }) => {
-        try {
-            const response = await fetch(
-                "http://localhost:4000/api/user/cart",
-                {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                        authorization: `Bearer ${token}`,
-                    },
-                }
-            );
-
-            if (!response.ok) {
-                throw new Error(
-                    `Failed to fetch Details: ${response.status} ${response.statusText}`
-                );
-            }
-            const res = await response.json();
-            return res;
-        } catch (error) {
-            console.error("Fetch error:", error);
+            return rejectWithValue(error.message);
         }
     }
 );
 
 export const removeFromCart = createAsyncThunk(
     "/removeFromCart",
-    async (productId, { dispatch, getState }) => {
+    async (productId, { dispatch, rejectWithValue }) => {
         try {
-            const response = await fetch(
-                "http://localhost:4000/api/user/cart/removeFromCart",
+            const response = await axios.put(
+                "http://localhost:4000/api/user/cart/remove",
                 {
-                    method: "PUT",
+                    productId: productId,
+                },
+                {
                     headers: {
                         "Content-Type": "application/json",
-                        authorization: `Bearer ${token}`,
+                        Authorization: `Bearer ${findToken()}`,
                     },
-                    body: JSON.stringify({
-                        productId: productId,
-                    }),
                 }
             );
-
-            if (!response.ok) {
-                throw new Error(
-                    `Failed to removeFromCart: ${response.status} ${response.statusText}`
-                );
-            }
-            const res = await response.json();
-            return res;
+            return response.data;
         } catch (error) {
             console.error("Error:", error);
+            return rejectWithValue(error.message);
         }
     }
 );
 
 export const addToCart = createAsyncThunk(
     "/addToCart",
-    async (productId, { dispatch, getState }) => {
+    async (productId, { dispatch, rejectWithValue }) => {
         try {
-            const response = await fetch(
-                "http://localhost:4000/api/product/addToCart",
+            const token = await findToken();
+            const response = await axios.put(
+                "http://localhost:4000/api/product/cart",
                 {
-                    method: "PUT",
+                    productId,
+                },
+                {
                     headers: {
                         "Content-Type": "application/json",
-                        authorization: `Bearer ${token}`,
+                        Authorization: `Bearer ${token}`,
                     },
-                    body: JSON.stringify({
-                        productId,
-                    }),
                 }
             );
-
-            if (!response.ok) {
-                throw new Error(
-                    `Failed to addToCart: ${response.status} ${response.statusText}`
-                );
-            }
-            const res = await response.json();
-            return res;
+            return response.data;
         } catch (error) {
             console.error("Error:", error);
+            return rejectWithValue(error.message);
         }
     }
 );
 
 export const toWishlist = createAsyncThunk(
     "/toWishlist",
-    async (productId, { dispatch, getState }) => {
+    async (productId, { dispatch, rejectWithValue }) => {
         try {
-            const response = await fetch(
+            const token = await findToken();
+
+            const response = await axios.put(
                 "http://localhost:4000/api/product/wishlist",
                 {
-                    method: "PUT",
+                    productId,
+                },
+                {
                     headers: {
                         "Content-Type": "application/json",
-                        authorization: `Bearer ${token}`,
+                        Authorization: `Bearer ${token}`,
                     },
-                    body: JSON.stringify({
-                        productId,
-                    }),
                 }
             );
-
-            if (!response.ok) {
-                throw new Error(
-                    `Failed to addToCart: ${response.status} ${response.statusText}`
-                );
-            }
-            const res = await response.json();
-            return res;
+            return response.data;
         } catch (error) {
             console.error("Error:", error);
+            return rejectWithValue(error.message);
         }
     }
 );
 
 export const getWishlist = createAsyncThunk(
     "/getWishlist",
-    async (_, { dispatch, getState }) => {
+    async (_, { dispatch, rejectWithValue }) => {
         try {
-            const response = await fetch(
+            const token = await findToken();
+
+            const response = await axios.get(
                 "http://localhost:4000/api/user/wishlist",
                 {
-                    method: "GET",
+                    withCredentials: true,
                     headers: {
-                        "Content-Type": "application/json",
-                        authorization: `Bearer ${token}`,
+                        Authorization: `Bearer ${token}`,
                     },
                 }
             );
-
-            if (!response.ok) {
-                throw new Error(
-                    `Failed to fetch Details: ${response.status} ${response.statusText}`
-                );
-            }
-            const res = await response.json();
-            return res;
+            return response.data;
         } catch (error) {
             console.error("Fetch error:", error);
+            return rejectWithValue(error.message);
+        }
+    }
+);
+export const getCart = createAsyncThunk(
+    "/getCart",
+    async (_, { dispatch, rejectWithValue }) => {
+        try {
+            const token = await findToken();
+
+            const response = await axios.get(
+                "http://localhost:4000/api/user/cart",
+                {
+                    withCredentials: true, // Include credentials
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+            return response.data;
+        } catch (error) {
+            console.error("Fetch error:", error);
+            return rejectWithValue(error.message);
         }
     }
 );

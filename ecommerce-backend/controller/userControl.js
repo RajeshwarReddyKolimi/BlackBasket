@@ -15,7 +15,19 @@ const createUser = asyncHandler(async (req, res) => {
     const findUser = await User.findOne({ email: email });
     if (!findUser) {
         const newUser = await User.create(req.body);
-        res.json(newUser);
+        const refreshToken = await generateRefreshToken(newUser._id);
+        const updateUser = await User.findByIdAndUpdate(
+            newUser.id,
+            {
+                refreshToken: refreshToken,
+            },
+            { new: true }
+        );
+        res.cookie("refreshToken", refreshToken, {
+            httpOnly: true,
+            maxAge: 3 * 24 * 60 * 60 * 1000,
+        });
+        res.json({ token: refreshToken });
     } else {
         throw new Error("User already exists");
     }
@@ -39,44 +51,10 @@ const loginUser = asyncHandler(async (req, res) => {
                 maxAge: 3 * 24 * 60 * 60 * 1000,
             });
             res.json({
-                _id: findUser?._id,
-                firstName: findUser?.firstName,
-                lastName: findUser?.lastName,
-                email: findUser?.email,
                 token: refreshToken,
-                // token: generateToken(findUser?._id),
             });
         } else throw new Error("Invalid password");
     } else throw new Error("User not found");
-});
-
-const loginAdmin = asyncHandler(async (req, res) => {
-    const { email, password } = req.body;
-    const findAdmin = await User.findOne({ email });
-    if (findAdmin) {
-        if (findAdmin.role !== "Admin") throw new Error("Not Admin");
-        if (await findAdmin.isPasswordMatched(password)) {
-            const refreshToken = await generateRefreshToken(findAdmin?._id);
-            const updateAdmin = await User.findByIdAndUpdate(
-                findAdmin.id,
-                {
-                    refreshToken: refreshToken,
-                },
-                { new: true }
-            );
-            res.cookie("refreshToken", refreshToken, {
-                httpOnly: true,
-                maxAge: 3 * 24 * 60 * 60 * 1000,
-            });
-            res.json({
-                _id: findAdmin?._id,
-                firstName: findAdmin?.firstName,
-                lastName: findAdmin?.lastName,
-                email: findAdmin?.email,
-                token: generateToken(findAdmin?._id),
-            });
-        } else throw new Error("Invalid password");
-    } else throw new Error("Admin not found");
 });
 
 const handleRefreshToken = asyncHandler(async (req, res) => {
@@ -93,21 +71,6 @@ const handleRefreshToken = asyncHandler(async (req, res) => {
     });
 });
 
-const getAllUsers = asyncHandler(async (req, res) => {
-    const getUsers = await User.find();
-    if (getUsers.length > 0) {
-        res.json(getUsers);
-    } else throw new Error("No Users found");
-});
-
-const getOneUser = asyncHandler(async (req, res) => {
-    const { id } = req.params;
-    validateMongodbId(id);
-    const getUser = await User.findById(id);
-    if (getUser) res.json(getUser);
-    else throw new Error("User not found");
-});
-
 const getUserDetails = asyncHandler(async (req, res) => {
     const { refreshToken } = req.cookies;
     const getUser = await User.findOne(
@@ -120,22 +83,10 @@ const getUserDetails = asyncHandler(async (req, res) => {
     else throw new Error("User not found");
 });
 
-const deleteUser = asyncHandler(async (req, res) => {
-    const { id } = req.params;
-    validateMongodbId(id);
-    const delUser = await User.findByIdAndDelete(id);
-    if (delUser) {
-        res.json({ message: "Successfully Deleted" });
-    } else throw new Error("User not found");
-});
-
 const logoutUser = asyncHandler(async (req, res) => {
     const cookie = req.cookies;
-
     if (!cookie?.refreshToken) throw new Error("No refresh token in cookies");
-
     const refreshToken = cookie.refreshToken;
-    console.log(refreshToken);
     try {
         const user = await User.findOne({ refreshToken });
         if (!user) {
@@ -156,7 +107,7 @@ const logoutUser = asyncHandler(async (req, res) => {
             httpOnly: true,
             secure: true,
         });
-        return res.sendStatus(204);
+        return res.json({ message: "Successful" });
     } catch (error) {
         throw new Error(error);
     }
@@ -176,36 +127,6 @@ const updateUser = asyncHandler(async (req, res) => {
     );
     if (updUser) {
         res.json(updUser);
-    } else throw new Error("User not found");
-});
-
-const blockUser = asyncHandler(async (req, res) => {
-    const { id } = req.params;
-    validateMongodbId(id);
-    const block = await User.findByIdAndUpdate(
-        id,
-        {
-            isBlocked: true,
-        },
-        { new: true }
-    );
-    if (block) {
-        res.json({ message: "User blocked" });
-    } else throw new Error("User not found");
-});
-
-const unblockUser = asyncHandler(async (req, res) => {
-    const { id } = req.params;
-    validateMongodbId(id);
-    const unblock = await User.findByIdAndUpdate(
-        id,
-        {
-            isBlocked: false,
-        },
-        { new: true }
-    );
-    if (unblock) {
-        res.json({ message: "User unblocked" });
     } else throw new Error("User not found");
 });
 
@@ -273,7 +194,7 @@ const getUserCart = asyncHandler(async (req, res) => {
     const { _id } = req.user;
     try {
         const user = await User.findById(_id).populate("cart.items.product");
-
+        console.log(user.cart);
         res.json(user.cart);
     } catch (error) {
         throw new Error(error);
@@ -396,44 +317,16 @@ const getOrders = asyncHandler(async (req, res) => {
     }
 });
 
-const updateOrderStatus = asyncHandler(async (req, res) => {
-    const { status } = req.body;
-    const { id } = req.params;
-    validateMongodbId(id);
-    try {
-        const updateStatus = await Order.findByIdAndUpdate(
-            id,
-            {
-                orderStatus: status,
-                paymentIntent: {
-                    status: status,
-                },
-            },
-            {
-                new: true,
-            }
-        );
-        res.json(updateStatus);
-    } catch (error) {
-        throw new Error(error);
-    }
-});
 module.exports = {
     createUser,
     loginUser,
-    getAllUsers,
-    deleteUser,
-    getOneUser,
     getUserDetails,
     updateUser,
-    blockUser,
-    unblockUser,
     handleRefreshToken,
     logoutUser,
     updatePassword,
     forgotPasswordToken,
     resetPassword,
-    loginAdmin,
     getWishlist,
     saveAddress,
     getUserCart,
@@ -441,5 +334,4 @@ module.exports = {
     emptyCart,
     createOrder,
     getOrders,
-    updateOrderStatus,
 };

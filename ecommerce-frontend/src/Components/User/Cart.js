@@ -2,14 +2,16 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux/es/hooks/useSelector";
 import { useDispatch } from "react-redux";
 import CartCard from "./CartCard";
-import { getCart } from "../Redux/Thunks/userThunks";
-import { NavLink } from "react-router-dom";
+import { getCart } from "../../Redux/Thunks/userThunks";
+import { NavLink, Navigate } from "react-router-dom";
 function Cart() {
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(getCart());
-    }, []);
+    }, [dispatch]);
     const cartData = useSelector((state) => state.user.userData.cart);
+    const isUserLogged = useSelector((state) => state.user.isUserLogged);
+    if (!isUserLogged) return <Navigate to="/" replace />;
     return (
         <div>
             <h2>Cart Products</h2>

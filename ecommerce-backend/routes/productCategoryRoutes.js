@@ -1,5 +1,5 @@
 const express = require("express");
-const { authMiddleware, isAdmin } = require("../middleware/authMiddleware");
+const { adminAuth } = require("../middleware/authMiddleware");
 const {
     createProductCategory,
     updateProductCategory,
@@ -8,9 +8,9 @@ const {
     getAllProductCategory,
 } = require("../controller/productCategoryControl");
 const router = express.Router();
-router.post("/", authMiddleware, isAdmin, createProductCategory);
-router.put("/:id", authMiddleware, isAdmin, updateProductCategory);
-router.delete("/:id", authMiddleware, isAdmin, deleteProductCategory);
+router.post("/", adminAuth, createProductCategory);
+router.put("/:id", adminAuth, updateProductCategory);
+router.delete("/:id", adminAuth, deleteProductCategory);
 router.get("/:id", getProductCategory);
 router.get("/", getAllProductCategory);
 module.exports = router;

@@ -1,5 +1,5 @@
 const express = require("express");
-const { authMiddleware, isAdmin } = require("../middleware/authMiddleware");
+const { userAuth, adminAuth } = require("../middleware/authMiddleware");
 const {
     createBlogCategory,
     updateBlogCategory,
@@ -8,9 +8,9 @@ const {
     getAllBlogCategory,
 } = require("../controller/blogCategoryControl");
 const router = express.Router();
-router.post("/", authMiddleware, isAdmin, createBlogCategory);
-router.put("/:id", authMiddleware, isAdmin, updateBlogCategory);
-router.delete("/:id", authMiddleware, isAdmin, deleteBlogCategory);
+router.post("/", adminAuth, createBlogCategory);
+router.put("/:id", adminAuth, updateBlogCategory);
+router.delete("/:id", adminAuth, deleteBlogCategory);
 router.get("/:id", getBlogCategory);
 router.get("/", getAllBlogCategory);
 module.exports = router;

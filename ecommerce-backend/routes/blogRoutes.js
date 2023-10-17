@@ -1,5 +1,5 @@
 const express = require("express");
-const { authMiddleware, isAdmin } = require("../middleware/authMiddleware");
+const { userAuth, adminAuth } = require("../middleware/authMiddleware");
 const {
     createBlog,
     updateBlog,
@@ -12,19 +12,19 @@ const {
 } = require("../controller/blogControl");
 const { blogImgResize, uploadPhoto } = require("../middleware/uploadImages");
 const router = express.Router();
-router.post("/", authMiddleware, isAdmin, createBlog);
-router.put("/likes", authMiddleware, likeBlog);
-router.put("/dislikes", authMiddleware, dislikeBlog);
+router.post("/", userAuth, adminAuth, createBlog);
+router.put("/likes", userAuth, likeBlog);
+router.put("/dislikes", userAuth, dislikeBlog);
 router.put(
     "/upload/:id",
-    authMiddleware,
-    isAdmin,
+    userAuth,
+    adminAuth,
     uploadPhoto.array("images", 2),
     blogImgResize,
     uploadImages
 );
-router.put("/:id", authMiddleware, isAdmin, updateBlog);
+router.put("/:id", userAuth, adminAuth, updateBlog);
 router.get("/:id", getBlog);
 router.get("/", getAllBlogs);
-router.delete("/:id", authMiddleware, isAdmin, deleteBlog);
+router.delete("/:id", userAuth, adminAuth, deleteBlog);
 module.exports = router;

@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux/es/hooks/useSelector";
 import { useDispatch } from "react-redux";
-import { getWishlist } from "../Redux/Thunks/userThunks";
-import ProductCard from "./ProductCard";
+import { getWishlist } from "../../Redux/Thunks/userThunks";
+import ProductCard from "../Products/ProductCard";
+import { Navigate } from "react-router-dom";
 function Wishlist() {
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(getWishlist());
     }, []);
     const wishlistData = useSelector((state) => state.user.userData.wishlist);
+
+    const isUserLogged = useSelector((state) => state.user.isUserLogged);
+    if (!isUserLogged) return <Navigate to="/" replace />;
     return (
         <div>
             <h2>Wishlist Products</h2>

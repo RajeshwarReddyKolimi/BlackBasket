@@ -1,5 +1,5 @@
 const express = require("express");
-const { authMiddleware, isAdmin } = require("../middleware/authMiddleware");
+const { userAuth, adminAuth } = require("../middleware/authMiddleware");
 const {
     createColor,
     updateColor,
@@ -8,9 +8,9 @@ const {
     getAllColor,
 } = require("../controller/colorControl");
 const router = express.Router();
-router.post("/", authMiddleware, isAdmin, createColor);
-router.put("/:id", authMiddleware, isAdmin, updateColor);
-router.delete("/:id", authMiddleware, isAdmin, deleteColor);
+router.post("/", adminAuth, createColor);
+router.put("/:id", adminAuth, updateColor);
+router.delete("/:id", adminAuth, deleteColor);
 router.get("/:id", getColor);
 router.get("/", getAllColor);
 module.exports = router;

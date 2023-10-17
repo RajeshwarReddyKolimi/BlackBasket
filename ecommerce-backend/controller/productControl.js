@@ -35,7 +35,6 @@ const updateProduct = asyncHandler(async (req, res) => {
                 new: true,
             }
         );
-        console.log(updateProd);
         res.json(updateProd);
     } catch (error) {
         throw new Error(error);
@@ -45,6 +44,7 @@ const updateProduct = asyncHandler(async (req, res) => {
 const deleteProduct = asyncHandler(async (req, res) => {
     try {
         const { id } = req.params;
+        console.log(id);
         const deleteProd = await Product.findByIdAndDelete(id);
         res.json(deleteProd);
     } catch (error) {
@@ -151,7 +151,7 @@ const addToCart = asyncHandler(async (req, res) => {
     try {
         let user = await User.findById(_id);
         const existingCartItem = user.cart.items.find(
-            (cartItem) => cartItem.product.toString() === productId
+            (cartItem) => cartItem.product.toString() === productId.toString()
         );
         if (existingCartItem) {
             existingCartItem.quantity += 1;
