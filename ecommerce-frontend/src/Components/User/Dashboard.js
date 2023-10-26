@@ -29,14 +29,17 @@ function Dashboard() {
             <h4>{data && data.email && data.email}</h4>
             <h4>{data && data.role && data.role}</h4>
             <h3>
-                <NavLink to="/cart">
+                <NavLink to="../user/cart">
                     Cart {data && data.cartSize ? data.cartSize : 0}
                 </NavLink>
             </h3>
             <h3>
-                <NavLink to="/wishlist">
+                <NavLink to="../user/wishlist">
                     Wishlist {data && data.wishlistSize ? data.wishlistSize : 0}
                 </NavLink>
+            </h3>
+            <h3>
+                <NavLink to="../user/coupons">My Coupons</NavLink>
             </h3>
 
             <Products />

@@ -8,3 +8,22 @@ body {
     font-family: "Rubik", sans-serif;
     text-align: center;
 }
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button {
+    border: none;
+    background-color: inherit;
+    cursor: pointer;
+}
+
+li {
+    list-style: none;
+}
+
+.flex-buffer {
+    flex-grow: 1;
+}

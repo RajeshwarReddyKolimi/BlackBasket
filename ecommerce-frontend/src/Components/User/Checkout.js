@@ -9,8 +9,9 @@ function Checkout() {
     if (!isUserLogged) return <Navigate to="/" replace />;
     return (
         <div>
-            <div>Confirm Address: {data.address}</div>
-            <NavLink to="/payment">Pay {data.cart.totalPrice}</NavLink>
+            <div>Address: {data.address}</div>
+            <div>Price: {data.cart.totalPrice}</div>
+            <NavLink to="/payment">Confirm </NavLink>
         </div>
     );
 }

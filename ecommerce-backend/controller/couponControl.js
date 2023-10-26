@@ -1,10 +1,15 @@
 const Coupon = require("../models/couponModel");
+const User = require("../models/userModel");
 const asyncHandler = require("express-async-handler");
 const { validateMongodbId } = require("../utils/validateMongodbId");
 
 const createCoupon = asyncHandler(async (req, res) => {
     try {
         const newCoupon = await Coupon.create(req.body);
+        const update = await User.updateMany(
+            {},
+            { $push: { coupons: newCoupon._id } }
+        );
         res.json(newCoupon);
     } catch (error) {
         throw new Error(error);
@@ -38,6 +43,10 @@ const deleteCoupon = asyncHandler(async (req, res) => {
     validateMongodbId(id);
     try {
         const delCoupon = await Coupon.findByIdAndDelete(id);
+        const update = await User.updateMany(
+            {},
+            { $pull: { coupons: delCoupon._id } }
+        );
         res.json(delCoupon);
     } catch (error) {
         throw new Error(error);

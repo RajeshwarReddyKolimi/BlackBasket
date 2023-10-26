@@ -10,6 +10,11 @@ import {
     toWishlist,
     getWishlist,
     userSignup,
+    applyCoupon,
+    createOrder,
+    updateUserDetails,
+    addUserAddress,
+    updateUserAddress,
 } from "../Thunks/userThunks";
 
 const userSlice = createSlice({
@@ -28,7 +33,7 @@ const userSlice = createSlice({
         builder.addCase(userSignup.fulfilled, (state, action) => {
             state.isUserLogged = true;
             state.errorMessage = "";
-            document.cookie = `refreshToken=${action.payload.token}; path=/; expires=Wed, 21 Oct 2023 07:28:00 GMT;`;
+            document.cookie = `refreshToken=${action.payload.token}; path=/; expires=Wed, 31 Oct 2023 07:28:00 GMT;`;
             state.userData = {};
         });
         builder.addCase(userSignup.rejected, (state, action) => {
@@ -39,7 +44,7 @@ const userSlice = createSlice({
         builder.addCase(userLogin.pending, setLoadingState);
         builder.addCase(userLogin.fulfilled, (state, action) => {
             state.isUserLogged = true;
-            document.cookie = `refreshToken=${action.payload.token}; path=/; expires=Wed, 21 Oct 2023 07:28:00 GMT;`;
+            document.cookie = `refreshToken=${action.payload.token}; path=/; expires=Wed, 31 Oct 2023 07:28:00 GMT;`;
             state.errorMessage = "";
         });
         builder.addCase(userLogin.rejected, (state, action) => {
@@ -65,10 +70,33 @@ const userSlice = createSlice({
             state.isUserLogged = true;
             state.userData = action.payload;
         });
-        builder.addCase(getUserDetails.rejected, (state, action) => {
-            state.errorMessage = "Cannot Get Details";
+        builder.addCase(updateUserDetails.pending, setLoadingState);
+        builder.addCase(updateUserDetails.fulfilled, (state, action) => {
+            state.errorMessage = "";
+            state.userData = action.payload;
+        });
+        builder.addCase(updateUserDetails.rejected, (state, action) => {
+            state.errorMessage = "Cannot Update Details";
             state.userData = {};
-            state.isUserLogged = false;
+        });
+        builder.addCase(addUserAddress.pending, setLoadingState);
+        builder.addCase(addUserAddress.fulfilled, (state, action) => {
+            state.errorMessage = "";
+            state.userData = action.payload;
+        });
+        builder.addCase(addUserAddress.rejected, (state, action) => {
+            state.errorMessage = "Cannot Add Address";
+            state.userData = {};
+        });
+
+        builder.addCase(updateUserAddress.pending, setLoadingState);
+        builder.addCase(updateUserAddress.fulfilled, (state, action) => {
+            state.errorMessage = "";
+            state.userData = action.payload;
+        });
+        builder.addCase(updateUserAddress.rejected, (state, action) => {
+            state.errorMessage = "Cannot Add Address";
+            state.userData = {};
         });
         builder.addCase(removeFromCart.pending, setLoadingState);
         builder.addCase(removeFromCart.fulfilled, (state, action) => {
@@ -105,6 +133,24 @@ const userSlice = createSlice({
         builder.addCase(getCart.rejected, (state, action) => {
             state.errorMessage = "Cannot Get Cart";
         });
+
+        builder.addCase(applyCoupon.pending, setLoadingState);
+        builder.addCase(applyCoupon.fulfilled, (state, action) => {
+            state.errorMessage = "";
+            state.userData.cart = action.payload;
+        });
+        builder.addCase(applyCoupon.rejected, (state, action) => {
+            state.errorMessage = "Cannot Apply Coupon";
+        });
+
+        builder.addCase(createOrder.pending, setLoadingState);
+        builder.addCase(createOrder.fulfilled, (state, action) => {
+            state.errorMessage = "";
+        });
+        builder.addCase(createOrder.rejected, (state, action) => {
+            state.errorMessage = "Cannot Create Order";
+        });
+
         builder.addCase(toWishlist.pending, setLoadingState);
         builder.addCase(toWishlist.fulfilled, (state, action) => {
             state.errorMessage = "";
@@ -114,6 +160,7 @@ const userSlice = createSlice({
         builder.addCase(toWishlist.rejected, (state, action) => {
             state.errorMessage = "Cannot Wishlist";
         });
+
         builder.addCase(getWishlist.pending, setLoadingState);
         builder.addCase(getWishlist.fulfilled, (state, action) => {
             state.errorMessage = "";

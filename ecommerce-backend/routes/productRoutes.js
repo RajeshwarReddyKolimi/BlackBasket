@@ -7,24 +7,17 @@ const {
     deleteProduct,
     addToWishlist,
     updateRating,
-    uploadImages,
     deleteImages,
     addToCart,
+    uploadProductImage,
 } = require("../controller/productControl");
 const { adminAuth, userAuth } = require("../middleware/authMiddleware");
-const { uploadPhoto, productImgResize } = require("../middleware/uploadImages");
+const { uploadImages } = require("../utils/cloudinary");
 const router = express.Router();
 
 router.post("/", adminAuth, createProduct); //
 
-router.put(
-    "/upload",
-    userAuth,
-    adminAuth,
-    uploadPhoto.array("images", 10),
-    productImgResize,
-    uploadImages
-);
+router.put("/upload/:id", adminAuth, uploadProductImage);
 router.put("/wishlist", userAuth, addToWishlist); //
 router.put("/cart", userAuth, addToCart); //
 router.put("/rating", userAuth, updateRating); //
@@ -34,6 +27,5 @@ router.get("/:id", getAProduct); //
 router.get("/", getAllProducts); //
 
 router.delete("/:id", adminAuth, deleteProduct); //
-router.delete("/deleteImage/:id", adminAuth, deleteImages);
 
 module.exports = router;

@@ -115,7 +115,7 @@ const deleteUser = asyncHandler(async (req, res) => {
     validateMongodbId(id);
     const delUser = await User.findByIdAndDelete(id);
     if (delUser) {
-        res.json({ message: "Successfully Deleted" });
+        res.json({ id });
     } else throw new Error("User not found");
 });
 
@@ -176,7 +176,7 @@ const blockUser = asyncHandler(async (req, res) => {
         { new: true }
     );
     if (block) {
-        res.json({ message: "User blocked" });
+        res.json({ id });
     } else throw new Error("User not found");
 });
 
@@ -191,7 +191,7 @@ const unblockUser = asyncHandler(async (req, res) => {
         { new: true }
     );
     if (unblock) {
-        res.json({ message: "User unblocked" });
+        res.json({ id });
     } else throw new Error("User not found");
 });
 

@@ -1,17 +1,41 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux/es/hooks/useSelector";
+import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import CartCard from "./CartCard";
-import { getCart } from "../../Redux/Thunks/userThunks";
 import { NavLink, Navigate } from "react-router-dom";
+import CartCard from "./CartCard";
+import UserCouponCard from "./UserCouponCard";
+import CartCouponCard from "./CartCouponCard";
+import {
+    getUserDetails,
+    getCart,
+    applyCoupon,
+    createOrder,
+} from "../../Redux/Thunks/userThunks";
+import { getCoupons } from "../../Redux/Thunks/couponThunks";
+
 function Cart() {
     const dispatch = useDispatch();
-    useEffect(() => {
-        dispatch(getCart());
-    }, [dispatch]);
-    const cartData = useSelector((state) => state.user.userData.cart);
     const isUserLogged = useSelector((state) => state.user.isUserLogged);
+    const cartData = useSelector((state) => state.user.userData.cart);
+    const couponsData = useSelector((state) => state.user.userData.coupons);
+
+    const [selectedCoupon, setSelectedCoupon] = useState("");
+
+    useEffect(() => {
+        dispatch(getUserDetails());
+        dispatch(getCart());
+        dispatch(getCoupons());
+    }, [dispatch]);
+
     if (!isUserLogged) return <Navigate to="/" replace />;
+
+    async function apply(couponId) {
+        setSelectedCoupon(couponId);
+        dispatch(applyCoupon(couponId));
+    }
+    function handleOrder() {
+        dispatch(createOrder(selectedCoupon));
+    }
     return (
         <div>
             <h2>Cart Products</h2>
@@ -22,8 +46,28 @@ function Cart() {
                         <CartCard key={key} item={item} />
                     ))}
             </div>
+
+            <div className="">
+                {couponsData && (
+                    <div className="m-auto">
+                        {couponsData.map((id, key) => (
+                            <label key={key} className="d-flex flex-row">
+                                <input
+                                    type="radio"
+                                    name="couponOptions"
+                                    value={id}
+                                    onChange={(e) => apply(e.target.value)}
+                                />
+                                <CartCouponCard id={id} />
+                            </label>
+                        ))}
+                    </div>
+                )}
+            </div>
+
             <h3>Total Price: {cartData && cartData.totalPrice}</h3>
-            <NavLink to="/checkout">Checkout</NavLink>
+            <h3>Final Price: {cartData && cartData.finalPrice}</h3>
+            <button onClick={handleOrder}>Confirm Order</button>
         </div>
     );
 }

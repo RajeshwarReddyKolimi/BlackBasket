@@ -10,19 +10,10 @@ const {
     dislikeBlog,
     uploadImages,
 } = require("../controller/blogControl");
-const { blogImgResize, uploadPhoto } = require("../middleware/uploadImages");
 const router = express.Router();
 router.post("/", userAuth, adminAuth, createBlog);
 router.put("/likes", userAuth, likeBlog);
 router.put("/dislikes", userAuth, dislikeBlog);
-router.put(
-    "/upload/:id",
-    userAuth,
-    adminAuth,
-    uploadPhoto.array("images", 2),
-    blogImgResize,
-    uploadImages
-);
 router.put("/:id", userAuth, adminAuth, updateBlog);
 router.get("/:id", getBlog);
 router.get("/", getAllBlogs);

@@ -86,10 +86,90 @@ export const getUserDetails = createAsyncThunk(
     }
 );
 
+export const updateUserDetails = createAsyncThunk(
+    "/updateUserDetails",
+    async (details, { dispatch, rejectWithValue }) => {
+        try {
+            const token = await findToken();
+            const response = await axios.put(
+                "http://localhost:4000/api/user/update",
+                {
+                    firstName: details.firstName,
+                    lastName: details.lastName,
+                    email: details.email,
+                    mobile: details.mobile,
+                },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+            return response.data;
+        } catch (error) {
+            console.error("Fetch error:", error);
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
+export const addUserAddress = createAsyncThunk(
+    "/addUserAddress",
+    async (address, { dispatch, rejectWithValue }) => {
+        try {
+            const token = await findToken();
+            const response = await axios.post(
+                "http://localhost:4000/api/user/address",
+                {
+                    address: address,
+                },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+            return response.data;
+        } catch (error) {
+            console.error("Fetch error:", error);
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
+export const updateUserAddress = createAsyncThunk(
+    "/updateUserAddress",
+    async ({ id, address }, { dispatch, rejectWithValue }) => {
+        try {
+            const token = await findToken();
+            const response = await axios.put(
+                `http://localhost:4000/api/user/address/${id}`,
+                {
+                    address: address,
+                },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+            return response.data;
+        } catch (error) {
+            console.error("Fetch error:", error);
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
 export const removeFromCart = createAsyncThunk(
     "/removeFromCart",
     async (productId, { dispatch, rejectWithValue }) => {
         try {
+            const token = await findToken();
+
             const response = await axios.put(
                 "http://localhost:4000/api/user/cart/remove",
                 {
@@ -98,7 +178,7 @@ export const removeFromCart = createAsyncThunk(
                 {
                     headers: {
                         "Content-Type": "application/json",
-                        Authorization: `Bearer ${findToken()}`,
+                        Authorization: `Bearer ${token}`,
                     },
                 }
             );
@@ -169,6 +249,7 @@ export const getWishlist = createAsyncThunk(
 
             const response = await axios.get(
                 "http://localhost:4000/api/user/wishlist",
+                {},
                 {
                     withCredentials: true,
                     headers: {
@@ -188,12 +269,61 @@ export const getCart = createAsyncThunk(
     async (_, { dispatch, rejectWithValue }) => {
         try {
             const token = await findToken();
-
             const response = await axios.get(
                 "http://localhost:4000/api/user/cart",
                 {
-                    withCredentials: true, // Include credentials
+                    withCredentials: true,
                     headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+            return response.data;
+        } catch (error) {
+            console.error("Fetch error:", error);
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
+export const applyCoupon = createAsyncThunk(
+    "/user/coupon/",
+    async (credentials, { dispatch, rejectWithValue }) => {
+        try {
+            const token = await findToken();
+            const couponId = credentials;
+            const response = await axios.put(
+                `http://localhost:4000/api/user/applyCoupon/${couponId}`,
+                {},
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+            return response.data;
+        } catch (error) {
+            console.error("Fetch error:", error);
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
+export const createOrder = createAsyncThunk(
+    "/user/order/",
+    async (credentials, { dispatch, rejectWithValue }) => {
+        try {
+            const token = await findToken();
+            const couponId = credentials;
+            const response = await axios.post(
+                `http://localhost:4000/api/user/createOrder`,
+                {
+                    couponId: couponId,
+                },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
                         Authorization: `Bearer ${token}`,
                     },
                 }

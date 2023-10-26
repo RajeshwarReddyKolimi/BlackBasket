@@ -87,6 +87,28 @@ export const updateProduct = createAsyncThunk(
     }
 );
 
+export const uploadProductImages = createAsyncThunk(
+    "/uploadProductImages",
+    async ({ formData, productId }, { dispatch, rejectWithValue }) => {
+        try {
+            const token = await findToken();
+            const response = await axios.put(
+                `http://localhost:4000/api/product/upload/${productId.toString()}`,
+                formData,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+            return response.data;
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    }
+);
+
 export const deleteProduct = createAsyncThunk(
     "/deleteProduct",
     async (id, thunkAPI) => {

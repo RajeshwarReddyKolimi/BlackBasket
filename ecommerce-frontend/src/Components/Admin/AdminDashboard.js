@@ -27,6 +27,7 @@ function AdminDashboard() {
             <button onClick={logout}>Logout</button>
             <NavLink to="/admin/products"> Products </NavLink>
             <NavLink to="/admin/users"> Users </NavLink>
+            <NavLink to="/coupons"> Coupons </NavLink>
         </div>
     );
 }

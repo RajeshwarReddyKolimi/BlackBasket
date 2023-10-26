@@ -17,6 +17,8 @@ const {
     getOrders,
     getUserDetails,
     removeFromCart,
+    addAddress,
+    updateAddress,
 } = require("../controller/userControl");
 const { userAuth, adminAuth } = require("../middleware/authMiddleware");
 const {
@@ -32,13 +34,15 @@ const router = express.Router();
 router.post("/register", createUser); //
 router.post("/login", loginUser); //
 router.post("/forgot-password-token", forgotPasswordToken);
-router.post("/cart/cashOrder", userAuth, createOrder);
+router.post("/createOrder", userAuth, createOrder);
+router.post("/address", userAuth, addAddress);
 
+router.put("/address/:id", userAuth, updateAddress);
 router.put("/reset-password/:token", resetPassword);
 router.put("/password", userAuth, updatePassword);
-router.put("/saveAddress", userAuth, saveAddress);
 router.put("/update", userAuth, updateUser); //
 router.put("/cart/remove", userAuth, removeFromCart);
+router.put("/applyCoupon/:id", userAuth, applyCoupon);
 
 router.get("/refresh", handleRefreshToken);
 router.get("/logout", logoutUser); //

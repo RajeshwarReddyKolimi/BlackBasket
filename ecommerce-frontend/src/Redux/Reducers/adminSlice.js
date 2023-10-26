@@ -2,7 +2,12 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
     adminLogin,
     adminLogout,
+    blockUser,
+    deleteUser,
     getAdminDetails,
+    getUserById,
+    getUsers,
+    unblockUser,
 } from "../Thunks/adminThunks";
 
 const adminSlice = createSlice({
@@ -10,6 +15,8 @@ const adminSlice = createSlice({
     initialState: {
         isAdminLogged: false,
         errorMessage: "",
+        curUser: {},
+        users: [],
         adminData: {},
     },
     reducers: {},
@@ -21,7 +28,7 @@ const adminSlice = createSlice({
         builder.addCase(adminLogin.pending, setLoadingState);
         builder.addCase(adminLogin.fulfilled, (state, action) => {
             state.isAdminLogged = true;
-            document.cookie = `refreshToken=${action.payload.token}; path=/; expires=Wed, 21 Oct 2023 07:28:00 GMT;`;
+            document.cookie = `refreshToken=${action.payload.token}; path=/; expires=Wed, 31 Oct 2023 07:28:00 GMT;`;
             state.errorMessage = "";
         });
         builder.addCase(adminLogin.rejected, (state, action) => {
@@ -45,6 +52,61 @@ const adminSlice = createSlice({
         });
         builder.addCase(getAdminDetails.rejected, (state, action) => {
             state.errorMessage = "Cannot get";
+        });
+
+        builder.addCase(getUsers.pending, setLoadingState);
+        builder.addCase(getUsers.fulfilled, (state, action) => {
+            state.errorMessage = "";
+            state.users = action.payload;
+        });
+        builder.addCase(getUsers.rejected, (state, action) => {
+            state.errorMessage = "Cannot get";
+        });
+
+        builder.addCase(blockUser.pending, setLoadingState);
+        builder.addCase(blockUser.fulfilled, (state, action) => {
+            const id = action.payload.id;
+            const userIndex = state.users.findIndex((user) => user._id === id);
+            if (userIndex !== -1) {
+                state.users[userIndex].isBlocked = true;
+            }
+            state.errorMessage = "";
+        });
+        builder.addCase(blockUser.rejected, (state, action) => {
+            state.errorMessage = "Cannot block";
+        });
+
+        builder.addCase(unblockUser.pending, setLoadingState);
+        builder.addCase(unblockUser.fulfilled, (state, action) => {
+            const id = action.payload.id;
+            const userIndex = state.users.findIndex((user) => user._id === id);
+            if (userIndex !== -1) {
+                state.users[userIndex].isBlocked = false;
+            }
+            state.errorMessage = "";
+        });
+        builder.addCase(unblockUser.rejected, (state, action) => {
+            state.errorMessage = "Cannot unblock";
+        });
+
+        builder.addCase(deleteUser.pending, setLoadingState);
+        builder.addCase(deleteUser.fulfilled, (state, action) => {
+            const id = action.payload.id;
+            state.users = state.users.filter((user) => user._id !== id);
+            state.errorMessage = "";
+        });
+        builder.addCase(deleteUser.rejected, (state, action) => {
+            state.errorMessage = "Cannot Delete";
+        });
+
+        builder.addCase(getUserById.pending, setLoadingState);
+        builder.addCase(getUserById.fulfilled, (state, action) => {
+            state.curUser = action.payload;
+            state.errorMessage = "";
+        });
+        builder.addCase(getUserById.rejected, (state, action) => {
+            state.errorMessage = "Cannot Delete";
+            state.curUser = {};
         });
     },
 });

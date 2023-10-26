@@ -14,6 +14,11 @@ const userSchema = new mongoose.Schema(
             type: String,
             unique: true,
         },
+        mobile: {
+            type: String,
+            unique: true,
+            match: /^[6-9]\d{9}$/,
+        },
         password: {
             type: String,
         },
@@ -25,31 +30,40 @@ const userSchema = new mongoose.Schema(
             type: String,
             default: "User",
         },
+
         cart: {
             items: [
                 {
                     product: {
                         type: mongoose.Schema.Types.ObjectId,
                         ref: "Product",
-                        unique: true,
+                        unique: false,
                     },
                     quantity: Number,
                 },
             ],
             totalPrice: { type: Number, default: 0 },
+            finalPrice: { type: Number, default: this.totalPrice },
         },
+
         cartSize: {
             type: Number,
             default: 0,
         },
-        address: {
-            type: String,
-        },
+        address: [
+            {
+                houseNo: String,
+                street: String,
+                village: String,
+                city: String,
+                landmark: String,
+                pincode: { type: String, required: true, match: /^\d{6}$/ },
+            },
+        ],
         wishlist: [
             {
                 type: mongoose.Schema.Types.ObjectId,
                 ref: "Product",
-                unique: true,
             },
         ],
         wishlistSize: {
@@ -59,6 +73,29 @@ const userSchema = new mongoose.Schema(
         refreshToken: {
             type: String,
         },
+        coupons: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "Coupon",
+            },
+        ],
+        orders: [
+            {
+                items: [
+                    {
+                        type: mongoose.Schema.Types.ObjectId,
+                        ref: "Products",
+                    },
+                ],
+                coupon: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: "Coupon",
+                },
+                finalPrice: Number,
+                address: String,
+                time: Date,
+            },
+        ],
         passwordChangedAt: Date,
         passwordResetToken: String,
         passwordResetExpires: Date,
@@ -67,6 +104,7 @@ const userSchema = new mongoose.Schema(
 );
 
 userSchema.pre("save", async function (next) {
+    this.cart.finalPrice = this.cart.totalPrice;
     this.cartSize = this.cart.items.length;
     this.wishlistSize = this.wishlist.length;
     if (!this.isModified("password")) {
