@@ -27,7 +27,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(
     cors({
-        origin: "https://blackbasket-by-rajeshwar.netlify.app/",
+        origin: "https://blackbasket-by-rajeshwar.netlify.app",
         credentials: true,
     })
 );
