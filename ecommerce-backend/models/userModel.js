@@ -6,21 +6,26 @@ const userSchema = new mongoose.Schema(
     {
         firstName: {
             type: String,
+            required: true,
         },
         lastName: {
             type: String,
+            required: true,
         },
         email: {
             type: String,
             unique: true,
+            required: true,
         },
         mobile: {
             type: String,
             unique: true,
+            required: true,
             match: /^[6-9]\d{9}$/,
         },
         password: {
             type: String,
+            required: true,
         },
         isBlocked: {
             type: Boolean,
@@ -75,25 +80,50 @@ const userSchema = new mongoose.Schema(
         },
         coupons: [
             {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "Coupon",
+                coupon: { type: mongoose.Schema.Types.ObjectId, ref: "Coupon" },
+                code: String,
             },
         ],
         orders: [
             {
                 items: [
                     {
-                        type: mongoose.Schema.Types.ObjectId,
-                        ref: "Products",
+                        product: {
+                            type: mongoose.Schema.Types.ObjectId,
+                            ref: "Product",
+                            unique: false,
+                        },
+                        quantity: Number,
                     },
                 ],
                 coupon: {
-                    type: mongoose.Schema.Types.ObjectId,
-                    ref: "Coupon",
+                    coupon: {
+                        type: mongoose.Schema.Types.ObjectId,
+                        ref: "Coupon",
+                    },
+                    code: String,
                 },
+                totalPrice: Number,
                 finalPrice: Number,
-                address: String,
+                address: {},
                 time: Date,
+            },
+        ],
+        queries: [
+            {
+                subject: {
+                    type: String,
+                    required: true,
+                },
+                description: {
+                    type: String,
+                    required: true,
+                },
+                status: {
+                    type: String,
+                    default: "Submitted",
+                    enum: ["Submitted", "Resolved", "Contacted", "In Progress"],
+                },
             },
         ],
         passwordChangedAt: Date,

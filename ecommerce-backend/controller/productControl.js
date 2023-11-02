@@ -1,5 +1,8 @@
 // const { CommandStartedEvent } = require("mongodb");
 const Product = require("../models/productModel.js");
+const Color = require("../models/colorModel.js");
+const Brand = require("../models/brandModel.js");
+const ProductCategory = require("../models/productCategoryModel.js");
 const User = require("../models/userModel.js");
 const slugify = require("slugify");
 const asyncHandler = require("express-async-handler");
@@ -10,34 +13,55 @@ const {
     uploadImages,
 } = require("../utils/cloudinary.js");
 const fs = require("fs");
-
 const createProduct = asyncHandler(async (req, res) => {
     try {
-        if (req.body.title) {
-            req.body.slug = slugify(req.body.title);
-        }
+        const formData = req.body;
+        const slug = req.body.title ? slugify(req.body.title) : "";
+        req.body.slug = slug;
+        req.body.brand = req.body.brand ? req.body.brand.toUpperCase() : "";
+        req.body.color = req.body.color ? req.body.color.toUpperCase() : "";
+        req.body.category = req.body.category
+            ? req.body.category.toUpperCase()
+            : "";
         const newProduct = await Product.create(req.body);
+        const brand = await Brand.find({ name: req.body.brand });
+        if (!brand)
+            updateBrand = await Brand.create({
+                name: req.body.brand,
+            });
+        const color = await Color.find({ name: req.body.color });
+        if (!color)
+            updatecolor = await Color.create({
+                name: req.body.color,
+            });
+        const category = await ProductCategory.find({
+            name: req.body.category,
+        });
+        if (!category)
+            updatecolor = await ProductCategory.create({
+                name: req.body.category,
+            });
         res.json(newProduct);
     } catch (error) {
+        console.error(error);
         throw new Error(error);
     }
 });
 
 const updateProduct = asyncHandler(async (req, res) => {
+    const productId = req.params.id;
     try {
-        const { id } = req.params;
-        if (req.body.title) {
-            req.body.slug = slugify(req.body.title);
-        }
-        const updateProd = await Product.findOneAndUpdate(
-            { _id: id },
+        const formData = req.body;
+        const slug = req.body.title ? slugify(req.body.title) : "";
+        req.body.slug = slug;
+        const updateProduct = await Product.findByIdAndUpdate(
+            productId,
             req.body,
-            {
-                new: true,
-            }
+            { new: true }
         );
-        res.json(updateProd);
+        res.json(updateProduct);
     } catch (error) {
+        console.error(error);
         throw new Error(error);
     }
 });
@@ -59,6 +83,103 @@ const getAProduct = asyncHandler(async (req, res) => {
         const getProduct = await Product.findById(id);
         res.json(getProduct);
     } catch (error) {
+        throw new Error(error);
+    }
+});
+
+const searchProducts = asyncHandler(async (req, res) => {
+    try {
+        const perPage = 20;
+        const {
+            id: searchTerm,
+            page,
+            sort,
+            brands,
+            maxPrice,
+            minPrice,
+            star,
+            discount,
+            colors,
+            categories,
+        } = req.query;
+
+        const query = {
+            $or: [
+                { title: { $regex: new RegExp(searchTerm, "i") } },
+                { brand: { $regex: new RegExp(searchTerm, "i") } },
+                { category: { $regex: new RegExp(searchTerm, "i") } },
+                { color: { $regex: new RegExp(searchTerm, "i") } },
+            ],
+        };
+        const filters = [];
+        if (brands) {
+            const selectedBrands = brands.split(",");
+            filters.push({
+                brand: {
+                    $in: selectedBrands.map((brand) => new RegExp(brand, "i")),
+                },
+            });
+        }
+
+        if (colors) {
+            const selectedColors = colors.split(",");
+            filters.push({
+                color: {
+                    $in: selectedColors.map((color) => new RegExp(color, "i")),
+                },
+            });
+        }
+
+        if (categories) {
+            const selectedCategories = categories.split(",");
+            filters.push({
+                category: {
+                    $in: selectedCategories.map(
+                        (category) => new RegExp(category, "i")
+                    ),
+                },
+            });
+        }
+
+        if (filters.length > 0) {
+            query.$and = filters;
+        }
+        console.log(query);
+        if (maxPrice) {
+            query.price = { $lte: parseFloat(maxPrice) };
+        }
+
+        if (minPrice) {
+            query.price = { ...query.price, $gte: parseFloat(minPrice) };
+        }
+        if (star) {
+            query.totalrating = { $gte: parseFloat(star) };
+        }
+
+        if (discount) {
+            query.discount = { $gte: parseFloat(discount) };
+        }
+
+        const sortOptions = {
+            priceAsc: { price: 1 },
+            priceDesc: { price: -1 },
+            newestFirst: { createdAt: 1 },
+            ratingAsc: { totalrating: 1 },
+            ratingDesc: { totalrating: -1 },
+            discount: { discount: -1 },
+        };
+        let sortQuery = "";
+        if (sort && sortOptions[sort]) {
+            sortQuery = sortOptions[sort];
+        }
+        const getProduct = await Product.find(query)
+            .sort(sortQuery)
+            .skip((page - 1) * perPage)
+            .limit(perPage)
+            .exec();
+        res.json(getProduct);
+    } catch (error) {
+        console.log(error);
         throw new Error(error);
     }
 });
@@ -232,9 +353,7 @@ const updateRating = asyncHandler(async (req, res) => {
 const uploadProductImage = asyncHandler(async (req, res) => {
     const productId = req.params.id;
     try {
-        console.log(productId);
         const imgUrls = await uploadImages(req, res);
-        console.log("ImgURLS", imgUrls);
         const product = await Product.findByIdAndUpdate(
             productId,
             {
@@ -259,4 +378,5 @@ module.exports = {
     addToCart,
     updateRating,
     uploadProductImage,
+    searchProducts,
 };

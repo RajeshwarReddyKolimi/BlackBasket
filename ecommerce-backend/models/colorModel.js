@@ -1,15 +1,14 @@
 const mongoose = require("mongoose");
 
-var colorSchema = new mongoose.Schema(
-    {
-        title: {
-            type: String,
-            required: true,
-            unique: true,
-            index: true,
+var colorSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: true,
+        unique: true,
+        set: (value) => {
+            return value.toUpperCase();
         },
     },
-    { timestamps: true }
-);
+});
 
 module.exports = mongoose.model("Color", colorSchema);

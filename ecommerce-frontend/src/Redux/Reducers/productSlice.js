@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
     createProduct,
     deleteProduct,
+    getProductById,
     getProducts,
     updateProduct,
 } from "../Thunks/productThunks";
@@ -11,6 +12,7 @@ const productSlice = createSlice({
     initialState: {
         errorMessage: "",
         products: [],
+        searchedProduct: null,
     },
     reducers: {},
     extraReducers: (builder) => {
@@ -25,6 +27,15 @@ const productSlice = createSlice({
         });
         builder.addCase(getProducts.rejected, (state, action) => {
             state.errorMessage = "Cannot get Products";
+        });
+
+        builder.addCase(getProductById.pending, setLoadingState);
+        builder.addCase(getProductById.fulfilled, (state, action) => {
+            state.errorMessage = "";
+            state.searchedProduct = action.payload;
+        });
+        builder.addCase(getProductById.rejected, (state, action) => {
+            state.errorMessage = "Cannot get Product";
         });
 
         builder.addCase(createProduct.pending, setLoadingState);

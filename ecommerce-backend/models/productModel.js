@@ -16,9 +16,16 @@ const productSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
+        originalPrice: {
+            type: Number,
+            required: true,
+        },
         price: {
             type: Number,
             required: true,
+        },
+        discount: {
+            type: Number,
         },
         category: {
             type: String,
@@ -37,7 +44,7 @@ const productSchema = new mongoose.Schema(
             default: 0,
         },
         images: [],
-        color: [],
+        color: String,
         tags: [],
         ratings: [
             {
@@ -45,16 +52,26 @@ const productSchema = new mongoose.Schema(
                 comment: String,
                 postedby: {
                     type: mongoose.Schema.Types.ObjectId,
+                    userName: String,
                     ref: "User",
+                },
+                date: {
+                    type: Date,
                 },
             },
         ],
         totalrating: {
-            type: String,
+            type: Number,
             default: 0,
         },
     },
     { timestamps: true }
 );
+
+productSchema.pre("save", async function (next) {
+    this.discount =
+        ((this.originalPrice - this.price) / this.originalPrice) * 100;
+    next();
+});
 
 module.exports = mongoose.model("Product", productSchema);

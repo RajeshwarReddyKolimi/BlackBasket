@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserDetails } from "../../Redux/Thunks/userThunks";
-import { NavLink } from "react-router-dom";
+import { NavLink, Navigate } from "react-router-dom";
 import UserAddressCard from "./UserAddressCard";
 
 function UserAddress() {
@@ -10,12 +10,16 @@ function UserAddress() {
         dispatch(getUserDetails());
     }, []);
     const userAddress = useSelector((state) => state.user.userData.address);
+
+    const isUserLogged = useSelector((state) => state.user.isUserLogged);
+
+    if (!isUserLogged) return <Navigate to="/user/login" replace />;
     return (
         <div className="user-address-section">
             <div className="section-header">
                 <div className="header-title">Your Addresses</div>
                 <NavLink to="/user/address/add">
-                    <button className="button">Add Address</button>
+                    <button className="button-1">Add Address</button>
                 </NavLink>
             </div>
             {userAddress &&

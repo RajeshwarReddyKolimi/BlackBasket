@@ -15,6 +15,9 @@ var couponSchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
+    maxDiscount: {
+        type: Number,
+    },
 });
 
 module.exports = mongoose.model("Coupon", couponSchema);

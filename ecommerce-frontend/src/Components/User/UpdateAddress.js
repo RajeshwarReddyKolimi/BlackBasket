@@ -50,13 +50,17 @@ function UpdateAddress() {
         dispatch(updateUserAddress({ id, address }));
         return <Navigate to="/user/address" replace />;
     }
+
+    const isUserLogged = useSelector((state) => state.user.isUserLogged);
+
+    if (!isUserLogged) return <Navigate to="/user/login" replace />;
     return (
         <div className="update-address-section">
             <div className="section-header">
-                <div className="header-title">Add Address</div>
+                <div className="header-title">Update Address</div>
                 <button
                     type="submit"
-                    className="button"
+                    className="button-1"
                     onClick={(e) => updateAddress(e)}
                 >
                     Update

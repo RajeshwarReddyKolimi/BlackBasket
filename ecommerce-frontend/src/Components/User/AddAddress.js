@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addUserAddress } from "../../Redux/Thunks/userThunks";
 import "../../styles/userAccount.css";
+import { Navigate } from "react-router-dom";
 function AddAddress() {
     const dispatch = useDispatch();
     const [address, setAddress] = useState({
@@ -16,6 +17,9 @@ function AddAddress() {
         e.preventDefault();
         dispatch(addUserAddress(address));
     }
+    const isUserLogged = useSelector((state) => state.user.isUserLogged);
+
+    if (!isUserLogged) return <Navigate to="/user/login" replace />;
     return (
         <div className="add-address-section">
             <div className="section-header">

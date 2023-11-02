@@ -9,17 +9,13 @@ function AdminDashboard() {
     const isAdminLogged = useSelector((state) => state.admin.isAdminLogged);
     const errorMessage = useSelector((state) => state.admin.errorMessage);
     useEffect(() => {
-        getDetails();
+        dispatch(getAdminDetails());
     }, [dispatch]);
     const data = useSelector((state) => state.admin.adminData);
-
-    function getDetails() {
-        dispatch(getAdminDetails());
-    }
+    if (!isAdminLogged) return <Navigate to="/" replace />;
     function logout() {
         dispatch(adminLogout());
     }
-    if (!isAdminLogged) return <Navigate to="/" replace />;
     return (
         <div className="d-flex flex-column">
             <h3>Admin Dashboard</h3>
@@ -27,7 +23,7 @@ function AdminDashboard() {
             <button onClick={logout}>Logout</button>
             <NavLink to="/admin/products"> Products </NavLink>
             <NavLink to="/admin/users"> Users </NavLink>
-            <NavLink to="/coupons"> Coupons </NavLink>
+            <NavLink to="/admin/coupons"> Coupons </NavLink>
         </div>
     );
 }

@@ -15,13 +15,19 @@ import {
     updateUserDetails,
     addUserAddress,
     updateUserAddress,
+    getUserOrders,
+    updateCartItemQuantity,
+    deleteAccount,
+    getUserCoupons,
 } from "../Thunks/userThunks";
+import { createQuery } from "../Thunks/enquiryThunks";
 
 const userSlice = createSlice({
     name: "User",
     initialState: {
         isUserLogged: false,
         errorMessage: "",
+        successMessage: "",
         userData: {},
     },
     reducers: {},
@@ -33,22 +39,27 @@ const userSlice = createSlice({
         builder.addCase(userSignup.fulfilled, (state, action) => {
             state.isUserLogged = true;
             state.errorMessage = "";
+            state.successMessage = "Succesfully Signed Up";
+
             document.cookie = `refreshToken=${action.payload.token}; path=/; expires=Wed, 31 Oct 2023 07:28:00 GMT;`;
             state.userData = {};
         });
         builder.addCase(userSignup.rejected, (state, action) => {
             state.isUserLogged = false;
             state.errorMessage = "Cannot Signup";
+            state.successMessage = "";
             state.userData = {};
         });
         builder.addCase(userLogin.pending, setLoadingState);
         builder.addCase(userLogin.fulfilled, (state, action) => {
             state.isUserLogged = true;
-            document.cookie = `refreshToken=${action.payload.token}; path=/; expires=Wed, 31 Oct 2023 07:28:00 GMT;`;
+            document.cookie = `refreshToken=${action.payload.token}; path=/; expires=Wed, 30 Nov 2023 07:28:00 GMT;`;
             state.errorMessage = "";
+            state.successMessage = "Succesfully Signed Up";
         });
         builder.addCase(userLogin.rejected, (state, action) => {
             state.errorMessage = "Cannot Log In";
+            state.successMessage = "";
             state.userData = {};
             state.isUserLogged = false;
         });
@@ -121,6 +132,18 @@ const userSlice = createSlice({
         builder.addCase(addToCart.rejected, (state, action) => {
             state.errorMessage = "Cannot Add to Cart";
         });
+        builder.addCase(updateCartItemQuantity.pending, setLoadingState);
+        builder.addCase(updateCartItemQuantity.fulfilled, (state, action) => {
+            state.errorMessage = "";
+            state.userData.cart = action.payload;
+            state.userData.cartSize =
+                action.payload && action.payload.items
+                    ? action.payload.items.length
+                    : 0;
+        });
+        builder.addCase(updateCartItemQuantity.rejected, (state, action) => {
+            state.errorMessage = "Cannot Add to Cart";
+        });
         builder.addCase(getCart.pending, setLoadingState);
         builder.addCase(getCart.fulfilled, (state, action) => {
             state.errorMessage = "";
@@ -132,6 +155,22 @@ const userSlice = createSlice({
         });
         builder.addCase(getCart.rejected, (state, action) => {
             state.errorMessage = "Cannot Get Cart";
+        });
+        builder.addCase(getUserCoupons.pending, setLoadingState);
+        builder.addCase(getUserCoupons.fulfilled, (state, action) => {
+            state.errorMessage = "";
+            state.userData.coupons = action.payload;
+        });
+        builder.addCase(getUserCoupons.rejected, (state, action) => {
+            state.errorMessage = "Cannot Get coupons";
+        });
+        builder.addCase(getUserOrders.pending, setLoadingState);
+        builder.addCase(getUserOrders.fulfilled, (state, action) => {
+            state.errorMessage = "";
+            state.userData.orders = action.payload;
+        });
+        builder.addCase(getUserOrders.rejected, (state, action) => {
+            state.errorMessage = "Cannot Get Orders";
         });
 
         builder.addCase(applyCoupon.pending, setLoadingState);
@@ -169,6 +208,24 @@ const userSlice = createSlice({
         });
         builder.addCase(getWishlist.rejected, (state, action) => {
             state.errorMessage = "Cannot Get Wishlist";
+        });
+
+        builder.addCase(deleteAccount.pending, setLoadingState);
+        builder.addCase(deleteAccount.fulfilled, (state, action) => {
+            state.errorMessage = "";
+            state.userData = {};
+        });
+        builder.addCase(deleteAccount.rejected, (state, action) => {
+            state.errorMessage = "Cannot Delete Account";
+        });
+
+        builder.addCase(createQuery.pending, setLoadingState);
+        builder.addCase(createQuery.fulfilled, (state, action) => {
+            state.errorMessage = "";
+            state.userData.queries = action.payload;
+        });
+        builder.addCase(createQuery.rejected, (state, action) => {
+            state.errorMessage = "Cannot post Query";
         });
     },
 });

@@ -14,13 +14,10 @@ export const adminLogin = createAsyncThunk(
     "/admin/login",
     async (credentials, { dispatch, rejectWithValue }) => {
         try {
-            const response = await axios.post(
-                "http://localhost:4000/api/admin/login",
-                {
-                    email: credentials.email,
-                    password: credentials.password,
-                }
-            );
+            const response = await axios.post(`${apiUrl}/admin/login`, {
+                email: credentials.email,
+                password: credentials.password,
+            });
             return response.data;
         } catch (error) {
             console.error("Fetch error:", error);
@@ -33,12 +30,9 @@ export const adminLogout = createAsyncThunk(
     "/logout",
     async (_, { dispatch, rejectWithValue }) => {
         try {
-            const response = await axios.get(
-                "http://localhost:4000/api/admin/logout",
-                {
-                    withCredentials: true,
-                }
-            );
+            const response = await axios.get(`${apiUrl}/admin/logout`, {
+                withCredentials: true,
+            });
             return response.data;
         } catch (error) {
             console.error("Fetch error:", error);
@@ -51,12 +45,9 @@ export const getAdminDetails = createAsyncThunk(
     "/getAdminDetails",
     async (_, { dispatch, rejectWithValue }) => {
         try {
-            const response = await axios.get(
-                "http://localhost:4000/api/admin/details",
-                {
-                    withCredentials: true,
-                }
-            );
+            const response = await axios.get(`${apiUrl}/admin/details`, {
+                withCredentials: true,
+            });
             if (response.status < 300) return response.data;
         } catch (error) {
             console.error("Fetched error:", error);
@@ -70,15 +61,12 @@ export const getUsers = createAsyncThunk(
     async (_, { dispatch, rejectWithValue }) => {
         try {
             const token = await findToken();
-            const response = await axios.get(
-                "http://localhost:4000/api/admin/users/all",
-                {
-                    withCredentials: true,
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            );
+            const response = await axios.get(`${apiUrl}/admin/users/all`, {
+                withCredentials: true,
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
 
             if (response.status < 300) return response.data;
         } catch (error) {
@@ -95,7 +83,7 @@ export const blockUser = createAsyncThunk(
             const id = credentials;
             const token = await findToken();
             const response = await axios.put(
-                `http://localhost:4000/api/admin/blockUser/${id}`,
+                `${apiUrl}/admin/blockUser/${id}`,
                 {},
                 {
                     headers: {
@@ -120,7 +108,7 @@ export const unblockUser = createAsyncThunk(
             const id = credentials;
             const token = await findToken();
             const response = await axios.put(
-                `http://localhost:4000/api/admin/unblockUser/${id}`,
+                `${apiUrl}/admin/unblockUser/${id}`,
                 {},
                 {
                     headers: {
@@ -145,7 +133,7 @@ export const deleteUser = createAsyncThunk(
             const id = credentials;
             const token = await findToken();
             const response = await axios.delete(
-                `http://localhost:4000/api/admin/deleteUser/${id}`,
+                `${apiUrl}/admin/deleteUser/${id}`,
                 {
                     headers: {
                         "Content-Type": "application/json",
@@ -168,15 +156,12 @@ export const getUserById = createAsyncThunk(
         try {
             const id = credentials;
             const token = await findToken();
-            const response = await axios.get(
-                `http://localhost:4000/api/admin/user/${id}`,
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            );
+            const response = await axios.get(`${apiUrl}/admin/user/${id}`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+            });
 
             if (response.status < 300) return response.data;
         } catch (error) {

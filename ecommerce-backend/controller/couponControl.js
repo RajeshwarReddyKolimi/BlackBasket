@@ -4,14 +4,16 @@ const asyncHandler = require("express-async-handler");
 const { validateMongodbId } = require("../utils/validateMongodbId");
 
 const createCoupon = asyncHandler(async (req, res) => {
+    const { coupon } = req.body;
     try {
-        const newCoupon = await Coupon.create(req.body);
+        const newCoupon = await Coupon.create(coupon);
         const update = await User.updateMany(
             {},
-            { $push: { coupons: newCoupon._id } }
+            { $push: { coupons: { coupon: newCoupon._id, code: coupon.name } } }
         );
         res.json(newCoupon);
     } catch (error) {
+        // console.log(error);
         throw new Error(error);
     }
 });
@@ -25,13 +27,30 @@ const getAllCoupons = asyncHandler(async (req, res) => {
     }
 });
 
-const updateCoupon = asyncHandler(async (req, res) => {
+const getCouponById = asyncHandler(async (req, res) => {
     const { id } = req.params;
     validateMongodbId(id);
     try {
-        const updCoupon = await Coupon.findByIdAndUpdate(id, req.body, {
+        const coupon = await Coupon.findById(id);
+        if (!coupon) throw new Error("Coupon Not found");
+        res.json(coupon);
+    } catch (error) {
+        throw new Error(error);
+    }
+});
+
+const updateCoupon = asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const { coupon } = req.body;
+    validateMongodbId(id);
+    try {
+        const updCoupon = await Coupon.findByIdAndUpdate(id, coupon, {
             new: true,
         });
+        const update = await User.updateMany(
+            {},
+            { $set: { coupons: { code: coupon.name } } }
+        );
         res.json(updCoupon);
     } catch (error) {
         throw new Error(error);
@@ -53,4 +72,10 @@ const deleteCoupon = asyncHandler(async (req, res) => {
     }
 });
 
-module.exports = { createCoupon, getAllCoupons, updateCoupon, deleteCoupon };
+module.exports = {
+    createCoupon,
+    getAllCoupons,
+    getCouponById,
+    updateCoupon,
+    deleteCoupon,
+};

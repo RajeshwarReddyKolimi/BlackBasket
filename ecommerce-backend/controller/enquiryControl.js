@@ -1,11 +1,29 @@
 const Enquiry = require("../models/enqModel");
+const User = require("../models/userModel");
 const asyncHandler = require("express-async-handler");
 const validateMongodbId = require("../utils/validateMongodbId");
 
 const createEnquiry = asyncHandler(async (req, res) => {
+    const { _id } = req.user;
+    const { query } = req.body;
+    console.log("Waiting");
     try {
-        const newCategory = await Enquiry.create(req.body);
-        res.json(newCategory);
+        const user = await User.findByIdAndUpdate(
+            _id,
+            {
+                $push: {
+                    queries: {
+                        subject: query.subject,
+                        description: query.description,
+                        status: "Submitted",
+                    },
+                },
+            },
+            { new: true }
+        );
+        if (!user) throw new Error("Cannot raise query");
+        const newEnquiry = await Enquiry.create(query);
+        res.json(user.queries);
     } catch (error) {
         throw new Error(error);
     }

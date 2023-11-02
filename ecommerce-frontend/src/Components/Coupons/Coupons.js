@@ -17,7 +17,7 @@ function Coupons() {
     return (
         <div>
             <h3>Coupons</h3>
-            <div className="container-sm w-50 d-flex flex-row flex-wrap">
+            <div className="">
                 {couponsData &&
                     couponsData.map((coupon, key) => (
                         <CouponCard key={key} coupon={coupon} />

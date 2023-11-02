@@ -57,7 +57,6 @@ function UserHeader() {
                         <NavLink to="#">Accessories</NavLink>
                     </div>
                 </div>
-
                 <div className="navbar-category">
                     <li className="navbar-category-header nav-item">
                         Appliances

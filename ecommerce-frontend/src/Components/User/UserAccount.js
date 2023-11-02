@@ -1,10 +1,36 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "../../styles/userAccount.css";
-import { NavLink } from "react-router-dom";
+import { NavLink, Navigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { RiLogoutBoxLine } from "react-icons/ri";
+import {
+    deleteAccount,
+    getUserDetails,
+    userLogout,
+} from "../../Redux/Thunks/userThunks";
+import ResultPopup from "../ResultPopup";
 function UserAccount() {
+    const dispatch = useDispatch();
+    const isUserLogged = useSelector((state) => state.user.isUserLogged);
+    useEffect(() => {
+        dispatch(getUserDetails());
+    }, []);
+    if (!isUserLogged) return <Navigate to="/user/login" replace />;
+    function logout() {
+        dispatch(userLogout());
+    }
+    function deleteAcc() {
+        dispatch(deleteAccount());
+    }
     return (
-        <div className="user-account">
-            <div className="header-title">Your Account</div>
+        <div className="user-account-section">
+            <div className="section-header">
+                <div className="header-title">Your Account</div>
+                <button className="button-1" onClick={logout}>
+                    <span>Logout</span>
+                    <RiLogoutBoxLine />
+                </button>
+            </div>
             <div className="account-options">
                 <NavLink
                     to="/user/account/profile"
@@ -31,10 +57,13 @@ function UserAccount() {
                     <div className="account-option-header">Coupons</div>
                     <div>View Coupons</div>
                 </NavLink>
-                <NavLink to="#" className={"account-options-items"}>
+                <NavLink to="/user/support" className={"account-options-items"}>
                     <div className="account-option-header">Support</div>
                     <div>Mail your Query</div>
                 </NavLink>
+                <button onClick={deleteAcc} className="button-danger-1">
+                    Delete Account
+                </button>
             </div>
         </div>
     );

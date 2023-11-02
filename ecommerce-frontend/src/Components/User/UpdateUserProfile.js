@@ -4,6 +4,7 @@ import {
     getUserDetails,
     updateUserDetails,
 } from "../../Redux/Thunks/userThunks";
+import { Navigate } from "react-router-dom";
 
 function UpdateUserProfile() {
     const dispatch = useDispatch();
@@ -30,6 +31,9 @@ function UpdateUserProfile() {
         dispatch(updateUserDetails(details));
     }
 
+    const isUserLogged = useSelector((state) => state.user.isUserLogged);
+
+    if (!isUserLogged) return <Navigate to="/user/login" replace />;
     return (
         <div className="profile-update">
             <div className="section-header">
@@ -37,7 +41,7 @@ function UpdateUserProfile() {
 
                 <button
                     type="submit"
-                    className="button"
+                    className="button-1"
                     onClick={(e) => handleUpdateDetails(e)}
                 >
                     Save

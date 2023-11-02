@@ -2,11 +2,13 @@ const mongoose = require("mongoose");
 
 var productCategorySchema = new mongoose.Schema(
     {
-        title: {
+        name: {
             type: String,
             required: true,
             unique: true,
-            index: true,
+            set: (value) => {
+                return value.toUpperCase();
+            },
         },
     },
     { timestamps: true }

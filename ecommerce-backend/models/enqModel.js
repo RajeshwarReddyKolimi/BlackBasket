@@ -13,7 +13,11 @@ var enquirySchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    comment: {
+    subject: {
+        type: String,
+        required: true,
+    },
+    description: {
         type: String,
         required: true,
     },

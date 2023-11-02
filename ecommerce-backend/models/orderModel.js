@@ -27,6 +27,12 @@ var orderSchema = new mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
         },
+        totalPrice: Number,
+        finalPrice: Number,
+        coupon: {
+            id: { type: mongoose.Schema.Types.ObjectId, ref: "Coupon" },
+            code: String,
+        },
         time: Date,
     },
     { timestamps: true }

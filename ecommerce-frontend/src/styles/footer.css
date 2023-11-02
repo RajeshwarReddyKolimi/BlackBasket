@@ -1,13 +1,5 @@
-:root {
-    --footer-color: #0f172a;
-    --footer-hover-color: #1a2746;
-    --footer-bg-hover-color: #ffffff;
-    --footer-bg-color: #eeeeee;
-    --footer-highlight-color: #3b82f6;
-    --footer-highlight-hover-color: #3373da;
-}
 .footer {
-    background-color: var(--footer-bg-color);
+    background-color: var(--highlight-bg-color);
     display: flex;
     flex-direction: row;
     justify-content: space-around;

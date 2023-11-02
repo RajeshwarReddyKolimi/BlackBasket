@@ -12,11 +12,18 @@ const { sendEmail } = require("./emailControl");
 const crypto = require("crypto");
 
 const createUser = asyncHandler(async (req, res) => {
-    const email = req.body.email;
+    const { userDetails } = req.body;
     try {
+        const email = userDetails.email;
         const findUser = await User.findOne({ email: email });
         if (!findUser) {
-            const newUser = new User(req.body);
+            const newUser = new User(userDetails);
+            const coupons = await Coupon.find({});
+            const couponIds = coupons.map((coupon) => coupon._id);
+
+            newUser.coupons = couponIds;
+            const updUser = await newUser.save();
+
             const refreshToken = await generateRefreshToken(newUser._id);
             newUser.refreshToken = refreshToken;
             await newUser.save();
@@ -24,7 +31,6 @@ const createUser = asyncHandler(async (req, res) => {
                 httpOnly: true,
                 maxAge: 3 * 24 * 60 * 60 * 1000,
             });
-            console.log(refreshToken);
             res.json({ token: refreshToken });
         } else {
             throw new Error("User already exists");
@@ -76,7 +82,14 @@ const getUserDetails = asyncHandler(async (req, res) => {
     const { refreshToken } = req.cookies;
     const getUser = await User.findOne(
         { refreshToken },
-        { _id: 0, createdAt: 0, updatedAt: 0, __v: 0, refreshToken: 0 }
+        {
+            _id: 0,
+            createdAt: 0,
+            updatedAt: 0,
+            __v: 0,
+            refreshToken: 0,
+            password: 0,
+        }
     )
         .populate("cart")
         .populate("wishlist");
@@ -183,7 +196,6 @@ const resetPassword = asyncHandler(async (req, res) => {
     const { password } = req.body;
     const { token } = req.params;
     const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
-    console.log(password, token, hashedToken);
     const user = await User.findOne({
         passwordResetToken: hashedToken,
         passwordResetExpires: { $gt: Date.now() },
@@ -210,10 +222,51 @@ const getUserCart = asyncHandler(async (req, res) => {
     const { _id } = req.user;
     try {
         const user = await User.findById(_id).populate("cart.items.product");
-        console.log(user.cart);
         res.json(user.cart);
     } catch (error) {
         throw new Error(error);
+    }
+});
+const updateCartItemQuantity = asyncHandler(async (req, res) => {
+    const { _id } = req.user;
+    const { productId, value } = req.body;
+    validateMongodbId(productId);
+
+    try {
+        const user = await User.findById(_id);
+
+        const itemIndex = user.cart.items.findIndex(
+            (item) => item.product.toString() === productId
+        );
+
+        if (itemIndex === -1) {
+            return res
+                .status(404)
+                .json({ error: "Item not found in the cart" });
+        }
+
+        const product = await Product.findById(
+            user.cart.items[itemIndex].product
+        );
+        const updatedQuantity = user.cart.items[itemIndex].quantity + value;
+        const totalUpdatedPrice =
+            product.price *
+            (updatedQuantity - user.cart.items[itemIndex].quantity);
+
+        if (updatedQuantity <= 0) {
+            user.cart.items.splice(itemIndex, 1);
+        } else {
+            user.cart.items[itemIndex].quantity = updatedQuantity;
+        }
+
+        user.cart.totalPrice += totalUpdatedPrice;
+
+        await user.save();
+        await user.populate("cart.items.product");
+        res.json(user.cart);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Internal server error" });
     }
 });
 
@@ -223,25 +276,26 @@ const removeFromCart = asyncHandler(async (req, res) => {
     validateMongodbId(productId);
     try {
         const user = await User.findById(_id);
-        const deletedItems = user.cart.items.filter(
-            (item) => item.product.toString() === productId.toString()
+        const deletedItem = user.cart.items.find(
+            (item) => item.product.toString() === productId
         );
 
-        let totalReducedPrice = 0;
-        for (const deletedItem of deletedItems) {
+        if (deletedItem) {
             const product = await Product.findById(deletedItem.product);
-            totalReducedPrice += product.price * deletedItem.quantity;
+            const totalReducedPrice = product.price * deletedItem.quantity;
+
+            user.cart.items = user.cart.items.filter(
+                (item) => item.product.toString() !== productId
+            );
+
+            user.cart.totalPrice -= totalReducedPrice;
+
+            await user.save();
+            await user.populate("cart.items.product");
+            res.json(user.cart);
+        } else {
+            res.status(404).json({ error: "Item not found in the cart" });
         }
-
-        user.cart.items = user.cart.items.filter(
-            (item) => item.product.toString() !== productId.toString()
-        );
-
-        user.cart.totalPrice -= totalReducedPrice;
-
-        await user.save();
-        await user.populate("cart.items.product");
-        res.json(user.cart);
     } catch (error) {
         throw new Error(error);
     }
@@ -285,7 +339,16 @@ const updateAddress = asyncHandler(async (req, res) => {
     try {
         const updatedUser = await User.updateOne(
             { _id, "address._id": addressId },
-            { $set: { "address.$": address } }
+            {
+                $set: {
+                    "address.$.houseNo": address.houseNo,
+                    "address.$.street": address.street,
+                    "address.$.village": address.village,
+                    "address.$.city": address.city,
+                    "address.$.landmark": address.landmark,
+                    "address.$.pincode": address.pincode,
+                },
+            }
         );
         const user = await User.findById(_id);
         res.json(user);
@@ -297,27 +360,23 @@ const updateAddress = asyncHandler(async (req, res) => {
 
 const applyCoupon = asyncHandler(async (req, res) => {
     const { _id } = req.user;
-    const couponId = req.params.id;
-    console.log(couponId);
+    const { couponCode } = req.body;
     validateMongodbId(_id);
-    validateMongodbId(couponId);
     try {
         const user = await User.findById(_id);
         const isValidCoupon = user.coupons.find(
-            (id) => id.toString() === couponId
+            (coupon) => coupon.code === couponCode
         );
         if (!isValidCoupon) throw new Error("Invalid Coupon");
-
-        const coupon = await Coupon.findById(couponId);
+        const coupon = await Coupon.findById(isValidCoupon.coupon);
         const discount = coupon.discount;
+        const maxDiscount = coupon.maxDiscount;
         const total = user.cart.totalPrice;
-        const final = (total * (100 - discount)) / 100;
-        const updatedUser = await User.findByIdAndUpdate(
-            _id,
-            { $set: { "cart.finalPrice": final } },
-            { new: true }
-        );
-        res.json(updatedUser.cart);
+        let currDiscount = (total * discount) / 100;
+        if (maxDiscount && maxDiscount < currDiscount)
+            currDiscount = maxDiscount;
+        const final = total - currDiscount;
+        res.json({ discount: currDiscount, finalPrice: final });
     } catch (error) {
         throw new Error(error);
     }
@@ -325,45 +384,51 @@ const applyCoupon = asyncHandler(async (req, res) => {
 
 const createOrder = asyncHandler(async (req, res) => {
     const { _id } = req.user;
-    const couponId = req.body.id;
+    const { couponCode, address, finalPrice } = req.body;
     try {
         const user = await User.findById(_id);
         const userCart = await user.cart;
         const products = userCart.items;
-        console.log(products);
         products.forEach(async (item) => {
             await Product.findByIdAndUpdate(item.product.toString(), {
                 $inc: { quantity: -item.quantity },
+                $inc: { sold: item.quantity },
             });
         });
-
         const time = Date.now();
-
+        const appliedCoupon = user.coupons.find(
+            (coupon) => coupon.code === couponCode
+        );
         const order = {
             items: userCart.items,
-            coupon: couponId,
-            finalPrice: userCart.finalPrice,
-            address: user.address,
+            coupon: appliedCoupon,
+            totalPrice: userCart.totalPrice,
+            finalPrice: finalPrice,
+            address: address,
             time: time,
         };
         let updatedUser = await User.findByIdAndUpdate(
             _id,
             {
                 $push: { orders: order },
-                $pull: { coupons: couponId },
+                $pull: { coupons: appliedCoupon },
                 $set: { cart: { items: [], totalPrice: 0, finalPrice: 0 } },
             },
             { new: true }
         );
         const updatedOrder = await Order.create({
             items: userCart.items,
+            coupon: appliedCoupon,
+            totalPrice: userCart.totalPrice,
+            finalPrice: finalPrice,
+            address: address,
+            time: time,
             orderedBy: _id,
             orderStatus: "Ordered",
-            time: time,
         });
-
         return res.json({ message: "Success" });
     } catch (error) {
+        console.log(error);
         throw new Error(error);
     }
 });
@@ -372,15 +437,52 @@ const getOrders = asyncHandler(async (req, res) => {
     const { _id } = req.user;
     validateMongodbId(_id);
     try {
-        const orders = await Order.findOne({ orderby: _id })
-            .populate("products.product")
-            .exec();
-        res.json(orders);
+        const user = await User.findById(_id).populate("orders.items.product");
+        res.json(user.orders);
     } catch (error) {
         throw new Error(error);
     }
 });
 
+const getOrderById = asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const { _id } = req.user;
+    validateMongodbId(_id);
+    validateMongodbId(id);
+    try {
+        const user = await User.findById(_id)
+            .populate("orders.items.product")
+            .populate("orders.coupon.coupon");
+        const order = user.orders.find(
+            (order) => order._id.toString() === id.toString()
+        );
+        console.log(order);
+        res.json(order);
+    } catch (error) {
+        throw new Error(error);
+    }
+});
+
+const getUserCoupons = asyncHandler(async (req, res) => {
+    const { _id } = req.user;
+    validateMongodbId(_id);
+    try {
+        const user = await User.findById(_id).populate("coupons.coupon");
+        console.log(user.coupons);
+        res.json(user.coupons);
+    } catch (error) {
+        throw new Error(error);
+    }
+});
+
+const deleteAccount = asyncHandler(async (req, res) => {
+    const { _id } = req.user;
+    validateMongodbId(id);
+    const delUser = await User.findByIdAndDelete(id);
+    if (delUser) {
+        res.json({ id });
+    } else throw new Error("User not found");
+});
 module.exports = {
     createUser,
     loginUser,
@@ -395,9 +497,13 @@ module.exports = {
     addAddress,
     updateAddress,
     getUserCart,
+    updateCartItemQuantity,
     removeFromCart,
     emptyCart,
     createOrder,
     getOrders,
+    getOrderById,
     applyCoupon,
+    getUserCoupons,
+    deleteAccount,
 };

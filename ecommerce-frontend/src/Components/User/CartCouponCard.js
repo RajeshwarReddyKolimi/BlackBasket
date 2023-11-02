@@ -33,15 +33,13 @@ function CartCouponCard(props) {
     }
     return (
         <div>
-            {coupon && coupon[0] ? (
+            {coupon && coupon[0] && (
                 <div className="container-sm border border-dark m-2">
                     <h4>{coupon[0].name}</h4>
                     <h5>{formattedDate}</h5>
                     <h4>{coupon[0].discount} %</h4>
                     <h4>{coupon[0]._id}</h4>
                 </div>
-            ) : (
-                <h4>No coupons available</h4>
             )}
         </div>
     );

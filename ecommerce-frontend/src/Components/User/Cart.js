@@ -5,6 +5,8 @@ import { NavLink, Navigate } from "react-router-dom";
 import CartCard from "./CartCard";
 import UserCouponCard from "./UserCouponCard";
 import CartCouponCard from "./CartCouponCard";
+import "../../styles/product.css";
+import "../../styles/cart.css";
 import {
     getUserDetails,
     getCart,
@@ -12,6 +14,8 @@ import {
     createOrder,
 } from "../../Redux/Thunks/userThunks";
 import { getCoupons } from "../../Redux/Thunks/couponThunks";
+import UserCoupons from "./UserCoupons";
+import Empty from "../Empty";
 
 function Cart() {
     const dispatch = useDispatch();
@@ -24,50 +28,33 @@ function Cart() {
     useEffect(() => {
         dispatch(getUserDetails());
         dispatch(getCart());
-        dispatch(getCoupons());
     }, [dispatch]);
 
     if (!isUserLogged) return <Navigate to="/" replace />;
 
-    async function apply(couponId) {
-        setSelectedCoupon(couponId);
-        dispatch(applyCoupon(couponId));
-    }
-    function handleOrder() {
-        dispatch(createOrder(selectedCoupon));
-    }
     return (
-        <div>
+        <div className="cart-page">
             <h2>Cart Products</h2>
-            <div className="container-sm w-50 d-flex flex-row flex-wrap">
-                {cartData &&
-                    cartData.items &&
-                    cartData.items.map((item, key) => (
+            {cartData && cartData.items && cartData.items.length > 0 ? (
+                <div className="cart-products-container">
+                    {cartData.items.map((item, key) => (
                         <CartCard key={key} item={item} />
                     ))}
-            </div>
+                </div>
+            ) : (
+                <Empty text="Cart is Empty" />
+            )}
 
-            <div className="">
-                {couponsData && (
-                    <div className="m-auto">
-                        {couponsData.map((id, key) => (
-                            <label key={key} className="d-flex flex-row">
-                                <input
-                                    type="radio"
-                                    name="couponOptions"
-                                    value={id}
-                                    onChange={(e) => apply(e.target.value)}
-                                />
-                                <CartCouponCard id={id} />
-                            </label>
-                        ))}
-                    </div>
-                )}
+            <div className="cart-value">
+                Cart Value : ₹{cartData && cartData.totalPrice}
             </div>
+            {/* <h3>Final Price: {cartData && cartData.finalPrice}</h3> */}
 
-            <h3>Total Price: {cartData && cartData.totalPrice}</h3>
-            <h3>Final Price: {cartData && cartData.finalPrice}</h3>
-            <button onClick={handleOrder}>Confirm Order</button>
+            {cartData && cartData.items && cartData.items.length > 0 && (
+                <NavLink to="/user/checkout" className="button-1-full">
+                    Checkout
+                </NavLink>
+            )}
         </div>
     );
 }

@@ -10,19 +10,21 @@ const {
     deleteImages,
     addToCart,
     uploadProductImage,
+    searchProducts,
 } = require("../controller/productControl");
 const { adminAuth, userAuth } = require("../middleware/authMiddleware");
-const { uploadImages } = require("../utils/cloudinary");
+const { uploadImages, handleUpload } = require("../utils/cloudinary");
 const router = express.Router();
 
-router.post("/", adminAuth, createProduct); //
+router.post("/", adminAuth, handleUpload, createProduct); //
 
 router.put("/upload/:id", adminAuth, uploadProductImage);
 router.put("/wishlist", userAuth, addToWishlist); //
 router.put("/cart", userAuth, addToCart); //
 router.put("/rating", userAuth, updateRating); //
-router.put("/:id", adminAuth, updateProduct); //
+router.put("/:id", adminAuth, handleUpload, updateProduct); //
 
+router.get("/search", searchProducts); //
 router.get("/:id", getAProduct); //
 router.get("/", getAllProducts); //
 

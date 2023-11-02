@@ -1,15 +1,19 @@
 import React from "react";
 import { BiSolidEditAlt } from "react-icons/bi";
-import { NavLink } from "react-router-dom";
+import { NavLink, Navigate } from "react-router-dom";
 import "../../styles/userAccount.css";
+import { useSelector } from "react-redux";
 function UserAddressCard(props) {
+    const isUserLogged = useSelector((state) => state.user.isUserLogged);
+
+    if (!isUserLogged) return <Navigate to="/user/login" replace />;
     const { address } = props;
     return (
-        <div className="add-address-section">
+        <div className="user-address-card-section">
             <div className="section-header">
                 <div className="header-title">Address</div>
                 <NavLink to={`/user/address/update/${address._id}`}>
-                    <button className="button">
+                    <button className="button-1">
                         <span>Edit</span>
                         <BiSolidEditAlt />
                     </button>

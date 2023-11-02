@@ -7,43 +7,75 @@ import {
     updateProduct,
     uploadProductImages,
 } from "../../Redux/Thunks/productThunks";
+import "../../styles/product.css";
+import { AiFillStar } from "react-icons/ai";
+import { NavLink } from "react-router-dom";
+import { BiSolidEditAlt } from "react-icons/bi";
+import { MdDelete } from "react-icons/md";
 function AdminProductCard(props) {
     const { item } = props;
     const [uploadImages, setUploadImages] = useState([]);
     const dispatch = useDispatch();
-    function update() {
-        dispatch(updateProduct(item._id));
-    }
     function deleteProd() {
         dispatch(deleteProduct(item._id));
     }
-    function handleUpload(e) {
-        e.preventDefault();
-        const formData = new FormData();
-        formData.append("Image", "VALUE");
-        for (const file of uploadImages) {
-            formData.append("images", file);
-        }
-        dispatch(uploadProductImages({ formData, productId: item._id }));
-    }
+    const id = item && item._id;
     return (
-        <div className="container-sm border border-dark mx-2">
-            <img src={`${item.images[0] ? item.images[0] : ""}`} alt="image" />
-            <h2>{item.title}</h2>
-            <h3>{item.price}</h3>
-            <h4>{item._id}</h4>
-            <button onClick={update}>Update</button>
-            <button onClick={deleteProd}>Delete</button>
-            <form onSubmit={(e) => handleUpload(e)}>
-                <input
-                    type="file"
-                    name="images"
-                    multiple
-                    onChange={(e) => setUploadImages(e.target.files)}
-                ></input>
-                <button type="submit">Upload</button>
-            </form>
-        </div>
+        <NavLink to={`/admin/product/${id}`}>
+            <div to={`/product/${id}`} className="product-card">
+                <div className="product-card-image-container">
+                    <img
+                        src={`${item && item.images[0] ? item.images[0] : ""}`}
+                        alt="image"
+                        className="product-card-poster-image"
+                    />
+                </div>
+                <div className="product-card-rating">
+                    <span className="product-card-rating-value">
+                        {item && item.totalrating.toFixed(1)}
+                    </span>
+                    <AiFillStar className="product-card-rating-star" />
+                </div>
+                <div className="product-card-info">
+                    <div className="product-card-brand">
+                        {item && item.brand}
+                    </div>
+                    <div className="product-card-title">
+                        {item && item.title}
+                    </div>
+                    <div className="product-card-price">
+                        <div className="product-card-final-price">
+                            {" "}
+                            <span className="rupee-symbol">₹</span>
+                            {item && item.price}{" "}
+                        </div>
+
+                        <span className="product-card-original-price">
+                            <del>
+                                {" "}
+                                <span className="rupee-symbol">₹</span>
+                                {item && item.originalPrice}{" "}
+                            </del>
+                        </span>
+                        <span className="product-card-discount">
+                            <span className="product-card-discount-value">
+                                {Math.round(item && item.discount)}
+                            </span>
+                            % Off
+                        </span>
+                    </div>
+                    <NavLink
+                        to={`/admin/product/update/${id}`}
+                        className="button-1-full"
+                    >
+                        <BiSolidEditAlt />
+                    </NavLink>
+                    <button className="button-1-full" onClick={deleteProd}>
+                        <MdDelete />
+                    </button>
+                </div>
+            </div>
+        </NavLink>
     );
 }
 

@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import "../../styles/userAccount.css";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserDetails } from "../../Redux/Thunks/userThunks";
-import { NavLink } from "react-router-dom";
+import { NavLink, Navigate } from "react-router-dom";
 import { BiSolidEditAlt } from "react-icons/bi";
 function UserProfile() {
     const dispatch = useDispatch();
@@ -10,16 +10,17 @@ function UserProfile() {
         dispatch(getUserDetails());
     }, []);
     const userData = useSelector((state) => state.user.userData);
+    const isUserLogged = useSelector((state) => state.user.isUserLogged);
+
+    if (!isUserLogged) return <Navigate to="/user/login" replace />;
     return (
         <div className="profile-section">
             <div className="section-header">
                 <div className="header-title">Your Profile</div>
 
-                <NavLink to="/user/account/profile/update">
-                    <button className="button">
-                        <span>Edit</span>
-                        <BiSolidEditAlt />
-                    </button>
+                <NavLink to="/user/account/profile/update" className="button-1">
+                    <span>Edit</span>
+                    <BiSolidEditAlt />
                 </NavLink>
             </div>
             <div className="profile-container">

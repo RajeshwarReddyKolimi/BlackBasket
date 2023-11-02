@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios"; // Import Axios
+import apiUrl from "../../apiUrl";
 
 async function findToken() {
     const cookie = document.cookie
@@ -12,17 +13,11 @@ async function findToken() {
 
 export const userSignup = createAsyncThunk(
     "/signup",
-    async (credentials, { dispatch, rejectWithValue }) => {
+    async (userDetails, { dispatch, rejectWithValue }) => {
         try {
-            const response = await axios.post(
-                "http://localhost:4000/api/user/register",
-                {
-                    email: credentials.email,
-                    password: credentials.password,
-                    firstName: credentials.firstName,
-                    lastName: credentials.lastName,
-                }
-            );
+            const response = await axios.post(`${apiUrl}/user/register`, {
+                userDetails,
+            });
             return response.data;
         } catch (error) {
             console.error("Fetch error:", error);
@@ -35,13 +30,10 @@ export const userLogin = createAsyncThunk(
     "/login",
     async (credentials, { dispatch, rejectWithValue }) => {
         try {
-            const response = await axios.post(
-                "http://localhost:4000/api/user/login",
-                {
-                    email: credentials.email,
-                    password: credentials.password,
-                }
-            );
+            const response = await axios.post(`${apiUrl}/user/login`, {
+                email: credentials.email,
+                password: credentials.password,
+            });
             return response.data;
         } catch (error) {
             console.error("Fetch error:", error);
@@ -54,12 +46,9 @@ export const userLogout = createAsyncThunk(
     "/logout",
     async (_, { dispatch, rejectWithValue }) => {
         try {
-            const response = await axios.get(
-                "http://localhost:4000/api/user/logout",
-                {
-                    withCredentials: true, // Include credentials
-                }
-            );
+            const response = await axios.get(`${apiUrl}/user/logout`, {
+                withCredentials: true, // Include credentials
+            });
             return response.data;
         } catch (error) {
             console.error("Fetch error:", error);
@@ -72,12 +61,9 @@ export const getUserDetails = createAsyncThunk(
     "/getUserDetails",
     async (_, { dispatch, rejectWithValue }) => {
         try {
-            const response = await axios.get(
-                "http://localhost:4000/api/user/details",
-                {
-                    withCredentials: true, // Include credentials
-                }
-            );
+            const response = await axios.get(`${apiUrl}/user/details`, {
+                withCredentials: true,
+            });
             return response.data;
         } catch (error) {
             console.error("Fetch error:", error);
@@ -92,7 +78,7 @@ export const updateUserDetails = createAsyncThunk(
         try {
             const token = await findToken();
             const response = await axios.put(
-                "http://localhost:4000/api/user/update",
+                `${apiUrl}/user/update`,
                 {
                     firstName: details.firstName,
                     lastName: details.lastName,
@@ -120,7 +106,7 @@ export const addUserAddress = createAsyncThunk(
         try {
             const token = await findToken();
             const response = await axios.post(
-                "http://localhost:4000/api/user/address",
+                `${apiUrl}/user/address`,
                 {
                     address: address,
                 },
@@ -145,7 +131,7 @@ export const updateUserAddress = createAsyncThunk(
         try {
             const token = await findToken();
             const response = await axios.put(
-                `http://localhost:4000/api/user/address/${id}`,
+                `${apiUrl}/user/address/${id}`,
                 {
                     address: address,
                 },
@@ -171,7 +157,7 @@ export const removeFromCart = createAsyncThunk(
             const token = await findToken();
 
             const response = await axios.put(
-                "http://localhost:4000/api/user/cart/remove",
+                `${apiUrl}/user/cart/remove`,
                 {
                     productId: productId,
                 },
@@ -196,9 +182,35 @@ export const addToCart = createAsyncThunk(
         try {
             const token = await findToken();
             const response = await axios.put(
-                "http://localhost:4000/api/product/cart",
+                `${apiUrl}/product/cart`,
                 {
                     productId,
+                },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+            return response.data;
+        } catch (error) {
+            console.error("Error:", error);
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
+export const updateCartItemQuantity = createAsyncThunk(
+    "/updateCartItemQuantity",
+    async ({ productId, value }, { dispatch, rejectWithValue }) => {
+        try {
+            const token = await findToken();
+            const response = await axios.put(
+                `${apiUrl}/user/cart/update`,
+                {
+                    productId,
+                    value,
                 },
                 {
                     headers: {
@@ -222,7 +234,7 @@ export const toWishlist = createAsyncThunk(
             const token = await findToken();
 
             const response = await axios.put(
-                "http://localhost:4000/api/product/wishlist",
+                `${apiUrl}/product/wishlist`,
                 {
                     productId,
                 },
@@ -246,17 +258,30 @@ export const getWishlist = createAsyncThunk(
     async (_, { dispatch, rejectWithValue }) => {
         try {
             const token = await findToken();
+            const response = await axios.get(`${apiUrl}/user/wishlist`, {
+                withCredentials: true,
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            return response.data;
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
 
-            const response = await axios.get(
-                "http://localhost:4000/api/user/wishlist",
-                {},
-                {
-                    withCredentials: true,
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            );
+export const getCart = createAsyncThunk(
+    "/getCart",
+    async (_, { dispatch, rejectWithValue }) => {
+        try {
+            const token = await findToken();
+            const response = await axios.get(`${apiUrl}/user/cart`, {
+                withCredentials: true,
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
             return response.data;
         } catch (error) {
             console.error("Fetch error:", error);
@@ -264,20 +289,36 @@ export const getWishlist = createAsyncThunk(
         }
     }
 );
-export const getCart = createAsyncThunk(
-    "/getCart",
+export const getUserCoupons = createAsyncThunk(
+    "/getUserCoupons",
     async (_, { dispatch, rejectWithValue }) => {
         try {
             const token = await findToken();
-            const response = await axios.get(
-                "http://localhost:4000/api/user/cart",
-                {
-                    withCredentials: true,
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            );
+            const response = await axios.get(`${apiUrl}/user/coupons`, {
+                withCredentials: true,
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            return response.data;
+        } catch (error) {
+            console.error("Fetch error:", error);
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
+export const getUserOrders = createAsyncThunk(
+    "/getUserOrders",
+    async (_, { dispatch, rejectWithValue }) => {
+        try {
+            const token = await findToken();
+            const response = await axios.get(`${apiUrl}/user/orders`, {
+                withCredentials: true,
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
             return response.data;
         } catch (error) {
             console.error("Fetch error:", error);
@@ -288,13 +329,15 @@ export const getCart = createAsyncThunk(
 
 export const applyCoupon = createAsyncThunk(
     "/user/coupon/",
-    async (credentials, { dispatch, rejectWithValue }) => {
+    async ({ couponCode }, { dispatch, rejectWithValue }) => {
         try {
+            console.log(couponCode);
             const token = await findToken();
-            const couponId = credentials;
             const response = await axios.put(
-                `http://localhost:4000/api/user/applyCoupon/${couponId}`,
-                {},
+                `${apiUrl}/user/applyCoupon`,
+                {
+                    couponCode,
+                },
                 {
                     headers: {
                         "Content-Type": "application/json",
@@ -312,14 +355,19 @@ export const applyCoupon = createAsyncThunk(
 
 export const createOrder = createAsyncThunk(
     "/user/order/",
-    async (credentials, { dispatch, rejectWithValue }) => {
+    async (
+        { couponCode, address, finalPrice },
+        { dispatch, rejectWithValue }
+    ) => {
         try {
             const token = await findToken();
-            const couponId = credentials;
+            console.log(couponCode, address);
             const response = await axios.post(
-                `http://localhost:4000/api/user/createOrder`,
+                `${apiUrl}/user/createOrder`,
                 {
-                    couponId: couponId,
+                    couponCode,
+                    address,
+                    finalPrice,
                 },
                 {
                     headers: {
@@ -328,6 +376,26 @@ export const createOrder = createAsyncThunk(
                     },
                 }
             );
+            return response.data;
+        } catch (error) {
+            console.error("Fetch error:", error);
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
+export const deleteAccount = createAsyncThunk(
+    "/user/delete",
+    async (credentials, { dispatch, rejectWithValue }) => {
+        try {
+            const token = await findToken();
+            const couponId = credentials;
+            const response = await axios.delete(`${apiUrl}/user`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+            });
             return response.data;
         } catch (error) {
             console.error("Fetch error:", error);

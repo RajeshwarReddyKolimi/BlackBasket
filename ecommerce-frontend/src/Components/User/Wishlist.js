@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { getWishlist } from "../../Redux/Thunks/userThunks";
 import ProductCard from "../Products/ProductCard";
 import { Navigate } from "react-router-dom";
+import "../../styles/product.css";
 function Wishlist() {
     const dispatch = useDispatch();
     useEffect(() => {
@@ -16,7 +17,7 @@ function Wishlist() {
     return (
         <div>
             <h2>Wishlist Products</h2>
-            <div className="container-sm w-50 d-flex flex-row flex-wrap">
+            <div className="products-container">
                 {wishlistData &&
                     wishlistData.map((item, key) => (
                         <ProductCard key={key} item={item} />

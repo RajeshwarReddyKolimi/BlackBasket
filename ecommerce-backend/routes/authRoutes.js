@@ -9,7 +9,6 @@ const {
     forgotPasswordToken,
     resetPassword,
     getWishlist,
-    saveAddress,
     getUserCart,
     emptyCart,
     applyCoupon,
@@ -19,6 +18,10 @@ const {
     removeFromCart,
     addAddress,
     updateAddress,
+    updateCartItemQuantity,
+    deleteAccount,
+    getOrderById,
+    getUserCoupons,
 } = require("../controller/userControl");
 const { userAuth, adminAuth } = require("../middleware/authMiddleware");
 const {
@@ -42,15 +45,19 @@ router.put("/reset-password/:token", resetPassword);
 router.put("/password", userAuth, updatePassword);
 router.put("/update", userAuth, updateUser); //
 router.put("/cart/remove", userAuth, removeFromCart);
-router.put("/applyCoupon/:id", userAuth, applyCoupon);
+router.put("/cart/update", userAuth, updateCartItemQuantity);
+router.put("/applyCoupon", userAuth, applyCoupon);
 
 router.get("/refresh", handleRefreshToken);
 router.get("/logout", logoutUser); //
 router.get("/details", getUserDetails); //
 router.get("/wishlist", userAuth, getWishlist); //
 router.get("/cart", userAuth, getUserCart); //
-router.get("/orders", userAuth, getOrders); // Pending
+router.get("/orders", userAuth, getOrders); //
+router.get("/coupons", userAuth, getUserCoupons); //
+router.get("/orders/:id", userAuth, getOrderById); //
 
 router.delete("/emptyCart", userAuth, emptyCart);
+router.delete("/", userAuth, deleteAccount);
 
 module.exports = router;
