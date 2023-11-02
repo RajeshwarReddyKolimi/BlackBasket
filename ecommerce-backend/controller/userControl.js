@@ -41,6 +41,7 @@ const createUser = asyncHandler(async (req, res) => {
 });
 
 const loginUser = asyncHandler(async (req, res) => {
+    console.log("HERE");
     const { email, password } = req.body;
     const findUser = await User.findOne({ email });
     if (findUser) {
