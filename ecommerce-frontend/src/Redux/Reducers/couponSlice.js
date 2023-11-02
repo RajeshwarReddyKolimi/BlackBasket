@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { createCoupon, deleteCoupon, getCoupons } from "../Thunks/couponThunks";
-
-export const couponSlice = createSlice({
+const couponSlice = createSlice({
     name: "Coupon",
     initialState: {
         errorMessage: "",
@@ -43,3 +42,4 @@ export const couponSlice = createSlice({
         });
     },
 });
+export default couponSlice;

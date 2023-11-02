@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import apiUrl from "../../apiUrl";
 
 async function findToken() {
     const cookie = document.cookie

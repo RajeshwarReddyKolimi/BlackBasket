@@ -4,6 +4,7 @@ import { createCoupon, updateCoupon } from "../../Redux/Thunks/couponThunks";
 import findToken from "../../findToken";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import apiUrl from "../../apiUrl";
 
 function AdminUpdateCoupon() {
     const { id } = useParams();

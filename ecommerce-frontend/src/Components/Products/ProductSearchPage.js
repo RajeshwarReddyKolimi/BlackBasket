@@ -8,6 +8,7 @@ import { getColors } from "../../Redux/Thunks/colorThunks";
 import { getCategories } from "../../Redux/Thunks/categoryThunks";
 import { getBrands } from "../../Redux/Thunks/brandThunks";
 import { useDispatch, useSelector } from "react-redux";
+import apiUrl from "../../apiUrl";
 
 function ProductSearchPage() {
     const dispatch = useDispatch();

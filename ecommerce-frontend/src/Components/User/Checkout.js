@@ -13,6 +13,8 @@ import UserCouponCard from "./UserCouponCard";
 import findToken from "../../findToken";
 import axios from "axios";
 import UserAddressCard from "./UserAddressCard";
+import apiUrl from "../../apiUrl";
+
 function Checkout() {
     const dispatch = useDispatch();
     const cartData = useSelector((state) => state.user.userData.cart);
