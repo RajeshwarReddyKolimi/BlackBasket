@@ -41,28 +41,31 @@ const createUser = asyncHandler(async (req, res) => {
 });
 
 const loginUser = asyncHandler(async (req, res) => {
-    console.log("HERE");
     const { email, password } = req.body;
-    const findUser = await User.findOne({ email });
-    if (findUser) {
-        if (await findUser.isPasswordMatched(password)) {
-            const refreshToken = await generateRefreshToken(findUser?._id);
-            const updateUser = await User.findByIdAndUpdate(
-                findUser.id,
-                {
-                    refreshToken: refreshToken,
-                },
-                { new: true }
-            );
-            res.cookie("refreshToken", refreshToken, {
-                httpOnly: true,
-                maxAge: 3 * 24 * 60 * 60 * 1000,
-            });
-            res.json({
-                token: refreshToken,
-            });
-        } else throw new Error("Invalid password");
-    } else throw new Error("User not found");
+    try {
+        const findUser = await User.findOne({ email });
+        if (findUser) {
+            if (await findUser.isPasswordMatched(password)) {
+                const refreshToken = await generateRefreshToken(findUser?._id);
+                const updateUser = await User.findByIdAndUpdate(
+                    findUser.id,
+                    {
+                        refreshToken: refreshToken,
+                    },
+                    { new: true }
+                );
+                res.cookie("refreshToken", refreshToken, {
+                    httpOnly: true,
+                    maxAge: 3 * 24 * 60 * 60 * 1000,
+                });
+                res.json({
+                    token: refreshToken,
+                });
+            } else throw new Error("Invalid password");
+        } else throw new Error("User not found");
+    } catch (error) {
+        console.log(error);
+    }
 });
 
 const handleRefreshToken = asyncHandler(async (req, res) => {

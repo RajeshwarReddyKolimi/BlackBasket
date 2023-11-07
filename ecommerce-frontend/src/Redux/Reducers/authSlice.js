@@ -41,7 +41,7 @@ const userSlice = createSlice({
             state.errorMessage = "";
             state.successMessage = "Succesfully Signed Up";
 
-            document.cookie = `refreshToken=${action.payload.token}; path=/; expires=Wed, 31 Oct 2023 07:28:00 GMT;`;
+            document.cookie = `refreshToken=${action.payload.token}; path=/; expires=Wed, 30 Nov 2023 07:28:00 GMT;`;
             state.userData = {};
         });
         builder.addCase(userSignup.rejected, (state, action) => {
