@@ -27,8 +27,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(
     cors({
-        // origin: "https://blackbasket-by-rajeshwar.netlify.app",
-        origin: "http://localhost:3000",
+        origin: "https://blackbasket-by-rajeshwar.netlify.app",
+        // origin: "http://localhost:3000",
         credentials: true,
     })
 );
