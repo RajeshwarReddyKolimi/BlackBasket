@@ -51,9 +51,11 @@ const productSchema = new mongoose.Schema(
                 star: Number,
                 comment: String,
                 postedby: {
-                    type: mongoose.Schema.Types.ObjectId,
+                    userId: {
+                        type: mongoose.Schema.Types.ObjectId,
+                        ref: "User",
+                    },
                     userName: String,
-                    ref: "User",
                 },
                 date: {
                     type: Date,

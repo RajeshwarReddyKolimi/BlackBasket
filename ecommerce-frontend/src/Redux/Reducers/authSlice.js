@@ -30,7 +30,14 @@ const userSlice = createSlice({
         successMessage: "",
         userData: {},
     },
-    reducers: {},
+    reducers: {
+        addItem: (state, action) => {
+            state.userData.cart = action.payload;
+        },
+        updateAddress: (state, action) => {
+            state.userData.address = action.payload;
+        },
+    },
     extraReducers: (builder) => {
         const setLoadingState = (state) => {
             state.errorMessage = "Loading";
@@ -229,5 +236,7 @@ const userSlice = createSlice({
         });
     },
 });
+
+export const { addItem, updateAddress } = userSlice.actions;
 
 export default userSlice;

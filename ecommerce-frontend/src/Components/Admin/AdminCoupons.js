@@ -14,7 +14,7 @@ function AdminCoupons() {
     return (
         <div>
             <h3>All Coupons</h3>
-            <NavLink to="/admin/coupon/add" className="button-1-full">
+            <NavLink to="/admin/coupon/add" className="button-full">
                 Add Coupon
             </NavLink>
             {couponsData && couponsData.length > 0 ? (

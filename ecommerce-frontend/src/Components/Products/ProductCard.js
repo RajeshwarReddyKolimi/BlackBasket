@@ -10,23 +10,46 @@ import "../../styles/product.css";
 import { AiFillHeart, AiFillStar } from "react-icons/ai";
 import { NavLink, Navigate } from "react-router-dom";
 import ConfirmPopup from "../ConfirmPopup";
+import ResultPopup from "../ResultPopup";
+import findToken from "../../findToken";
+import axios from "axios";
+import apiUrl from "../../apiUrl";
+import { addItem } from "../../Redux/Reducers/authSlice";
+import { MdVerified } from "react-icons/md";
 
 function ProductCard(props) {
+    const [showCartMessage, setShowCartMessage] = useState(false);
     const { item } = props;
     const dispatch = useDispatch();
     const isUserLogged = useSelector((state) => state.user.isUserLogged);
 
     useEffect(() => {
         dispatch(getUserDetails());
-    }, []);
-    function addCart() {
-        if (!isUserLogged) return <Navigate to="/user/login" replace />;
+    }, [dispatch]);
 
-        dispatch(addToCart(item._id));
+    async function addCart() {
+        if (!isUserLogged) return <Navigate to="/user/login" replace />;
+        try {
+            const token = await findToken();
+            const response = await axios.put(
+                `${apiUrl}/product/cart`,
+                {
+                    productId: item._id,
+                },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+            dispatch(addItem(response.data));
+            setShowCartMessage(true);
+        } catch (error) {
+            console.log("Error:", error);
+        }
     }
-    function wishlist() {
-        dispatch(toWishlist(item._id));
-    }
+
     const id = item && item._id;
 
     return (
@@ -44,13 +67,8 @@ function ProductCard(props) {
                     />
                 </div>
             </NavLink>
-            <div className="product-card-rating">
-                <span className="product-card-rating-value">
-                    {item && item.totalrating && item.totalrating.toFixed(1)}
-                </span>
-                <AiFillStar className="product-card-rating-star" />
-            </div>
-            <div className="product-card-info">
+
+            <div className="product-card-info-container">
                 <NavLink to={`/product/${id}`}>
                     <div className="product-card-brand">
                         {item && item.brand}
@@ -59,29 +77,51 @@ function ProductCard(props) {
                         {item && item.title}
                     </div>
                 </NavLink>
-                <div className="product-card-price">
-                    <div className="product-card-final-price">
+                {item && item.ratings && item.ratings.length > 0 ? (
+                    <div className="product-star">
+                        <AiFillStar className="star-icon" />
+                        <span>
+                            {item &&
+                                item.totalrating &&
+                                item.totalrating.toFixed(1)}
+                        </span>
+                        <span>|</span>
+                        <span>
+                            {" "}
+                            {item && item.ratings && item.ratings.length}{" "}
+                            ratings
+                        </span>
+                        <MdVerified className="verified-icon" />
+                    </div>
+                ) : (
+                    <div>No Ratings Yet </div>
+                )}
+                <div className="product-price-container">
+                    <div className="product-price">
                         {" "}
                         <span className="rupee-symbol">₹</span>
                         {item && item.price}{" "}
                     </div>
 
-                    <span className="product-card-original-price">
+                    <span className="product-original-price">
                         <del>
                             {" "}
                             <span className="rupee-symbol">₹</span>
                             {item && item.originalPrice}{" "}
                         </del>
                     </span>
-                    <span className="product-card-discount">
-                        <span className="product-card-discount-value">
-                            {Math.round(item && item.discount)}
-                        </span>
-                        % Off
+                    <span className="product-discount">
+                        -{Math.round(item && item.discount)}%
                     </span>
                 </div>
-                <button className="button-1-full" onClick={addCart}>
+                <button className="button-full" onClick={addCart}>
                     Add to Cart
+                    {showCartMessage && (
+                        <ResultPopup
+                            successMessage={`Added to cart : ${item.title}`}
+                            setFunction={setShowCartMessage}
+                        />
+                    )}
                 </button>
             </div>
         </div>

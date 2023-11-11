@@ -36,21 +36,21 @@ function AdminAddProduct() {
         dispatch(createProduct({ formData }));
     }
     return (
-        <div>
+        <div className="section">
             <form
                 onSubmit={(e) => {
                     handleAddProduct(e);
                 }}
-                className="add-product-form"
+                className="form"
             >
-                <div className="product-form-item">
-                    <label for="product-title" className="product-form-label">
+                <div className="form-item">
+                    <label for="title" className="form-label">
                         Product Name
                     </label>
                     <input
                         type="text"
-                        name="product-title"
-                        className="product-form-input"
+                        name="title"
+                        className="form-input"
                         onChange={(e) =>
                             setProduct((prev) => {
                                 return { ...prev, title: e.target.value };
@@ -59,14 +59,14 @@ function AdminAddProduct() {
                         required
                     />
                 </div>
-                <div className="product-form-item">
-                    <label for="product-brand" className="product-form-label">
+                <div className="form-item">
+                    <label for="brand" className="form-label">
                         Product Brand
                     </label>
                     <input
                         type="text"
-                        name="product-brand"
-                        className="product-form-input"
+                        name="brand"
+                        className="form-input"
                         onChange={(e) =>
                             setProduct((prev) => {
                                 return { ...prev, brand: e.target.value };
@@ -75,14 +75,14 @@ function AdminAddProduct() {
                         required
                     />
                 </div>
-                <div className="product-form-item">
-                    <label for="product-color" className="product-form-label">
+                <div className="form-item">
+                    <label for="color" className="form-label">
                         Color
                     </label>
                     <input
                         type="text"
-                        name="product-color"
-                        className="product-form-input"
+                        name="color"
+                        className="form-input"
                         onChange={(e) =>
                             setProduct((prev) => {
                                 return { ...prev, color: e.target.value };
@@ -91,14 +91,14 @@ function AdminAddProduct() {
                         required
                     />
                 </div>
-                <div className="product-form-item">
-                    <label for="product-price" className="product-form-label">
+                <div className="form-item">
+                    <label for="price" className="form-label">
                         Price
                     </label>
                     <input
                         type="number"
-                        name="product-price"
-                        className="product-form-input"
+                        name="price"
+                        className="form-input"
                         onChange={(e) =>
                             setProduct((prev) => {
                                 return { ...prev, price: e.target.value };
@@ -108,17 +108,14 @@ function AdminAddProduct() {
                         required
                     />
                 </div>
-                <div className="product-form-item">
-                    <label
-                        for="product-originalPrice"
-                        className="product-form-label"
-                    >
+                <div className="form-item">
+                    <label for="originalPrice" className="form-label">
                         Original Price
                     </label>
                     <input
                         type="number"
-                        name="product-originalPrice"
-                        className="product-form-input"
+                        name="originalPrice"
+                        className="form-input"
                         onChange={(e) =>
                             setProduct((prev) => {
                                 return {
@@ -131,17 +128,14 @@ function AdminAddProduct() {
                         required
                     />
                 </div>
-                <div className="product-form-item">
-                    <label
-                        for="product-category"
-                        className="product-form-label"
-                    >
+                <div className="form-item">
+                    <label for="category" className="form-label">
                         Category
                     </label>
                     <input
                         type="text"
-                        name="product-category"
-                        className="product-form-input"
+                        name="category"
+                        className="form-input"
                         onChange={(e) =>
                             setProduct((prev) => {
                                 return { ...prev, category: e.target.value };
@@ -150,17 +144,14 @@ function AdminAddProduct() {
                         required
                     />
                 </div>
-                <div className="product-form-item">
-                    <label
-                        for="product-quantity"
-                        className="product-form-label"
-                    >
+                <div className="form-item">
+                    <label for="quantity" className="form-label">
                         Quantity
                     </label>
                     <input
                         type="number"
-                        name="product-quantity"
-                        className="product-form-input"
+                        name="quantity"
+                        className="form-input"
                         onChange={(e) =>
                             setProduct((prev) => {
                                 return { ...prev, quantity: e.target.value };
@@ -170,17 +161,14 @@ function AdminAddProduct() {
                         required
                     />
                 </div>
-                <div className="product-form-item">
-                    <label
-                        for="product-description"
-                        className="product-form-label"
-                    >
+                <div className="form-item">
+                    <label for="description" className="form-label">
                         Description
                     </label>
                     <input
                         type="text"
-                        name="product-description"
-                        className="product-form-input"
+                        name="description"
+                        className="form-input"
                         onChange={(e) =>
                             setProduct((prev) => {
                                 return { ...prev, description: e.target.value };
@@ -189,21 +177,21 @@ function AdminAddProduct() {
                         required
                     />
                 </div>
-                <div className="product-form-item">
-                    <label for="images" className="product-form-label">
+                <div className="form-item">
+                    <label for="images" className="form-label">
                         Images
                     </label>
                     <input
                         type="file"
                         name="images"
-                        className="product-form-input"
+                        className="form-input"
                         onChange={(e) => setUploadImages(e.target.files)}
                         multiple
                         required
                     />
                 </div>
 
-                <button type="submit" className="button-1-full">
+                <button type="submit" className="button-full">
                     Add
                 </button>
             </form>

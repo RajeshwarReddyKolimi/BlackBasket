@@ -26,7 +26,7 @@ function AdminProducts() {
     return (
         <div>
             <h2>Products</h2>
-            <NavLink to="/admin/product/add" className="button-1-full">
+            <NavLink to="/admin/product/add" className="button-full">
                 Add Product
             </NavLink>
             <form onSubmit={(e) => handleSearchById(e)}>
@@ -35,7 +35,7 @@ function AdminProducts() {
                     className=""
                     onChange={(e) => setSearchInput(e.target.value)}
                 ></input>
-                <button type="submit" className="button-1-full">
+                <button type="submit" className="button-full">
                     Submit
                 </button>
             </form>

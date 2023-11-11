@@ -331,7 +331,6 @@ export const applyCoupon = createAsyncThunk(
     "/user/coupon/",
     async ({ couponCode }, { dispatch, rejectWithValue }) => {
         try {
-            console.log(couponCode);
             const token = await findToken();
             const response = await axios.put(
                 `${apiUrl}/user/applyCoupon`,
@@ -361,7 +360,6 @@ export const createOrder = createAsyncThunk(
     ) => {
         try {
             const token = await findToken();
-            console.log(couponCode, address);
             const response = await axios.post(
                 `${apiUrl}/user/createOrder`,
                 {

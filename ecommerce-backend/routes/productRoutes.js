@@ -7,10 +7,10 @@ const {
     deleteProduct,
     addToWishlist,
     updateRating,
-    deleteImages,
     addToCart,
     uploadProductImage,
     searchProducts,
+    getRating,
 } = require("../controller/productControl");
 const { adminAuth, userAuth } = require("../middleware/authMiddleware");
 const { uploadImages, handleUpload } = require("../utils/cloudinary");
@@ -24,6 +24,7 @@ router.put("/cart", userAuth, addToCart); //
 router.put("/rating", userAuth, updateRating); //
 router.put("/:id", adminAuth, handleUpload, updateProduct); //
 
+router.get("/rating/:id", userAuth, getRating); //
 router.get("/search", searchProducts); //
 router.get("/:id", getAProduct); //
 router.get("/", getAllProducts); //

@@ -7,9 +7,10 @@ const {
     getBrand,
     getAllBrand,
 } = require("../controller/brandControl");
+const { handleUpload } = require("../utils/cloudinary");
 const router = express.Router();
-router.post("/", adminAuth, createBrand);
-router.put("/:id", adminAuth, updateBrand);
+router.post("/", adminAuth, handleUpload, createBrand);
+router.put("/:id", adminAuth, handleUpload, updateBrand);
 router.delete("/:id", adminAuth, deleteBrand);
 router.get("/:id", getBrand);
 router.get("/", getAllBrand);

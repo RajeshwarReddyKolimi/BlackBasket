@@ -66,11 +66,11 @@ function AdminProductCard(props) {
                     </div>
                     <NavLink
                         to={`/admin/product/update/${id}`}
-                        className="button-1-full"
+                        className="button-full"
                     >
                         <BiSolidEditAlt />
                     </NavLink>
-                    <button className="button-1-full" onClick={deleteProd}>
+                    <button className="button-full" onClick={deleteProd}>
                         <MdDelete />
                     </button>
                 </div>

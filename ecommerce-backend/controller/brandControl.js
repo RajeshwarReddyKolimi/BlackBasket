@@ -3,9 +3,12 @@ const asyncHandler = require("express-async-handler");
 const validateMongodbId = require("../utils/validateMongodbId");
 
 const createBrand = asyncHandler(async (req, res) => {
+    const { name, images } = req.body;
     try {
-        const newCategory = await Brand.create(req.body);
-        res.json(newCategory);
+        let image = "";
+        if (images.length !== 0) image = images[0];
+        const newBrand = await Brand.create({ name, image });
+        res.json(newBrand);
     } catch (error) {
         throw new Error(error);
     }
@@ -13,11 +16,16 @@ const createBrand = asyncHandler(async (req, res) => {
 
 const updateBrand = asyncHandler(async (req, res) => {
     const { id } = req.params;
+    const { name, images } = req.body;
     try {
-        const updateCategory = await Brand.findByIdAndUpdate(id, req.body, {
-            new: true,
-        });
-        res.json(updateCategory);
+        let logo = "";
+        if (images.length !== 0) logo = images[0];
+        const updateBrand = await Brand.findByIdAndUpdate(
+            id,
+            { name, logo },
+            { new: true }
+        );
+        res.json(updateBrand);
     } catch (error) {
         throw new Error(error);
     }

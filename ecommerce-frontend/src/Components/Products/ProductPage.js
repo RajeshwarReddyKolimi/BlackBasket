@@ -158,28 +158,28 @@ function ProductPage() {
                 <div className="product-page-title">
                     {product && product.title}
                 </div>
-                <div className="product-page-price-container">
-                    <span className="product-page-price">
+                <div className="product-price-container">
+                    <span className="product-price">
                         {" "}
                         ₹{product && product.price}{" "}
                     </span>
-                    <span className="product-page-originalPrice">
+                    <span className="product-original-price">
                         <del> ₹{product && product.originalPrice} </del>
                     </span>
-                    <span className="product-page-discount">
+                    <span className="product-discount">
                         {Math.round(product && product.discount)}% Off
                     </span>
                 </div>
                 {product && product.ratings && product.ratings.length > 0 && (
-                    <div className="product-page-star">
+                    <div className="product-star">
                         <AiFillStar className="star-icon" />
-                        <span className="product-page-star-value">
+                        <span>
                             {product &&
                                 product.totalrating &&
                                 product.totalrating.toFixed(1)}
                         </span>
                         <span>|</span>
-                        <span className="product-page-star-count">
+                        <span>
                             {" "}
                             {product &&
                                 product.ratings &&
@@ -203,7 +203,7 @@ function ProductPage() {
                 </div>
                 <div className="button-container-flex">
                     <button
-                        className="button-1-full"
+                        className="button-full"
                         onClick={() => {
                             setShowPopup(true);
                         }}
@@ -216,7 +216,7 @@ function ProductPage() {
                             setShowPopup={setShowPopup}
                         />
                     )}
-                    <button className="button-1-full" onClick={wishlist}>
+                    <button className="button-full" onClick={wishlist}>
                         Wishlist
                     </button>
                 </div>

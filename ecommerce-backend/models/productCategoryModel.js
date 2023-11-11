@@ -10,6 +10,9 @@ var productCategorySchema = new mongoose.Schema(
                 return value.toUpperCase();
             },
         },
+        image: {
+            type: String,
+        },
     },
     { timestamps: true }
 );

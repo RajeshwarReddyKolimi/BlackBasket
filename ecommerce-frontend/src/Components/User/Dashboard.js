@@ -3,6 +3,12 @@ import { useSelector, useDispatch } from "react-redux";
 import { NavLink, Navigate } from "react-router-dom";
 import Products from "../Products/Products";
 import { getUserDetails, userLogout } from "../../Redux/Thunks/userThunks";
+import Slider from "./Slider";
+import ShopByCategory from "./ShopByCategory";
+import ShopByBrand from "./ShopByBrand";
+import BestSellers from "./BestSellers";
+import RecentProducts from "./RecentProducts";
+import TopRated from "./TopRated";
 
 function Dashboard() {
     const dispatch = useDispatch();
@@ -23,7 +29,12 @@ function Dashboard() {
     if (!isUserLogged) return <Navigate to="/" replace />;
     return (
         <div>
-            <Products />
+            <Slider />
+            <ShopByCategory />
+            <BestSellers />
+            <ShopByBrand />
+            <RecentProducts />
+            <TopRated />
         </div>
     );
 }

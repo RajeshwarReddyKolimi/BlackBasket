@@ -7,25 +7,50 @@ body {
     font-family: "Anuphan", sans-serif;
     font-family: "Rubik", sans-serif;
     text-align: center;
+    min-height: 100vh;
 }
+::-webkit-scrollbar {
+    width: 0px;
+}
+
+body::-webkit-scrollbar {
+    width: 4px;
+}
+
+body::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+body::-webkit-scrollbar-thumb {
+    background-color: #999999;
+    border-radius: 6px;
+}
+
+body::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+}
+
 :root {
     --theme-color: #ffffff;
     --theme-hover-color: #dddddd;
     --theme-text-color: #000000;
     --important-color: #df2e38;
-    --important-bg-color: rgba(255, 231, 233, 0.9);
+    --important-bg-color: rgba(255, 231, 233);
     --highlight-color: #3b82f6;
     --highlight-color-dark: rgb(16, 104, 247);
     --highlight-bg-color: #ebf2fe;
     --highlight-bg-alpha-color: #3b82f61a;
     --box-shadow-color: #cccccc;
     --box-shadow: 0 0 8px 1px var(--box-shadow-color);
-    --success-color: green;
-    --success-bg-color: rgba(219, 255, 219, 0.9);
+    --success-color: #4bb543;
+    --success-bg-color: rgb(238, 255, 238);
 }
+
 a {
+    cursor: pointer;
     text-decoration: none;
     color: inherit;
+    text-align: center;
 }
 h1,
 h2,
@@ -48,6 +73,12 @@ li {
 .flex-buffer {
     flex-grow: 1;
 }
+
+.logo {
+    text-align: left;
+    font-weight: 800;
+    line-height: 12px;
+}
 .empty-icon-container {
     width: 100%;
     display: flex;
@@ -59,22 +90,22 @@ li {
     color: var(--highlight-bg-color);
     font-size: 10rem;
 }
-.button-1,
-.button-1-full {
+.button,
+.button-full {
     padding: 0.5rem 1rem;
     border-radius: 0.2rem;
     color: var(--highlight-color);
     border: 2px solid var(--highlight-color);
 }
-.button-1-full {
+.button-full {
     width: 100%;
 }
-.button-1:hover,
-.button-1-full:hover {
+.button:hover,
+.button-full:hover {
     color: var(--theme-color);
     background-color: var(--highlight-color);
 }
-.button-icon-1 {
+.button-icon {
     cursor: pointer;
     width: 2rem;
     height: 2rem;
@@ -83,22 +114,22 @@ li {
     color: var(--highlight-color);
 }
 
-.button-icon-1:hover {
+.button-icon:hover {
     color: var(--theme-color);
     background-color: var(--highlight-color);
 }
-.button-danger-1 {
+.button-danger {
     padding: 0.5rem 1rem;
     border-radius: 0.2rem;
     color: var(--important-color);
     border: 2px solid var(--important-color);
 }
 
-.button-danger-1:hover {
+.button-danger:hover {
     color: var(--theme-color);
     background-color: var(--important-color);
 }
-.button-danger-1-full {
+.button-danger-full {
     width: 100%;
     border-radius: 0.2rem;
     padding: 0.5rem 1rem;
@@ -106,9 +137,38 @@ li {
     border: 2px solid var(--important-color);
 }
 
-.button-danger-1-full:hover {
+.button-danger-full:hover {
     color: var(--theme-color);
     background-color: var(--important-color);
+}
+.button-success {
+    padding: 0.5rem 1rem;
+    border-radius: 0.2rem;
+    color: var(--success-color);
+    border: 2px solid var(--success-color);
+}
+
+.button-success:hover {
+    color: var(--theme-color);
+    background-color: var(--success-color);
+}
+.button-success-full {
+    width: 100%;
+    border-radius: 0.2rem;
+    padding: 0.5rem 1rem;
+    color: var(--success-color);
+    border: 2px solid var(--success-color);
+}
+
+.button-success-full:hover {
+    color: var(--theme-color);
+    background-color: var(--success-color);
+}
+.button-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 0.5rem;
 }
 .button-container-flex {
     width: 100%;
@@ -118,14 +178,14 @@ li {
     align-items: center;
     gap: 1rem;
 }
-.button-1-inverse-full {
+.button-inverse-full {
     width: 100%;
     padding: 0.5rem 1rem;
     color: var(--theme-color);
     background-color: var(--highlight-color);
     border: 2px solid var(--highlight-color);
 }
-.button-1-inverse-full:hover {
+.button-inverse-full:hover {
     border-color: var(--highlight-color-dark);
     background-color: var(--highlight-color-dark);
 }
@@ -165,8 +225,6 @@ li {
     flex-direction: column;
     gap: 0.5rem;
     background-color: var(--theme-color);
-    /* width: 50vw;
-    height: 50vh; */
     padding: 2rem;
     position: fixed;
     z-index: 99;
@@ -174,4 +232,83 @@ li {
     left: 50%;
     transform: translate(-50%, -50%);
     box-shadow: var(--box-shadow);
+}
+
+.section {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+    text-align: left;
+}
+.section-header {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+.header-title {
+    font-size: 1.5rem;
+    font-weight: 500;
+    text-align: left;
+}
+
+.final-price-container {
+    margin: auto;
+    width: 100%;
+    max-width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+.final-price-item {
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.final-price-key {
+    font-weight: 600;
+}
+.final-price-value {
+    font-weight: 400;
+}
+
+.product-star {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.2rem;
+}
+
+.verified-icon {
+    color: var(--highlight-color);
+}
+.star-icon {
+    color: var(--highlight-color);
+}
+
+.product-price-container {
+    display: flex;
+    flex-direction: row;
+    gap: 0.25rem;
+    align-items: center;
+}
+.product-price {
+    font-weight: 500;
+    font-size: 1.2em;
+}
+
+.product-original-price {
+    color: grey;
+}
+
+.product-discount {
+    color: var(--success-color);
+    font-size: 1.4em;
+    font-weight: 500;
+}
+.rupee-symbol {
+    font-size: 1em;
 }

@@ -47,11 +47,11 @@ function AdminCouponCard(props) {
                     <div className="coupon-button-container">
                         <NavLink
                             to={`/admin/coupon/update/${coupon._id}`}
-                            className="button-1-full"
+                            className="button-full"
                         >
                             <BiEdit />
                         </NavLink>
-                        <button className="button-1-full" onClick={deleteCpn}>
+                        <button className="button-full" onClick={deleteCpn}>
                             <MdDelete />
                         </button>
                     </div>

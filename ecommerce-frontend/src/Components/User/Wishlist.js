@@ -5,6 +5,7 @@ import { getWishlist } from "../../Redux/Thunks/userThunks";
 import ProductCard from "../Products/ProductCard";
 import { Navigate } from "react-router-dom";
 import "../../styles/product.css";
+import Empty from "../Empty";
 function Wishlist() {
     const dispatch = useDispatch();
     useEffect(() => {
@@ -18,10 +19,13 @@ function Wishlist() {
         <div>
             <h2>Wishlist Products</h2>
             <div className="products-container">
-                {wishlistData &&
+                {wishlistData && wishlistData.length > 0 ? (
                     wishlistData.map((item, key) => (
                         <ProductCard key={key} item={item} />
-                    ))}
+                    ))
+                ) : (
+                    <Empty text="No items in Wishlist" />
+                )}
             </div>
         </div>
     );

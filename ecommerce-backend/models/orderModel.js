@@ -23,12 +23,17 @@ var orderSchema = new mongoose.Schema(
                 "Delivered",
             ],
         },
+        address: String,
         orderedBy: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
         },
         totalPrice: Number,
         finalPrice: Number,
+        discount: {
+            type: Number,
+            default: 0,
+        },
         coupon: {
             id: { type: mongoose.Schema.Types.ObjectId, ref: "Coupon" },
             code: String,

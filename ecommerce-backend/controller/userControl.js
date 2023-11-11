@@ -333,6 +333,24 @@ const addAddress = asyncHandler(async (req, res) => {
         throw new Error(error);
     }
 });
+const deleteAddress = asyncHandler(async (req, res) => {
+    const { _id } = req.user;
+    const { id: addressId } = req.params;
+    console.log(addressId);
+    validateMongodbId(_id);
+    try {
+        const updateUser = await User.findByIdAndUpdate(
+            _id,
+            {
+                $pull: { address: { _id: addressId } },
+            },
+            { new: true }
+        );
+        res.json(updateUser.address);
+    } catch (error) {
+        throw new Error(error);
+    }
+});
 
 const updateAddress = asyncHandler(async (req, res) => {
     const addressId = req.params.id;
@@ -345,6 +363,8 @@ const updateAddress = asyncHandler(async (req, res) => {
             { _id, "address._id": addressId },
             {
                 $set: {
+                    "address.$.userName": address.userName,
+                    "address.$.mobile": address.mobile,
                     "address.$.houseNo": address.houseNo,
                     "address.$.street": address.street,
                     "address.$.village": address.village,
@@ -408,6 +428,7 @@ const createOrder = asyncHandler(async (req, res) => {
             coupon: appliedCoupon,
             totalPrice: userCart.totalPrice,
             finalPrice: finalPrice,
+            discount: userCart.totalPrice - finalPrice,
             address: address,
             time: time,
         };
@@ -424,6 +445,7 @@ const createOrder = asyncHandler(async (req, res) => {
             items: userCart.items,
             coupon: appliedCoupon,
             totalPrice: userCart.totalPrice,
+            discount: userCart.totalPrice - finalPrice,
             finalPrice: finalPrice,
             address: address,
             time: time,
@@ -460,7 +482,6 @@ const getOrderById = asyncHandler(async (req, res) => {
         const order = user.orders.find(
             (order) => order._id.toString() === id.toString()
         );
-        console.log(order);
         res.json(order);
     } catch (error) {
         throw new Error(error);
@@ -472,7 +493,6 @@ const getUserCoupons = asyncHandler(async (req, res) => {
     validateMongodbId(_id);
     try {
         const user = await User.findById(_id).populate("coupons.coupon");
-        console.log(user.coupons);
         res.json(user.coupons);
     } catch (error) {
         throw new Error(error);
@@ -499,6 +519,7 @@ module.exports = {
     resetPassword,
     getWishlist,
     addAddress,
+    deleteAddress,
     updateAddress,
     getUserCart,
     updateCartItemQuantity,

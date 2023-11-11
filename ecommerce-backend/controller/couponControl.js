@@ -9,7 +9,14 @@ const createCoupon = asyncHandler(async (req, res) => {
         const newCoupon = await Coupon.create(coupon);
         const update = await User.updateMany(
             {},
-            { $push: { coupons: { coupon: newCoupon._id, code: coupon.name } } }
+            {
+                $push: {
+                    coupons: {
+                        coupon: newCoupon._id,
+                        code: coupon.name.toUpperCase(),
+                    },
+                },
+            }
         );
         res.json(newCoupon);
     } catch (error) {
@@ -49,7 +56,7 @@ const updateCoupon = asyncHandler(async (req, res) => {
         });
         const update = await User.updateMany(
             {},
-            { $set: { coupons: { code: coupon.name } } }
+            { $set: { coupons: { code: coupon.name.toUpperCase() } } }
         );
         res.json(updCoupon);
     } catch (error) {

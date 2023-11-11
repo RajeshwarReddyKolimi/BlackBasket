@@ -23,13 +23,9 @@ function UserAccount() {
         dispatch(deleteAccount());
     }
     return (
-        <div className="user-account-section">
+        <div className="section">
             <div className="section-header">
-                <div className="header-title">Your Account</div>
-                <button className="button-1" onClick={logout}>
-                    <span>Logout</span>
-                    <RiLogoutBoxLine />
-                </button>
+                <div className="header-title">My Account</div>
             </div>
             <div className="account-options">
                 <NavLink
@@ -61,7 +57,13 @@ function UserAccount() {
                     <div className="account-option-header">Support</div>
                     <div>Mail your Query</div>
                 </NavLink>
-                <button onClick={deleteAcc} className="button-danger-1">
+            </div>
+            <div className="button-container-flex">
+                <button className="button" onClick={logout}>
+                    <span>Logout</span>
+                    <RiLogoutBoxLine />
+                </button>
+                <button onClick={deleteAcc} className="button-danger">
                     Delete Account
                 </button>
             </div>

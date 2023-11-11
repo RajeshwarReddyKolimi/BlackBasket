@@ -5,6 +5,7 @@ import {
     updateUserDetails,
 } from "../../Redux/Thunks/userThunks";
 import { Navigate } from "react-router-dom";
+import "../../styles/forms.css";
 
 function UpdateUserProfile() {
     const dispatch = useDispatch();
@@ -35,31 +36,28 @@ function UpdateUserProfile() {
 
     if (!isUserLogged) return <Navigate to="/user/login" replace />;
     return (
-        <div className="profile-update">
+        <div className="section">
             <div className="section-header">
                 <div className="header-title">Edit Details</div>
 
                 <button
                     type="submit"
-                    className="button-1"
+                    className="button"
                     onClick={(e) => handleUpdateDetails(e)}
                 >
                     Save
                 </button>
             </div>
-            <form
-                className="update-form"
-                onSubmit={(e) => handleUpdateDetails(e)}
-            >
-                <div className="update-form-item">
-                    <label for="firstName" className="update-form-label">
+            <form className="form" onSubmit={(e) => handleUpdateDetails(e)}>
+                <div className="form-item">
+                    <label for="firstName" className="form-label">
                         {" "}
                         First Name :{" "}
                     </label>
                     <input
                         type="text"
                         name="firstName"
-                        className="update-form-input"
+                        className="form-input"
                         defaultValue={userData.firstName}
                         onChange={(e) =>
                             setDetails((prev) => {
@@ -68,8 +66,8 @@ function UpdateUserProfile() {
                         }
                     />
                 </div>
-                <div className="update-form-item">
-                    <label for="lastName" className="update-form-label">
+                <div className="form-item">
+                    <label for="lastName" className="form-label">
                         {" "}
                         Last Name :{" "}
                     </label>
@@ -77,7 +75,7 @@ function UpdateUserProfile() {
                     <input
                         type="text"
                         name="lastName"
-                        className="update-form-input"
+                        className="form-input"
                         defaultValue={userData.lastName}
                         onChange={(e) =>
                             setDetails((prev) => {
@@ -86,14 +84,14 @@ function UpdateUserProfile() {
                         }
                     />
                 </div>
-                <div className="update-form-item">
-                    <label for="email" className="update-form-label">
+                <div className="form-item">
+                    <label for="email" className="form-label">
                         Email :
                     </label>
                     <input
                         type="text"
                         name="email"
-                        className="update-form-input"
+                        className="form-input"
                         defaultValue={userData.email}
                         onChange={(e) =>
                             setDetails((prev) => {
@@ -102,14 +100,14 @@ function UpdateUserProfile() {
                         }
                     />
                 </div>
-                <div className="update-form-item">
-                    <label for="mobile" className="update-form-label">
+                <div className="form-item">
+                    <label for="mobile" className="form-label">
                         Mobile no. :
                     </label>
                     <input
                         type="text"
                         name="mobile"
-                        className="update-form-input"
+                        className="form-input"
                         defaultValue={userData.mobile}
                         onChange={(e) =>
                             setDetails((prev) => {

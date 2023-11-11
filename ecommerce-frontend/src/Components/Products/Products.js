@@ -4,6 +4,7 @@ import { useSelector } from "react-redux/es/hooks/useSelector";
 import { useDispatch } from "react-redux";
 import { getProducts } from "../../Redux/Thunks/productThunks";
 import "../../styles/product.css";
+import "../../styles/home.css";
 
 function Products() {
     const dispatch = useDispatch();
@@ -13,8 +14,8 @@ function Products() {
     }, [dispatch]);
 
     return (
-        <div>
-            <h2>Products</h2>
+        <div className="home-section">
+            <span className="home-header-title">Products</span>
             <div className="products-container">
                 {productsData &&
                     productsData.map((item, key) => (

@@ -14,12 +14,11 @@ function UserOrders() {
         dispatch(getUserOrders());
     }, []);
     if (!isUserLogged) return <Navigate to="/user/login" replace />;
-    console.log("Orders", userOrders);
     return (
         <div>
             <h3>My Orders</h3>
             {userOrders && userOrders.length > 0 ? (
-                <div className="order-container">
+                <div className="order-list-container">
                     {userOrders.map((order, key) => (
                         <UserOrderListCard key={key} order={order} />
                     ))}

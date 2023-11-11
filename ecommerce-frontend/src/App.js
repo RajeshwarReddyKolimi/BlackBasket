@@ -38,6 +38,8 @@ import UserCreateQuery from "./Components/User/UserCreateQuery";
 import UserSupport from "./Components/User/UserSupport";
 import UserOrderCard from "./Components/User/UserOrderCard";
 import ProductSearchPage from "./Components/Products/ProductSearchPage";
+import UserRating from "./Components/User/UserRating";
+import UpdateRating from "./Components/User/UpdateRating";
 function App() {
     return (
         <Provider store={store}>
@@ -117,6 +119,14 @@ function App() {
                         />
                         <Route path="/product/:id" element={<ProductPage />} />
                         <Route path="/user/cart" element={<Cart />} />
+                        <Route
+                            path="/user/rating/:id"
+                            element={<UserRating />}
+                        />
+                        <Route
+                            path="/user/rating/edit/:id"
+                            element={<UpdateRating />}
+                        />
                         <Route path="/user/wishlist" element={<Wishlist />} />
                         <Route path="/user/support" element={<UserSupport />} />
                         <Route

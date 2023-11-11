@@ -1,57 +1,56 @@
 import React from "react";
-import { BiSolidEditAlt } from "react-icons/bi";
 import { NavLink, Navigate } from "react-router-dom";
-import "../../styles/userAccount.css";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import "../../styles/address.css";
+import axios from "axios";
+import findToken from "../../findToken";
+import apiUrl from "../../apiUrl";
+import { updateAddress } from "../../Redux/Reducers/authSlice";
 function UserAddressCard(props) {
+    const dispatch = useDispatch();
     const isUserLogged = useSelector((state) => state.user.isUserLogged);
-
     if (!isUserLogged) return <Navigate to="/user/login" replace />;
     const { address } = props;
+    const formattedAddress = `${
+        address.userName ? address.userName + "\n" : ""
+    }${address.houseNo ? address.houseNo + "\n" : ""}${
+        address.street ? address.street + "\n" : ""
+    }${address.village ? address.village + "\n" : ""}${
+        address.city ? address.city + "\n" : ""
+    }${address.landmark ? address.landmark + "\n" : ""}${
+        address.pincode ? address.pincode + "\n" : ""
+    }${address.mobile}`;
+    async function deleteAddress() {
+        try {
+            const token = await findToken();
+            const response = await axios.delete(
+                `${apiUrl}/user/address/${address._id}`,
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+            dispatch(updateAddress(response.data));
+        } catch (error) {
+            console.log(error);
+        }
+    }
     return (
-        <div className="user-address-card-section">
-            <div className="section-header">
-                <div className="header-title">Address</div>
-                <NavLink to={`/user/address/update/${address._id}`}>
-                    <button className="button-1">
-                        <span>Edit</span>
-                        <BiSolidEditAlt />
-                    </button>
+        <div className="address-item">
+            <div className="address">{formattedAddress}</div>
+            <div className="flex-buffer"></div>
+            <div className="button-container">
+                <NavLink
+                    className="button"
+                    to={`/user/address/update/${address._id}`}
+                >
+                    Edit
                 </NavLink>
-            </div>
-            <div className="address-container">
-                <div className="address-item">
-                    <span className="address-item-key">House no. :</span>
-                    <span className="address-item-value">
-                        {address.houseNo}
-                    </span>
-                </div>
-                <div className="address-item">
-                    <span className="address-item-key">Street :</span>
-                    <span className="address-item-value">{address.street}</span>
-                </div>
-                <div className="address-item">
-                    <span className="address-item-key">Village :</span>
-                    <span className="address-item-value">
-                        {address.village}
-                    </span>
-                </div>
-                <div className="address-item">
-                    <span className="address-item-key">City :</span>
-                    <span className="address-item-value">{address.city}</span>
-                </div>
-                <div className="address-item">
-                    <span className="address-item-key">Landmark :</span>
-                    <span className="address-item-value">
-                        {address.landmark}
-                    </span>
-                </div>
-                <div className="address-item">
-                    <span className="address-item-key">Pincode :</span>
-                    <span className="address-item-value">
-                        {address.pincode}
-                    </span>
-                </div>
+                <button className="button-danger" onClick={deleteAddress}>
+                    Delete{" "}
+                </button>
             </div>
         </div>
     );

@@ -3,8 +3,11 @@ const asyncHandler = require("express-async-handler");
 const validateMongodbId = require("../utils/validateMongodbId");
 
 const createProductCategory = asyncHandler(async (req, res) => {
+    const { name, images } = req.body;
     try {
-        const newCategory = await ProductCategory.create(req.body);
+        let image = "";
+        if (images.length !== 0) image = images[0];
+        const newCategory = await ProductCategory.create({ name, image });
         res.json(newCategory);
     } catch (error) {
         throw new Error(error);
@@ -13,10 +16,13 @@ const createProductCategory = asyncHandler(async (req, res) => {
 
 const updateProductCategory = asyncHandler(async (req, res) => {
     const { id } = req.params;
+    const { name, images } = req.body;
     try {
+        let image = "";
+        if (images.length !== 0) image = images[0];
         const updateCategory = await ProductCategory.findByIdAndUpdate(
             id,
-            req.body,
+            { name, image },
             { new: true }
         );
         res.json(updateCategory);

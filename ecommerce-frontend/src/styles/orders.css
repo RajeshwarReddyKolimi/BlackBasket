@@ -1,3 +1,116 @@
+.order-list-container {
+    padding: 1rem;
+}
+.order-products-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
 .order-list-item {
-    border: 2px solid grey;
+    text-align: left;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    gap: 1rem;
+    padding: 1rem 2rem;
+    background-color: var(--highlight-bg-color);
+    border-bottom: 1px solid var(--box-shadow-color);
+}
+.order-list-item:last-child {
+    border-bottom: none;
+}
+.order-success-icon {
+    font-size: 2rem;
+    color: var(--success-color);
+}
+.order-page {
+    margin: auto;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    gap: 0.5rem;
+    text-align: left;
+}
+
+.order-card {
+    display: flex;
+    justify-content: space-around;
+    flex-direction: row;
+    width: 100%;
+    background-color: var(--highlight-bg-color);
+    padding: 1rem;
+    gap: 0.8rem;
+    text-align: left;
+}
+.order-card-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    text-align: left;
+}
+.order-card-image-container {
+    width: 120px;
+    height: 120px;
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.order-card-poster-image {
+    width: 100%;
+}
+.order-card-info-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+.order-card-brand {
+    font-weight: 600;
+    text-align: left;
+}
+.order-card-title {
+    text-align: left;
+    width: 100%;
+    font-weight: 500;
+    max-height: 1.5rem;
+    overflow: hidden;
+}
+.order-card-price {
+    text-align: left;
+    font-weight: 500;
+}
+.order-value {
+    font-weight: 500;
+    font-size: 1.5rem;
+}
+.order-card-quantity {
+    padding: 0.5rem;
+    font-weight: 500;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.order-card-rating {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+.order-card-rating-header {
+    font-weight: 400;
+}
+
+@media screen and (max-width: 768px) {
+    .order-page {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 564px) {
+    .order-card {
+        padding: 0.5rem;
+    }
 }

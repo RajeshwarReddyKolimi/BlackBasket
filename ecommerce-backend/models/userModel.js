@@ -35,7 +35,17 @@ const userSchema = new mongoose.Schema(
             type: String,
             default: "User",
         },
-
+        ratings: [
+            {
+                star: Number,
+                comment: String,
+                productId: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: "Product",
+                },
+                date: Date,
+            },
+        ],
         cart: {
             items: [
                 {
@@ -57,6 +67,15 @@ const userSchema = new mongoose.Schema(
         },
         address: [
             {
+                userName: {
+                    type: String,
+                    required: true,
+                },
+                mobile: {
+                    type: String,
+                    required: true,
+                    match: /^[6-9]\d{9}$/,
+                },
                 houseNo: String,
                 street: String,
                 village: String,
@@ -103,9 +122,13 @@ const userSchema = new mongoose.Schema(
                     },
                     code: String,
                 },
+                discount: {
+                    type: Number,
+                    default: 0,
+                },
                 totalPrice: Number,
                 finalPrice: Number,
-                address: {},
+                address: String,
                 time: Date,
             },
         ],

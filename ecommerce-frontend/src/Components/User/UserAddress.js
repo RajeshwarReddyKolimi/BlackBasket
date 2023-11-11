@@ -15,17 +15,19 @@ function UserAddress() {
 
     if (!isUserLogged) return <Navigate to="/user/login" replace />;
     return (
-        <div className="user-address-section">
+        <div className="section">
             <div className="section-header">
                 <div className="header-title">Your Addresses</div>
                 <NavLink to="/user/address/add">
-                    <button className="button-1">Add Address</button>
+                    <button className="button">Add Address</button>
                 </NavLink>
             </div>
-            {userAddress &&
-                userAddress.map((address, key) => (
-                    <UserAddressCard address={address} />
-                ))}
+            <div className="address-container">
+                {userAddress &&
+                    userAddress.map((address, key) => (
+                        <UserAddressCard key={key} address={address} />
+                    ))}
+            </div>
         </div>
     );
 }

@@ -66,7 +66,7 @@ function UserLogin(props) {
                         required
                     />
                 </div>
-                <button className="button-1-inverse-full">Login</button>
+                <button className="button-inverse-full">Login</button>
                 <div className="login-form-footer">
                     Didn't have an account?{" "}
                     <NavLink to="/user/signup">Signup</NavLink>

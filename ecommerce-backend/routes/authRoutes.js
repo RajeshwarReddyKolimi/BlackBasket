@@ -22,6 +22,7 @@ const {
     deleteAccount,
     getOrderById,
     getUserCoupons,
+    deleteAddress,
 } = require("../controller/userControl");
 const { userAuth, adminAuth } = require("../middleware/authMiddleware");
 const {
@@ -58,6 +59,7 @@ router.get("/coupons", userAuth, getUserCoupons); //
 router.get("/orders/:id", userAuth, getOrderById); //
 
 router.delete("/emptyCart", userAuth, emptyCart);
+router.delete("/address/:id", userAuth, deleteAddress);
 router.delete("/", userAuth, deleteAccount);
 
 module.exports = router;

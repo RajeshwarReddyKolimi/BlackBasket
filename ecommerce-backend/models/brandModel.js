@@ -10,6 +10,9 @@ var brandSchema = new mongoose.Schema(
                 return value.toUpperCase();
             },
         },
+        logo: {
+            type: String,
+        },
     },
     { timestamps: true }
 );

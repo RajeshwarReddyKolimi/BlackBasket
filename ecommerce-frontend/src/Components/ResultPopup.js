@@ -1,35 +1,28 @@
 import React, { useState, useEffect } from "react";
 
-function ResultPopup({ successMessage, errorMessage }) {
-    const [showSuccess, setShowSuccess] = useState(false);
-    const [showError, setShowError] = useState(false);
-
+function ResultPopup({ successMessage, errorMessage, setFunction }) {
     useEffect(() => {
         if (successMessage) {
-            setShowSuccess(true);
-
             setTimeout(() => {
-                setShowSuccess(false);
+                if (setFunction) setFunction("");
             }, 3000);
         }
 
         if (errorMessage) {
-            setShowError(true);
-
             setTimeout(() => {
-                setShowError(false);
+                if (setFunction) setFunction("");
             }, 3000);
         }
     }, [successMessage, errorMessage]);
 
     return (
         <div className="result-poup-container">
-            {showSuccess && (
+            {successMessage && (
                 <div className="result-popup-slide-in result-popup-success">
                     {successMessage}
                 </div>
             )}
-            {showError && (
+            {errorMessage && (
                 <div className="result-popup-failure">{errorMessage}</div>
             )}
         </div>

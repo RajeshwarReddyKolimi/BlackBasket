@@ -14,11 +14,11 @@ function UserProfile() {
 
     if (!isUserLogged) return <Navigate to="/user/login" replace />;
     return (
-        <div className="profile-section">
+        <div className="section">
             <div className="section-header">
                 <div className="header-title">Your Profile</div>
 
-                <NavLink to="/user/account/profile/update" className="button-1">
+                <NavLink to="/user/account/profile/update" className="button">
                     <span>Edit</span>
                     <BiSolidEditAlt />
                 </NavLink>

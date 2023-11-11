@@ -4,7 +4,7 @@ import { addUserAddress } from "../../Redux/Thunks/userThunks";
 import "../../styles/userAccount.css";
 import { Navigate } from "react-router-dom";
 import { createQuery } from "../../Redux/Thunks/enquiryThunks";
-
+import "../../styles/forms.css";
 function UserCreateQuery() {
     const dispatch = useDispatch();
     const [query, setQuery] = useState({});
@@ -15,7 +15,7 @@ function UserCreateQuery() {
     const isUserLogged = useSelector((state) => state.user.isUserLogged);
     if (!isUserLogged) return <Navigate to="/user/login" replace />;
     return (
-        <div className="add-query-section">
+        <div className="section">
             <div className="section-header">
                 <div className="header-title">Raise a ticket</div>
                 <button
@@ -23,12 +23,12 @@ function UserCreateQuery() {
                     className="button"
                     onClick={(e) => enquire(e)}
                 >
-                    Save
+                    Submit
                 </button>
             </div>
-            <form onSubmit={(e) => enquire(e)} className="add-query-form">
-                <div className="query-form-item">
-                    <label for="query-user-name" className="query-form-label">
+            <form onSubmit={(e) => enquire(e)} className="form">
+                <div className="form-item">
+                    <label for="query-user-name" className="form-label">
                         {" "}
                         Name :{" "}
                     </label>
@@ -36,7 +36,7 @@ function UserCreateQuery() {
                     <input
                         type="text"
                         name="query-user-name"
-                        className="query-form-input"
+                        className="form-input"
                         onChange={(e) =>
                             setQuery((prev) => {
                                 return { ...prev, name: e.target.value };
@@ -45,8 +45,8 @@ function UserCreateQuery() {
                         required
                     />
                 </div>
-                <div className="query-form-item">
-                    <label for="query-user-email" className="query-form-label">
+                <div className="form-item">
+                    <label for="query-user-email" className="form-label">
                         {" "}
                         Email :{" "}
                     </label>
@@ -54,7 +54,7 @@ function UserCreateQuery() {
                     <input
                         type="text"
                         name="query-user-email"
-                        className="query-form-input"
+                        className="form-input"
                         onChange={(e) =>
                             setQuery((prev) => {
                                 return { ...prev, email: e.target.value };
@@ -63,8 +63,8 @@ function UserCreateQuery() {
                         required
                     />
                 </div>
-                <div className="query-form-item">
-                    <label for="query-user-mobile" className="query-form-label">
+                <div className="form-item">
+                    <label for="query-user-mobile" className="form-label">
                         {" "}
                         Mobile :{" "}
                     </label>
@@ -72,7 +72,7 @@ function UserCreateQuery() {
                     <input
                         type="text"
                         name="query-user-mobile"
-                        className="query-form-input"
+                        className="form-input"
                         onChange={(e) =>
                             setQuery((prev) => {
                                 return { ...prev, mobile: e.target.value };
@@ -81,11 +81,8 @@ function UserCreateQuery() {
                         required
                     />
                 </div>
-                <div className="query-form-item">
-                    <label
-                        for="query-user-subject"
-                        className="query-form-label"
-                    >
+                <div className="form-item">
+                    <label for="query-user-subject" className="form-label">
                         {" "}
                         Subject :{" "}
                     </label>
@@ -93,7 +90,7 @@ function UserCreateQuery() {
                     <input
                         type="text"
                         name="query-user-subject"
-                        className="query-form-input"
+                        className="form-input"
                         onChange={(e) =>
                             setQuery((prev) => {
                                 return { ...prev, subject: e.target.value };
@@ -102,11 +99,8 @@ function UserCreateQuery() {
                         required
                     />
                 </div>
-                <div className="query-form-item">
-                    <label
-                        for="query-user-description"
-                        className="query-form-label"
-                    >
+                <div className="form-item">
+                    <label for="query-user-description" className="form-label">
                         {" "}
                         Description :{" "}
                     </label>
@@ -114,7 +108,7 @@ function UserCreateQuery() {
                     <input
                         type="text"
                         name="query-user-description"
-                        className="query-form-input"
+                        className="form-input"
                         onChange={(e) =>
                             setQuery((prev) => {
                                 return { ...prev, description: e.target.value };

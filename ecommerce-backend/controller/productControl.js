@@ -101,8 +101,9 @@ const searchProducts = asyncHandler(async (req, res) => {
             discount,
             colors,
             categories,
+            category,
         } = req.query;
-
+        console.log(req.query);
         const query = {
             $or: [
                 { title: { $regex: new RegExp(searchTerm, "i") } },
@@ -141,10 +142,16 @@ const searchProducts = asyncHandler(async (req, res) => {
             });
         }
 
+        if (category) {
+            filters.push({
+                category: {
+                    category,
+                },
+            });
+        }
         if (filters.length > 0) {
             query.$and = filters;
         }
-        console.log(query);
         if (maxPrice) {
             query.price = { $lte: parseFloat(maxPrice) };
         }
@@ -163,11 +170,13 @@ const searchProducts = asyncHandler(async (req, res) => {
         const sortOptions = {
             priceAsc: { price: 1 },
             priceDesc: { price: -1 },
-            newestFirst: { createdAt: 1 },
+            timeAsc: { createdAt: -1 },
             ratingAsc: { totalrating: 1 },
             ratingDesc: { totalrating: -1 },
             discount: { discount: -1 },
+            mostSold: { sold: -1 },
         };
+
         let sortQuery = "";
         if (sort && sortOptions[sort]) {
             sortQuery = sortOptions[sort];
@@ -297,10 +306,12 @@ const updateRating = asyncHandler(async (req, res) => {
     const { _id } = req.user;
     const { star, productId, comment } = req.body;
     try {
+        const user = await User.findById(_id);
         const product = await Product.findById(productId);
         let alreadyRated = product.ratings.find(
-            (userId) => userId.postedby.toString() === _id.toString()
+            (userId) => userId?.postedby?.userId?.toString() === _id.toString()
         );
+
         if (alreadyRated) {
             const updateRate = await Product.updateOne(
                 {
@@ -310,11 +321,27 @@ const updateRating = asyncHandler(async (req, res) => {
                     $set: {
                         "ratings.$.star": star,
                         "ratings.$.comment": comment,
+                        "ratings.$.date": Date.now(),
                     },
                 },
                 {
                     new: true,
                 }
+            );
+
+            const updatedUser = await User.findOneAndUpdate(
+                {
+                    _id,
+                    "ratings.productId": productId,
+                },
+                {
+                    $set: {
+                        "ratings.$.star": star,
+                        "ratings.$.comment": comment,
+                        "ratings.$.date": Date.now(),
+                    },
+                },
+                { new: true }
             );
         } else {
             const rateProduct = await Product.findByIdAndUpdate(
@@ -324,7 +351,25 @@ const updateRating = asyncHandler(async (req, res) => {
                         ratings: {
                             star: star,
                             comment: comment,
-                            postedby: _id,
+                            postedby: {
+                                userId: _id,
+                                userName: user.firstName + " " + user.lastName,
+                            },
+                            date: Date.now(),
+                        },
+                    },
+                },
+                { new: true }
+            );
+            const updatedUser = await User.findByIdAndUpdate(
+                _id,
+                {
+                    $push: {
+                        ratings: {
+                            star: star,
+                            comment: comment,
+                            productId,
+                            date: Date.now(),
                         },
                     },
                 },
@@ -345,6 +390,22 @@ const updateRating = asyncHandler(async (req, res) => {
             { new: true }
         );
         res.json(finalProduct);
+    } catch (error) {
+        throw new Error(error);
+    }
+});
+
+const getRating = asyncHandler(async (req, res) => {
+    const { _id } = req.user;
+    const { id: productId } = req.params;
+    try {
+        const product = await Product.findById(productId);
+        let rating = {};
+        rating = product.ratings.find(
+            (userId) => userId?.postedby?.userId?.toString() === _id.toString()
+        );
+        console.log(rating);
+        res.json(rating);
     } catch (error) {
         throw new Error(error);
     }
@@ -377,6 +438,7 @@ module.exports = {
     addToWishlist,
     addToCart,
     updateRating,
+    getRating,
     uploadProductImage,
     searchProducts,
 };

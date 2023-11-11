@@ -1,31 +1,32 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "../../styles/footer.css";
 import { NavLink } from "react-router-dom";
+import { getCategories } from "../../Redux/Thunks/categoryThunks";
+import { useDispatch, useSelector } from "react-redux";
 function UserFooter() {
+    const dispatch = useDispatch();
+    const categories = useSelector((state) => state.category.categories);
+
+    useEffect(() => {
+        dispatch(getCategories());
+    }, [dispatch]);
     return (
         <footer className="footer">
-            <ul className="footer-list">
+            <ul className="footer-list flex-buffer">
                 <header className="footer-list-item footer-list-header">
                     Shop
                 </header>
-                <NavLink to="#" className="footer-list-item">
-                    Men
-                </NavLink>
-                <NavLink to="#" className="footer-list-item">
-                    Women
-                </NavLink>
-                <NavLink to="#" className="footer-list-item">
-                    Electronics
-                </NavLink>
-                <NavLink to="#" className="footer-list-item">
-                    Kids
-                </NavLink>
-                <NavLink to="#" className="footer-list-item">
-                    Appliances
-                </NavLink>
-                <NavLink to="#" className="footer-list-item">
-                    Home and Kitchen
-                </NavLink>
+                <div className="footer-list-container">
+                    {categories &&
+                        categories.map((category) => (
+                            <NavLink
+                                to={`/product/search?id=${category.name}`}
+                                className="footer-list-item"
+                            >
+                                {category.name.toLowerCase()}
+                            </NavLink>
+                        ))}
+                </div>
             </ul>
 
             <ul className="footer-list">

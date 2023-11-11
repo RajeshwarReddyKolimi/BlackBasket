@@ -11,24 +11,28 @@ function UpdateAddress() {
     const dispatch = useDispatch();
 
     const [address, setAddress] = useState({
+        userName: "",
         houseNo: "",
         street: "",
         village: "",
         City: "",
         landmark: "",
         pincode: "",
+        mobile: "",
     });
     const userAddresses = useSelector((state) => state.user.userData.address);
     const matchedAddress = userAddresses.filter(
         (address) => address._id.toString() === id.toString()
     );
     let currentAddress = {
+        userName: "",
         houseNo: "",
         street: "",
         village: "",
         City: "",
         landmark: "",
         pincode: "",
+        mobile: "",
     };
     if (matchedAddress && matchedAddress[0]) currentAddress = matchedAddress[0];
 
@@ -36,12 +40,14 @@ function UpdateAddress() {
         dispatch(getUserDetails());
         setAddress((prev) => {
             return {
+                userName: currentAddress.userName,
                 houseNo: currentAddress.houseNo,
                 street: currentAddress.street,
                 village: currentAddress.village,
                 city: currentAddress.city,
                 landmark: currentAddress.landmark,
                 pincode: currentAddress.pincode,
+                mobile: currentAddress.mobile,
             };
         });
     }, []);
@@ -55,31 +61,45 @@ function UpdateAddress() {
 
     if (!isUserLogged) return <Navigate to="/user/login" replace />;
     return (
-        <div className="update-address-section">
+        <div className="section">
             <div className="section-header">
                 <div className="header-title">Update Address</div>
+                <div className="flex-buffer"></div>
                 <button
                     type="submit"
-                    className="button-1"
+                    className="button"
                     onClick={(e) => updateAddress(e)}
                 >
                     Update
                 </button>
             </div>
-            <form
-                onSubmit={(e) => updateAddress(e)}
-                className="update-address-form"
-            >
-                <div className="address-form-item">
-                    <label for="address-house" className="address-form-label">
+            <form onSubmit={(e) => updateAddress(e)} className="form">
+                <div className="form-item">
+                    <label for="address-userName" className="form-label">
+                        {" "}
+                        User Name :{" "}
+                    </label>
+                    <input
+                        type="text"
+                        name="address-userName"
+                        className="form-input"
+                        defaultValue={currentAddress.userName}
+                        onChange={(e) =>
+                            setAddress((prev) => {
+                                return { ...prev, userName: e.target.value };
+                            })
+                        }
+                    />
+                </div>
+                <div className="form-item">
+                    <label for="address-house" className="form-label">
                         {" "}
                         House no. :{" "}
                     </label>
-
                     <input
                         type="text"
                         name="address-house"
-                        className="address-form-input"
+                        className="form-input"
                         defaultValue={currentAddress.houseNo}
                         onChange={(e) =>
                             setAddress((prev) => {
@@ -88,8 +108,8 @@ function UpdateAddress() {
                         }
                     />
                 </div>
-                <div className="address-form-item">
-                    <label for="address-street" className="address-form-label">
+                <div className="form-item">
+                    <label for="address-street" className="form-label">
                         {" "}
                         Street :{" "}
                     </label>
@@ -97,7 +117,7 @@ function UpdateAddress() {
                     <input
                         type="text"
                         name="address-street"
-                        className="address-form-input"
+                        className="form-input"
                         defaultValue={currentAddress.street}
                         onChange={(e) =>
                             setAddress((prev) => {
@@ -106,8 +126,8 @@ function UpdateAddress() {
                         }
                     />
                 </div>
-                <div className="address-form-item">
-                    <label for="address-village" className="address-form-label">
+                <div className="form-item">
+                    <label for="address-village" className="form-label">
                         {" "}
                         Village :{" "}
                     </label>
@@ -115,7 +135,7 @@ function UpdateAddress() {
                     <input
                         type="text"
                         name="address-village"
-                        className="address-form-input"
+                        className="form-input"
                         defaultValue={currentAddress.village}
                         onChange={(e) =>
                             setAddress((prev) => {
@@ -124,8 +144,8 @@ function UpdateAddress() {
                         }
                     />
                 </div>
-                <div className="address-form-item">
-                    <label for="address-city" className="address-form-label">
+                <div className="form-item">
+                    <label for="address-city" className="form-label">
                         {" "}
                         City :{" "}
                     </label>
@@ -133,7 +153,7 @@ function UpdateAddress() {
                     <input
                         type="text"
                         name="address-city"
-                        className="address-form-input"
+                        className="form-input"
                         defaultValue={currentAddress.city}
                         onChange={(e) =>
                             setAddress((prev) => {
@@ -142,11 +162,8 @@ function UpdateAddress() {
                         }
                     />
                 </div>
-                <div className="address-form-item">
-                    <label
-                        for="address-landmark"
-                        className="address-form-label"
-                    >
+                <div className="form-item">
+                    <label for="address-landmark" className="form-label">
                         {" "}
                         Landmark :{" "}
                     </label>
@@ -154,7 +171,7 @@ function UpdateAddress() {
                     <input
                         type="text"
                         name="address-landmark"
-                        className="address-form-input"
+                        className="form-input"
                         defaultValue={currentAddress.landmark}
                         onChange={(e) =>
                             setAddress((prev) => {
@@ -163,8 +180,8 @@ function UpdateAddress() {
                         }
                     />
                 </div>
-                <div className="address-form-item">
-                    <label for="address-pincode" className="address-form-label">
+                <div className="form-item">
+                    <label for="address-pincode" className="form-label">
                         {" "}
                         Pincode :{" "}
                     </label>
@@ -172,11 +189,28 @@ function UpdateAddress() {
                     <input
                         type="text"
                         name="address-pincode"
-                        className="address-form-input"
+                        className="form-input"
                         defaultValue={currentAddress.pincode}
                         onChange={(e) =>
                             setAddress((prev) => {
                                 return { ...prev, pincode: e.target.value };
+                            })
+                        }
+                    />
+                </div>
+                <div className="form-item">
+                    <label for="address-mobile" className="form-label">
+                        {" "}
+                        Mobile no. :{" "}
+                    </label>
+                    <input
+                        type="text"
+                        name="address-mobile"
+                        className="form-input"
+                        defaultValue={currentAddress.mobile}
+                        onChange={(e) =>
+                            setAddress((prev) => {
+                                return { ...prev, mobile: e.target.value };
                             })
                         }
                     />

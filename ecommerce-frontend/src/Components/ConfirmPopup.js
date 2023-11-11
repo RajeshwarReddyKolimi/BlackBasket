@@ -11,10 +11,10 @@ function confirmPopup({ action, setShowPopup }) {
         <div className="confirm-popup">
             Are you sure?
             <div className="button-container-flex">
-                <button onClick={cancel} className="button-1">
+                <button onClick={cancel} className="button">
                     Cancel
                 </button>
-                <button onClick={confirm} className="button-danger-1">
+                <button onClick={confirm} className="button-danger">
                     Confirm
                 </button>
             </div>

@@ -17,8 +17,10 @@ function UserSupport() {
     if (!isUserLogged) return <Navigate to="/" replace />;
 
     return (
-        <div>
-            <h2>Queries</h2>
+        <div className="section">
+            <div className="section-header">
+                <div className="header-title">Queries</div>
+            </div>
             {queries && queries.length > 0 ? (
                 <div className="products-container">
                     {queries.map((item, key) => (
@@ -31,7 +33,9 @@ function UserSupport() {
             ) : (
                 <Empty text="No queries" />
             )}
-            <NavLink to="/user/support/create-query">Raise a query</NavLink>
+            <NavLink to="/user/support/create-query" className="button">
+                Raise a query
+            </NavLink>
         </div>
     );
 }

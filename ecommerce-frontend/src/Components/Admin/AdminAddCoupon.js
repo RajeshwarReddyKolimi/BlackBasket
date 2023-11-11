@@ -94,7 +94,7 @@ function AdminAddCoupon() {
                         required
                     />
                 </div>
-                <button type="submit" className="button-1-full">
+                <button type="submit" className="button-full">
                     Create
                 </button>
             </form>
