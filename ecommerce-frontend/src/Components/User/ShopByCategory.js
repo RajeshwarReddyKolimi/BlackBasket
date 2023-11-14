@@ -14,8 +14,9 @@ function ShopByCategory() {
             <span className="home-header-title">Shop By Category</span>
             <div className="home-section-container">
                 {categories &&
-                    categories.map((category) => (
+                    categories.map((category, key) => (
                         <NavLink
+                            key={key}
                             to={`/product/search?id=${category.name}`}
                             className="home-category-link"
                         >

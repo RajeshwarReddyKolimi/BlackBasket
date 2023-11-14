@@ -14,8 +14,9 @@ function ShopByBrand() {
             <span className="home-header-title">Shop By Brand</span>
             <div className="home-section-container">
                 {brands &&
-                    brands.map((brand) => (
+                    brands.map((brand, key) => (
                         <NavLink
+                            key={key}
                             to={`/product/search?id=${brand.name}`}
                             className="home-brand-link"
                         >

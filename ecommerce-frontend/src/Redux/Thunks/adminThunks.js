@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import apiUrl from "../../apiUrl";
+import { setErrorMessage, setSuccessMessage } from "../Reducers/globalSlice";
 
 async function findToken() {
     const cookie = document.cookie
@@ -19,8 +20,10 @@ export const adminLogin = createAsyncThunk(
                 email: credentials.email,
                 password: credentials.password,
             });
+            dispatch(setSuccessMessage("Successfully Logged in"));
             return response.data;
         } catch (error) {
+            dispatch(setErrorMessage(error));
             console.error("Fetch error:", error);
             return rejectWithValue(error.message);
         }
@@ -34,8 +37,10 @@ export const adminLogout = createAsyncThunk(
             const response = await axios.get(`${apiUrl}/admin/logout`, {
                 withCredentials: true,
             });
+            dispatch(setSuccessMessage("Successfully logged out"));
             return response.data;
         } catch (error) {
+            dispatch(setErrorMessage(error));
             console.error("Fetch error:", error);
             return rejectWithValue(error.message);
         }
@@ -68,9 +73,9 @@ export const getUsers = createAsyncThunk(
                     Authorization: `Bearer ${token}`,
                 },
             });
-
             if (response.status < 300) return response.data;
         } catch (error) {
+            dispatch(setErrorMessage(error));
             console.error("Fetched error:", error);
             return rejectWithValue(error.message);
         }
@@ -94,8 +99,10 @@ export const blockUser = createAsyncThunk(
                 }
             );
 
+            dispatch(setSuccessMessage("User blocked"));
             if (response.status < 300) return response.data;
         } catch (error) {
+            dispatch(setErrorMessage(error));
             console.error("Fetched error:", error);
             return rejectWithValue(error.message);
         }
@@ -119,8 +126,10 @@ export const unblockUser = createAsyncThunk(
                 }
             );
 
+            dispatch(setSuccessMessage("User unblocked"));
             if (response.status < 300) return response.data;
         } catch (error) {
+            dispatch(setErrorMessage(error));
             console.error("Fetched error:", error);
             return rejectWithValue(error.message);
         }
@@ -143,8 +152,10 @@ export const deleteUser = createAsyncThunk(
                 }
             );
 
+            dispatch(setSuccessMessage("User deleted"));
             if (response.status < 300) return response.data;
         } catch (error) {
+            dispatch(setErrorMessage(error));
             console.error("Fetched error:", error);
             return rejectWithValue(error.message);
         }
@@ -166,6 +177,7 @@ export const getUserById = createAsyncThunk(
 
             if (response.status < 300) return response.data;
         } catch (error) {
+            dispatch(setErrorMessage(error));
             console.error("Fetched error:", error);
             return rejectWithValue(error.message);
         }

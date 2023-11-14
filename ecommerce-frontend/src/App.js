@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./Components/Home";
@@ -40,11 +40,18 @@ import UserOrderCard from "./Components/User/UserOrderCard";
 import ProductSearchPage from "./Components/Products/ProductSearchPage";
 import UserRating from "./Components/User/UserRating";
 import UpdateRating from "./Components/User/UpdateRating";
+import ResultPopup from "./Components/ResultPopup";
+import ScrollToTop from "./Components/ScrollToTop";
 function App() {
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
     return (
         <Provider store={store}>
             <div className="App">
+                <ResultPopup />
                 <BrowserRouter>
+                    <ScrollToTop />
                     <UserHeader />
                     <Routes>
                         <Route index element={<Dashboard />} />

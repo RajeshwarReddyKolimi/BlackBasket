@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import apiUrl from "../../apiUrl";
+import { setErrorMessage, setSuccessMessage } from "../Reducers/globalSlice";
 
 async function findToken() {
     const cookie = document.cookie
@@ -13,19 +14,20 @@ async function findToken() {
 
 export const getProducts = createAsyncThunk(
     "/getAllProducts",
-    async (_, thunkAPI) => {
+    async (_, { dispatch, rejectWithValue }) => {
         try {
             const response = await axios.get(`${apiUrl}/product/`);
             return response.data;
         } catch (error) {
             console.error("Error:", error);
+            return rejectWithValue(error);
         }
     }
 );
 
 export const createProduct = createAsyncThunk(
     "/createAProduct",
-    async ({ formData }, thunkAPI) => {
+    async ({ formData }, { dispatch, rejectWithValue }) => {
         try {
             const token = await findToken();
             const response = await axios.post(`${apiUrl}/product/`, formData, {
@@ -34,15 +36,18 @@ export const createProduct = createAsyncThunk(
                     Authorization: `Bearer ${token}`,
                 },
             });
+            dispatch(setSuccessMessage("Product added"));
             return response.data;
         } catch (error) {
+            dispatch(setErrorMessage(error));
             console.error("Error:", error);
+            return rejectWithValue(error);
         }
     }
 );
 export const updateProduct = createAsyncThunk(
     "/updateProduct",
-    async ({ formData, id }, thunkAPI) => {
+    async ({ formData, id }, { dispatch, rejectWithValue }) => {
         try {
             const token = await findToken();
             const response = await axios.put(
@@ -55,9 +60,12 @@ export const updateProduct = createAsyncThunk(
                     },
                 }
             );
+            dispatch(setSuccessMessage("Product Updated"));
             return response.data;
         } catch (error) {
+            dispatch(setErrorMessage(error));
             console.error("Error:", error);
+            return rejectWithValue(error);
         }
     }
 );
@@ -76,16 +84,19 @@ export const uploadProductImages = createAsyncThunk(
                     },
                 }
             );
+            dispatch(setSuccessMessage("Images uploaded"));
             return response.data;
         } catch (error) {
+            dispatch(setErrorMessage(error));
             console.error("Error:", error);
+            return rejectWithValue(error);
         }
     }
 );
 
 export const deleteProduct = createAsyncThunk(
     "/deleteProduct",
-    async (id, thunkAPI) => {
+    async (id, { dispatch, rejectWithValue }) => {
         try {
             const token = await findToken();
             const pId = id;
@@ -95,16 +106,19 @@ export const deleteProduct = createAsyncThunk(
                     Authorization: `Bearer ${token}`,
                 },
             });
+            dispatch(setSuccessMessage("Product deleted"));
             return response.data;
         } catch (error) {
+            dispatch(setErrorMessage(error));
             console.error("Error:", error);
+            return rejectWithValue(error);
         }
     }
 );
 
 export const getProductById = createAsyncThunk(
     "/getProductById",
-    async (id, thunkAPI) => {
+    async (id, { dispatch, rejectWithValue }) => {
         try {
             const token = await findToken();
             const response = await axios.get(`${apiUrl}/product/${id}`, {
@@ -116,6 +130,7 @@ export const getProductById = createAsyncThunk(
             return response.data;
         } catch (error) {
             console.error("Error:", error);
+            return rejectWithValue(error);
         }
     }
 );

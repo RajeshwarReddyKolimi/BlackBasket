@@ -42,6 +42,7 @@ body::-webkit-scrollbar-thumb:hover {
 
 :root {
     --theme-color: #ffffff;
+    --theme-alpha-color: #ffffffcc;
     --theme-hover-color: #dddddd;
     --theme-text-color: #000000;
     --important-color: #df2e38;
@@ -233,20 +234,32 @@ li {
     left: 50%;
     transform: translate(-50%);
 }
-
+.confirm-popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 50;
+    background-color: var(--theme-alpha-color);
+}
 .confirm-popup {
+    width: auto;
     text-align: center;
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 1rem;
     background-color: var(--theme-color);
     padding: 2rem;
     position: fixed;
-    z-index: 99;
+    z-index: 50;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     box-shadow: var(--box-shadow);
+}
+.confirm-popup-text {
+    padding: 0.5rem;
 }
 
 .section {

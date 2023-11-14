@@ -59,8 +59,9 @@ function UserHeader() {
                         </li>
                         <div className="navbar-category-dropdown">
                             {categories &&
-                                categories.map((category) => (
+                                categories.map((category, key) => (
                                     <NavLink
+                                        key={key}
                                         to={`/product/search?id=${category.name}`}
                                         className="navbar-category-dropdown-item"
                                         onClick={() => setShowMenu(false)}

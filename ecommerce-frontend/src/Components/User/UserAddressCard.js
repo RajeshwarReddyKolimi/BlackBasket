@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavLink, Navigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import "../../styles/address.css";
@@ -6,7 +6,9 @@ import axios from "axios";
 import findToken from "../../findToken";
 import apiUrl from "../../apiUrl";
 import { updateAddress } from "../../Redux/Reducers/authSlice";
+import ConfirmPopup from "../ConfirmPopup";
 function UserAddressCard(props) {
+    const [showConfirmPopup, setShowConfirmPopup] = useState(false);
     const dispatch = useDispatch();
     const isUserLogged = useSelector((state) => state.user.isUserLogged);
     if (!isUserLogged) return <Navigate to="/user/login" replace />;
@@ -48,9 +50,19 @@ function UserAddressCard(props) {
                 >
                     Edit
                 </NavLink>
-                <button className="button-danger" onClick={deleteAddress}>
+                <button
+                    className="button-danger"
+                    onClick={() => setShowConfirmPopup(true)}
+                >
                     Delete{" "}
                 </button>
+                {showConfirmPopup && (
+                    <ConfirmPopup
+                        action={deleteAddress}
+                        text="Are you sure you want to delete this Address?"
+                        setShowConfirmPopup={setShowConfirmPopup}
+                    />
+                )}
             </div>
         </div>
     );

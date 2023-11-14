@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
     addToSaveLater,
@@ -15,7 +15,10 @@ import {
 import { MdDelete, MdSaveAlt } from "react-icons/md";
 import "../../styles/product.css";
 import "../../styles/cart.css";
+import ConfirmPopup from "../ConfirmPopup";
+import { setSuccessMessage } from "../../Redux/Reducers/globalSlice";
 function CartCard(props) {
+    const [showConfirmPopup, setShowConfirmPopup] = useState(false);
     const { item } = props;
     const product = item.product;
     const dispatch = useDispatch();
@@ -24,9 +27,11 @@ function CartCard(props) {
     }
     function removeCart() {
         dispatch(removeFromCart(product._id));
+        dispatch(setSuccessMessage("Removed from Cart"));
     }
     function wishlist() {
         dispatch(addToSaveLater(product._id));
+        dispatch(setSuccessMessage("Added to Save later"));
     }
     const isUserLogged = useSelector((state) => state.user.isUserLogged);
     if (!isUserLogged) return <Navigate to="/" replace />;
@@ -88,7 +93,10 @@ function CartCard(props) {
                     </span>
                 </div>
                 <div className="button-container ">
-                    <button onClick={removeCart} className="button-danger">
+                    <button
+                        onClick={() => setShowConfirmPopup(true)}
+                        className="button-danger"
+                    >
                         <MdDelete />
                         Remove
                     </button>
@@ -96,6 +104,13 @@ function CartCard(props) {
                         <MdSaveAlt />
                         Save
                     </button>
+                    {showConfirmPopup && (
+                        <ConfirmPopup
+                            action={removeCart}
+                            text="Are you sure to remove from cart?"
+                            setShowConfirmPopup={setShowConfirmPopup}
+                        />
+                    )}
                 </div>
             </div>
         </div>

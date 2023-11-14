@@ -13,8 +13,8 @@ import axios from "axios";
 import apiUrl from "../../apiUrl";
 import "../../styles/checkout.css";
 import "../../styles/forms.css";
-import ResultPopup from "../ResultPopup";
 import ConfirmPopup from "../ConfirmPopup";
+import { setErrorMessage } from "../../Redux/Reducers/globalSlice";
 
 function Checkout() {
     const dispatch = useDispatch();
@@ -24,9 +24,7 @@ function Checkout() {
     const coupons = useSelector((state) => state.user.userData.coupons);
     const [couponDiscount, setCouponDiscount] = useState(0);
     const [selectedCoupon, setSelectedCoupon] = useState("");
-    const [successMessage, setSuccessMessage] = useState("");
-    const [errorMessage, setErrorMessage] = useState("");
-    const [showPopup, setShowPopup] = useState(false);
+    const [showConfirmPopup, setShowConfirmPopup] = useState(false);
     const [selectedAddress, setSelectedAddress] = useState("");
     const [finalPrice, setFinalPrice] = useState(
         (cartData && cartData.totalPrice) | 0
@@ -55,9 +53,7 @@ function Checkout() {
             );
             setCouponDiscount(response.data.discount);
             setFinalPrice(response.data.finalPrice);
-            setSuccessMessage(`Coupon Applied Successfully : ${couponCode}`);
         } catch (error) {
-            setErrorMessage(`Invalid Coupon : ${couponCode}`);
             setCouponDiscount(0);
             setFinalPrice(cartData.totalPrice);
             console.error("Fetch error:", error);
@@ -222,18 +218,6 @@ function Checkout() {
                     </div>
                 </div>
             </div>
-            {successMessage && successMessage !== "" && (
-                <ResultPopup
-                    successMessage={successMessage}
-                    setFunction={setSuccessMessage}
-                />
-            )}
-            {errorMessage && errorMessage !== "" && (
-                <ResultPopup
-                    errorMessage={errorMessage}
-                    setFunction={setErrorMessage}
-                />
-            )}
             <button
                 onClick={() => {
                     if (selectedAddress && selectedAddress !== "") {
@@ -242,20 +226,21 @@ function Checkout() {
                             cartData.finalPrice &&
                             cartData.finalPrice !== 0
                         )
-                            setShowPopup(true);
-                        else setErrorMessage("Cart is Empty");
+                            setShowConfirmPopup(true);
+                        else dispatch(setErrorMessage("Cart is Empty"));
                     } else {
-                        setErrorMessage("Address not selected");
+                        dispatch(setErrorMessage("Address not selected"));
                     }
                 }}
                 className="button-full"
             >
                 Place Order
             </button>
-            {showPopup && (
+            {showConfirmPopup && (
                 <ConfirmPopup
                     action={handleOrder}
-                    setShowPopup={setShowPopup}
+                    text="Confirm order?"
+                    setShowConfirmPopup={setShowConfirmPopup}
                 />
             )}
         </div>

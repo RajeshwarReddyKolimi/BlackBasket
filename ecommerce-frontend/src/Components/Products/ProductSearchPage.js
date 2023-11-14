@@ -13,12 +13,12 @@ import "../../styles/search.css";
 import "../../styles/forms.css";
 import { BsChevronDown, BsMenuDown, BsSortDown } from "react-icons/bs";
 import { AiOutlineClose } from "react-icons/ai";
+import Empty from "../Empty";
 function ProductSearchPage() {
     const dispatch = useDispatch();
     const brands = useSelector((state) => state.brand.brands);
     const colors = useSelector((state) => state.color.colors);
     const categories = useSelector((state) => state.category.categories);
-    const [showFilters, setShowFilters] = useState(false);
     const [selectedMinPrice, setSelectedMinPrice] = useState("");
     const [selectedMaxPrice, setSelectedMaxPrice] = useState("");
     const [selectedStar, setSelectedStar] = useState("");
@@ -34,6 +34,9 @@ function ProductSearchPage() {
     const [searchParams, setSearchParams] = useSearchParams();
     const id = searchParams.get("id");
     const [searchResult, setSearchResult] = useState();
+
+    const [showFilters, setShowFilters] = useState(false);
+
     const [query, setQuery] = useState(
         `sort=${sortBy}&brands=${selectedBrands}&minPrice=${selectedMinPrice}&maxPrice=${selectedMaxPrice}&colors=${selectedColors}&categories=${selectedCategories}&discount=${selectedDiscount}&star=${selectedStar}`
     );
@@ -127,29 +130,22 @@ function ProductSearchPage() {
     return (
         <div className="search-page">
             <div
-                className={`section ${
-                    showFilters
-                        ? "filter-container"
-                        : "filter-container-absolute"
+                className={`section filter-container ${
+                    !showFilters && "filter-container-hide"
                 }`}
             >
                 <div className="section-header">
                     <div className="header-title">Filters</div>
                     <button
                         onClick={() => {
-                            setShowFilters((prev) => !prev);
+                            setShowFilters(false);
                         }}
                         className="filters-close-button"
                     >
                         <AiOutlineClose />
                     </button>
                 </div>
-                <form
-                    onSubmit={(e) => {
-                        handleFilter(e);
-                    }}
-                    className="filter-form"
-                >
+                <div className="filter-form">
                     {brands && (
                         <button className="search-page-filter">
                             <div
@@ -360,22 +356,29 @@ function ProductSearchPage() {
                             type="button"
                             className="button-inverse-full"
                             onClick={(e) => {
-                                setShowFilters((prev) => false);
+                                setShowFilters(false);
                                 handleFilter(e);
                             }}
                         >
                             Apply
                         </button>
                     </div>
-                </form>
+                </div>
             </div>
+            <div
+                className={`${showFilters && "filter-overlay"}`}
+                onClick={(e) => {
+                    if (e.target.className !== "filter-overlay") return;
+                    setShowFilters(false);
+                }}
+            ></div>
             <div className="filter-result-container section">
                 <div className="section-header">
                     <div className="header-title">{id}</div>
                     <button
                         className="filter-button button"
                         onClick={() => {
-                            setShowFilters((prev) => false);
+                            setShowFilters((prev) => !prev);
                         }}
                     >
                         Filter
@@ -383,10 +386,13 @@ function ProductSearchPage() {
                     </button>
                 </div>
                 <div className="products-container">
-                    {searchResult &&
+                    {searchResult && searchResult.length > 0 ? (
                         searchResult.map((product, key) => (
                             <ProductCard key={key} item={product} />
-                        ))}
+                        ))
+                    ) : (
+                        <Empty text="No results" />
+                    )}
                 </div>
             </div>
         </div>

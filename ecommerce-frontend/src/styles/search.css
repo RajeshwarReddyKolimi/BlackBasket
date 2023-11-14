@@ -61,20 +61,28 @@
     }
 
     .filter-container {
+        padding: 1rem;
+        border-right: none;
+        background-color: var(--theme-color);
+        position: fixed;
+        overflow-y: scroll;
+        top: 5rem;
+        left: 0;
+        bottom: 4.5rem;
+        z-index: 9;
+        box-shadow: var(--box-shadow);
+    }
+    .filter-container-hide {
         display: none;
     }
-
-    .filter-container-absolute {
-        padding: 1rem;
-        background-color: var(--theme-color);
-        position: absolute;
-        overflow: scroll;
-        z-index: 10;
-        top: 0;
-        left: 0;
-        width: 90%;
-        height: 100%;
-        box-shadow: var(--box-shadow);
+    .filter-overlay {
+        position: fixed;
+        top: 0%;
+        left: 0%;
+        right: 0%;
+        bottom: 0%;
+        z-index: 8;
+        background-color: var(--theme-alpha-color);
     }
     .filters-close-button {
         display: block;

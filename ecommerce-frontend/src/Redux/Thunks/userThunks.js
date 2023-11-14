@@ -2,6 +2,12 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios"; // Import Axios
 import apiUrl from "../../apiUrl";
 
+import {
+    errorMessage,
+    successMessage,
+    setSuccessMessage,
+    setErrorMessage,
+} from "../Reducers/globalSlice";
 async function findToken() {
     const cookie = document.cookie
         .split(";")
@@ -18,8 +24,10 @@ export const userSignup = createAsyncThunk(
             const response = await axios.post(`${apiUrl}/user/register`, {
                 userDetails,
             });
+            dispatch(setSuccessMessage("Successfully Signed up"));
             return response.data;
         } catch (error) {
+            dispatch(setErrorMessage(error));
             console.error("Fetch error:", error);
             return rejectWithValue(error.message);
         }
@@ -34,8 +42,10 @@ export const userLogin = createAsyncThunk(
                 email: credentials.email,
                 password: credentials.password,
             });
+            dispatch(setSuccessMessage("Successfully Logged in!"));
             return response.data;
         } catch (error) {
+            dispatch(setErrorMessage(error));
             console.error("Fetch error:", error);
             return rejectWithValue(error.message);
         }
@@ -47,10 +57,12 @@ export const userLogout = createAsyncThunk(
     async (_, { dispatch, rejectWithValue }) => {
         try {
             const response = await axios.get(`${apiUrl}/user/logout`, {
-                withCredentials: true, // Include credentials
+                withCredentials: true,
             });
+            dispatch(setSuccessMessage("Successfully Logged out!"));
             return response.data;
         } catch (error) {
+            dispatch(setErrorMessage("Something went wrong: Try again"));
             console.error("Fetch error:", error);
             return rejectWithValue(error.message);
         }
@@ -92,8 +104,11 @@ export const updateUserDetails = createAsyncThunk(
                     },
                 }
             );
+
+            dispatch(setSuccessMessage("Profile Updated"));
             return response.data;
         } catch (error) {
+            dispatch(setErrorMessage("Something went wrong: Try again"));
             console.error("Fetch error:", error);
             return rejectWithValue(error.message);
         }
@@ -117,8 +132,10 @@ export const addUserAddress = createAsyncThunk(
                     },
                 }
             );
+            dispatch(setSuccessMessage("Address Added"));
             return response.data;
         } catch (error) {
+            dispatch(setErrorMessage("Something went wrong: Try again"));
             console.error("Fetch error:", error);
             return rejectWithValue(error.message);
         }
@@ -142,8 +159,10 @@ export const updateUserAddress = createAsyncThunk(
                     },
                 }
             );
+            dispatch(setSuccessMessage("Address Updated"));
             return response.data;
         } catch (error) {
+            dispatch(setErrorMessage("Something went wrong: Try again"));
             console.error("Fetch error:", error);
             return rejectWithValue(error.message);
         }
@@ -168,9 +187,11 @@ export const removeFromCart = createAsyncThunk(
                     },
                 }
             );
+            dispatch(setSuccessMessage("Removed from Cart"));
             return response.data;
         } catch (error) {
             console.error("Error:", error);
+            dispatch(setErrorMessage("Something went wrong: Try again"));
             return rejectWithValue(error.message);
         }
     }
@@ -193,9 +214,11 @@ export const addToCart = createAsyncThunk(
                     },
                 }
             );
+            dispatch(setSuccessMessage("Added to Cart"));
             return response.data;
         } catch (error) {
             console.error("Error:", error);
+            dispatch(setErrorMessage("Something went wrong: Try again"));
             return rejectWithValue(error.message);
         }
     }
@@ -219,9 +242,12 @@ export const updateCartItemQuantity = createAsyncThunk(
                     },
                 }
             );
+
+            dispatch(setSuccessMessage("Quantity Updated"));
             return response.data;
         } catch (error) {
             console.error("Error:", error);
+            dispatch(setErrorMessage("Something went wrong: Try again"));
             return rejectWithValue(error.message);
         }
     }
@@ -243,8 +269,11 @@ export const addToSaveLater = createAsyncThunk(
                     },
                 }
             );
+
+            dispatch(setSuccessMessage("Added to save for later"));
             return response.data;
         } catch (error) {
+            dispatch(setErrorMessage("Something went wrong: Try again"));
             console.error("Error:", error);
             return rejectWithValue(error.message);
         }
@@ -266,9 +295,11 @@ export const removeFromSaveLater = createAsyncThunk(
                 }
             );
 
+            dispatch(setSuccessMessage("Removed from save for later"));
             return response.data;
         } catch (error) {
             console.error("Error:", error);
+            dispatch(setErrorMessage("Something went wrong: Try again"));
             return rejectWithValue(error.message);
         }
     }
@@ -365,9 +396,12 @@ export const applyCoupon = createAsyncThunk(
                     },
                 }
             );
+
+            dispatch(setSuccessMessage("Coupon applied"));
             return response.data;
         } catch (error) {
             console.error("Fetch error:", error);
+            dispatch(setErrorMessage(error));
             return rejectWithValue(error.message);
         }
     }
@@ -395,8 +429,11 @@ export const createOrder = createAsyncThunk(
                     },
                 }
             );
+
+            dispatch(setSuccessMessage("Order Success"));
             return response.data;
         } catch (error) {
+            dispatch(setErrorMessage("Something went wrong: Try again"));
             console.error("Fetch error:", error);
             return rejectWithValue(error.message);
         }
@@ -415,8 +452,11 @@ export const deleteAccount = createAsyncThunk(
                     Authorization: `Bearer ${token}`,
                 },
             });
+
+            dispatch(setSuccessMessage("Account deleted Successfully"));
             return response.data;
         } catch (error) {
+            dispatch(setErrorMessage("Something went wrong: Try again"));
             console.error("Fetch error:", error);
             return rejectWithValue(error.message);
         }

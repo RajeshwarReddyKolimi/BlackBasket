@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import apiUrl from "../../apiUrl";
+import { setErrorMessage, setSuccessMessage } from "../Reducers/globalSlice";
 
 async function findToken() {
     const cookie = document.cookie
@@ -28,8 +29,10 @@ export const createCoupon = createAsyncThunk(
                     },
                 }
             );
+            dispatch(setSuccessMessage("Coupon created"));
             return response.data;
         } catch (error) {
+            dispatch(setErrorMessage(error));
             console.error("Fetch error:", error);
             return rejectWithValue(error.message);
         }
@@ -53,8 +56,10 @@ export const updateCoupon = createAsyncThunk(
                     },
                 }
             );
+            dispatch(setSuccessMessage("Coupon Updated"));
             return response.data;
         } catch (error) {
+            dispatch(setErrorMessage(error));
             console.error("Fetch error:", error);
             return rejectWithValue(error.message);
         }
@@ -92,8 +97,10 @@ export const deleteCoupon = createAsyncThunk(
                     Authorization: `Bearer ${token}`,
                 },
             });
+            dispatch(setSuccessMessage("Coupon Deleted"));
             return response.data;
         } catch (error) {
+            dispatch(setErrorMessage(error));
             console.error("Fetch error:", error);
             return rejectWithValue(error.message);
         }

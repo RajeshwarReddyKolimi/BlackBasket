@@ -36,13 +36,13 @@ import {
     BsWhatsapp,
 } from "react-icons/bs";
 import { BiCopy } from "react-icons/bi";
+import { pageUrl } from "../../apiUrl";
 
 function ProductPage() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { id } = useParams();
     const isUserLogged = useSelector((state) => state.user.isUserLogged);
-    const [showPopup, setShowPopup] = useState(false);
     useEffect(() => {
         dispatch(getProducts());
         dispatch(getUserDetails());
@@ -58,7 +58,7 @@ function ProductPage() {
     const products = useSelector((state) => state.product.products);
     const product = products.find((item) => item._id.toString() === id);
     // const productLink = `http://localhost:3000/product/${id}`;
-    const productLink = `https://blackbasket-by-rajeshwar.netlify.app/product/${id}`;
+    const productLink = `${pageUrl}/product/${id}`;
     return (
         <div className="product-page">
             <div className="product-page-image-container">
@@ -213,20 +213,15 @@ function ProductPage() {
                     <button
                         className="button-full"
                         onClick={() => {
-                            setShowPopup(true);
+                            addCart();
                         }}
                     >
                         Add to Cart
                     </button>
-                    {showPopup && (
-                        <ConfirmPopup
-                            action={addCart}
-                            setShowPopup={setShowPopup}
-                        />
-                    )}
+
                     <button className="button-full " onClick={wishlist}>
                         <MdSaveAlt />
-                        <span>Save for Later</span>
+                        <span>Save</span>
                     </button>
                 </div>
                 <div className="product-page-description">

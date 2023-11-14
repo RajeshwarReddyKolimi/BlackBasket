@@ -42,11 +42,16 @@ export default function Slider() {
             <div
                 className="slider"
                 ref={sliderRef}
-                style={{ width: sliders.length * "100vw" }}
+                style={{
+                    width:
+                        sliders && sliders.length
+                            ? sliders.length * 100 + "vw"
+                            : "0px",
+                }}
             >
                 {sliders.map((slider, key) => (
                     <Link
-                        to={`${pageUrl}${slider && slider.link}`}
+                        to={`${pageUrl}/${slider && slider.link}`}
                         key={key}
                         className="slider-item"
                     >

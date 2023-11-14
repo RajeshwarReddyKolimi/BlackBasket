@@ -8,9 +8,11 @@ import brandSlice from "./Reducers/brandSlice";
 import colorSlice from "./Reducers/colorSlice";
 import categorySlice from "./Reducers/categorySlice";
 import sliderSlice from "./Reducers/sliderSlice";
+import globalSlice from "./Reducers/globalSlice";
 const store = configureStore({
     reducer: {
         user: userSlice.reducer,
+        global: globalSlice.reducer,
         product: productSlice.reducer,
         admin: adminSlice.reducer,
         coupon: couponSlice.reducer,

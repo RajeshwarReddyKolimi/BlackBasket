@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "../../styles/userAccount.css";
 import { NavLink, Navigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,9 +8,10 @@ import {
     getUserDetails,
     userLogout,
 } from "../../Redux/Thunks/userThunks";
-import ResultPopup from "../ResultPopup";
+import ConfirmPopup from "../ConfirmPopup";
 function UserAccount() {
     const dispatch = useDispatch();
+    const [showConfirmPopup, setShowConfirmPopup] = useState(false);
     const isUserLogged = useSelector((state) => state.user.isUserLogged);
     useEffect(() => {
         dispatch(getUserDetails());
@@ -63,9 +64,19 @@ function UserAccount() {
                     <span>Logout</span>
                     <RiLogoutBoxLine />
                 </button>
-                <button onClick={deleteAcc} className="button-danger">
+                <button
+                    onClick={() => setShowConfirmPopup(true)}
+                    className="button-danger"
+                >
                     Delete Account
                 </button>
+                {showConfirmPopup && (
+                    <ConfirmPopup
+                        action={deleteAcc}
+                        text="Are you sure you want to delete account?"
+                        setShowConfirmPopup={setShowConfirmPopup}
+                    />
+                )}
             </div>
         </div>
     );

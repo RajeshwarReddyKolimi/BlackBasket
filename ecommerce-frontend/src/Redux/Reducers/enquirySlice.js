@@ -12,9 +12,7 @@ const enquirySlice = createSlice({
     },
     reducers: {},
     extraReducers: (builder) => {
-        const setLoadingState = (state) => {
-            state.errorMessage = "Loading";
-        };
+        const setLoadingState = (state) => {};
     },
 });
 export default enquirySlice;

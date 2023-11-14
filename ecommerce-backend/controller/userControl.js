@@ -45,7 +45,8 @@ const loginUser = asyncHandler(async (req, res) => {
     try {
         const findUser = await User.findOne({ email });
         if (findUser) {
-            if (await findUser.isPasswordMatched(password)) {
+            const passwordMatched = await findUser.isPasswordMatched(password);
+            if (passwordMatched) {
                 const refreshToken = await generateRefreshToken(findUser?._id);
                 const updateUser = await User.findByIdAndUpdate(
                     findUser.id,
@@ -64,7 +65,7 @@ const loginUser = asyncHandler(async (req, res) => {
             } else throw new Error("Invalid password");
         } else throw new Error("User not found");
     } catch (error) {
-        console.log(error);
+        throw new Error(error);
     }
 });
 

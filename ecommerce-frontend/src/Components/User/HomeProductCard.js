@@ -10,16 +10,18 @@ import "../../styles/home.css";
 import { AiFillHeart, AiFillStar } from "react-icons/ai";
 import { NavLink, Navigate, useNavigate } from "react-router-dom";
 import ConfirmPopup from "../ConfirmPopup";
-import ResultPopup from "../ResultPopup";
 import findToken from "../../findToken";
 import axios from "axios";
 import apiUrl from "../../apiUrl";
 import { addItem } from "../../Redux/Reducers/authSlice";
 import { MdVerified } from "react-icons/md";
+import {
+    setErrorMessage,
+    setSuccessMessage,
+} from "../../Redux/Reducers/globalSlice";
 
 function HomeProductCard(props) {
     const navigate = useNavigate();
-    const [showCartMessage, setShowCartMessage] = useState(false);
     const { item } = props;
     const dispatch = useDispatch();
     const isUserLogged = useSelector((state) => state.user.isUserLogged);
@@ -30,25 +32,7 @@ function HomeProductCard(props) {
 
     async function addCart() {
         if (!isUserLogged) return navigate("/user/login");
-        try {
-            const token = await findToken();
-            const response = await axios.put(
-                `${apiUrl}/product/cart`,
-                {
-                    productId: item._id,
-                },
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            );
-            dispatch(addItem(response.data));
-            setShowCartMessage(true);
-        } catch (error) {
-            console.log("Error:", error);
-        }
+        dispatch(addToCart(id));
     }
 
     const id = item && item._id;
@@ -117,12 +101,6 @@ function HomeProductCard(props) {
                 </div>
                 <button className="button-full" onClick={addCart}>
                     Add to Cart
-                    {showCartMessage && (
-                        <ResultPopup
-                            successMessage={`Added to cart : ${item.title}`}
-                            setFunction={setShowCartMessage}
-                        />
-                    )}
                 </button>
             </div>
         </div>

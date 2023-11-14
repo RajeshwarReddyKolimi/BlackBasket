@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import apiUrl from "../../apiUrl";
+import { setErrorMessage, setSuccessMessage } from "../Reducers/globalSlice";
 
 async function findToken() {
     const cookie = document.cookie
@@ -28,8 +29,11 @@ export const createQuery = createAsyncThunk(
                     },
                 }
             );
+            dispatch(setSuccessMessage("Query Raised"));
             return response.data;
         } catch (error) {
+            
+            dispatch(setErrorMessage(error));
             console.error("Fetch error:", error);
             return rejectWithValue(error.message);
         }

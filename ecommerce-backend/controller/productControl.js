@@ -267,6 +267,7 @@ const addToSaveLater = asyncHandler(async (req, res) => {
 const removeFromSaveLater = asyncHandler(async (req, res) => {
     const { _id } = req.user;
     const { id: productId } = req.params;
+    console.log(id);
     try {
         const user = await User.findById(_id);
         const alreadyAdded = user.wishlist.find(
@@ -281,8 +282,8 @@ const removeFromSaveLater = asyncHandler(async (req, res) => {
                 { new: true }
             );
             await user.save();
-            res.json(user.wishlist);
         }
+        res.json(user.wishlist);
     } catch (error) {
         throw new Error(error);
     }

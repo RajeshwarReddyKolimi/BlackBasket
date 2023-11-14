@@ -4,15 +4,12 @@ import { userLogin } from "../../Redux/Thunks/userThunks";
 import Dashboard from "./Dashboard";
 import Home from "../Home";
 import { NavLink, Navigate, useNavigate } from "react-router-dom";
-import ResultPopup from "../ResultPopup";
 function UserLogin(props) {
     const dispatch = useDispatch();
     const [credentials, setCredentials] = useState({
         email: "",
         password: "",
     });
-    const errorMessage = useSelector((state) => state.user.errorMessage);
-    const successMessage = useSelector((state) => state.user.successMessage);
     async function login(e) {
         e.preventDefault();
         dispatch(userLogin(credentials));
@@ -23,11 +20,6 @@ function UserLogin(props) {
     else if (isAdminLogged) return <Navigate to="/admin/dashboard" replace />;
     return (
         <div>
-            <ResultPopup
-                successMessage={successMessage}
-                errorMessage={errorMessage}
-            />
-
             <form onSubmit={(e) => login(e)} className="login-form">
                 <div className="login-form-header">User Login</div>
                 <div className="login-form-item">
