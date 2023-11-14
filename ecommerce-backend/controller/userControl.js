@@ -464,6 +464,7 @@ const getOrders = asyncHandler(async (req, res) => {
     validateMongodbId(_id);
     try {
         const user = await User.findById(_id).populate("orders.items.product");
+        user.orders.sort((a, b) => b.time - a.time);
         res.json(user.orders);
     } catch (error) {
         throw new Error(error);

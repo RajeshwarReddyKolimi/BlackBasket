@@ -2,15 +2,17 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addUserAddress } from "../../Redux/Thunks/userThunks";
 import "../../styles/userAccount.css";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { createQuery } from "../../Redux/Thunks/enquiryThunks";
 import "../../styles/forms.css";
 function UserCreateQuery() {
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const [query, setQuery] = useState({});
     function enquire(e) {
         e.preventDefault();
         dispatch(createQuery(query));
+        navigate(-1);
     }
     const isUserLogged = useSelector((state) => state.user.isUserLogged);
     if (!isUserLogged) return <Navigate to="/user/login" replace />;

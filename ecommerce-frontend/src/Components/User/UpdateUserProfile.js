@@ -4,10 +4,11 @@ import {
     getUserDetails,
     updateUserDetails,
 } from "../../Redux/Thunks/userThunks";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import "../../styles/forms.css";
 
 function UpdateUserProfile() {
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const [details, setDetails] = useState({
         firstName: "",
@@ -30,6 +31,7 @@ function UpdateUserProfile() {
     function handleUpdateDetails(e) {
         e.preventDefault();
         dispatch(updateUserDetails(details));
+        navigate(-1);
     }
 
     const isUserLogged = useSelector((state) => state.user.isUserLogged);

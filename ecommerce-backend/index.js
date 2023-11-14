@@ -13,6 +13,7 @@ const brandRouter = require("./routes/brandRoutes");
 const colorRouter = require("./routes/colorRoutes");
 const couponRouter = require("./routes/couponRoutes");
 const enquiryRouter = require("./routes/enquiryRoutes");
+const sliderRouter = require("./routes/sliderRoutes");
 const bodyParser = require("body-parser");
 const { default: mongoose } = require("mongoose");
 const { notFound, errorHandler } = require("./middleware/errorHandler");
@@ -27,8 +28,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(
     cors({
-        origin: "https://blackbasket-by-rajeshwar.netlify.app",
-        // origin: "http://localhost:3000",
+        // origin: "https://blackbasket-by-rajeshwar.netlify.app",
+        origin: "http://localhost:3000",
         credentials: true,
     })
 );
@@ -44,6 +45,7 @@ app.use("/api/brand", brandRouter);
 app.use("/api/color", colorRouter);
 app.use("/api/enquiry", enquiryRouter);
 app.use("/api/coupon", couponRouter);
+app.use("/api/slider", sliderRouter);
 
 app.use(notFound);
 app.use(errorHandler);

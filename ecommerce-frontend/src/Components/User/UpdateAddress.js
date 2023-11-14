@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Navigate, useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import "../../styles/userAccount.css";
 import {
     getUserDetails,
@@ -9,6 +9,7 @@ import {
 function UpdateAddress() {
     const { id } = useParams();
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const [address, setAddress] = useState({
         userName: "",
@@ -54,7 +55,7 @@ function UpdateAddress() {
     function updateAddress(e) {
         e.preventDefault();
         dispatch(updateUserAddress({ id, address }));
-        return <Navigate to="/user/address" replace />;
+        navigate(-1);
     }
 
     const isUserLogged = useSelector((state) => state.user.isUserLogged);

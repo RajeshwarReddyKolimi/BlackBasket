@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { NavLink, Navigate } from "react-router-dom";
+import { NavLink, Navigate, useNavigate } from "react-router-dom";
 import {
     applyCoupon,
     createOrder,
@@ -66,8 +66,9 @@ function Checkout() {
     function applyAddress(address) {
         setSelectedAddress(address);
     }
+    const navigate = useNavigate();
+
     function handleOrder() {
-        console.log(selectedAddress);
         dispatch(
             createOrder({
                 couponCode: selectedCoupon,
@@ -75,6 +76,7 @@ function Checkout() {
                 finalPrice,
             })
         );
+        navigate("/user/orders");
     }
 
     const isUserLogged = useSelector((state) => state.user.isUserLogged);

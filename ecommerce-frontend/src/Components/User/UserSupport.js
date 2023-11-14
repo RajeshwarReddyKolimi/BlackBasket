@@ -14,7 +14,7 @@ function UserSupport() {
         dispatch(getUserDetails());
     }, [dispatch]);
 
-    if (!isUserLogged) return <Navigate to="/" replace />;
+    if (!isUserLogged) return <Navigate to="/user/login" replace />;
 
     return (
         <div className="section">

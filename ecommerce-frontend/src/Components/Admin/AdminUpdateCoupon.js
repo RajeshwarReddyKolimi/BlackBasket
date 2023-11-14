@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { createCoupon, updateCoupon } from "../../Redux/Thunks/couponThunks";
 import findToken from "../../findToken";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import apiUrl from "../../apiUrl";
 
 function AdminUpdateCoupon() {
     const { id } = useParams();
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const [coupon, setCoupon] = useState({
         name: "",
@@ -41,24 +42,24 @@ function AdminUpdateCoupon() {
     function handleUpdateCoupon(e) {
         e.preventDefault();
         dispatch(updateCoupon({ coupon, id }));
+        navigate(-1);
     }
-    console.log(coupon);
     return (
         <div>
             <form
                 onSubmit={(e) => {
                     handleUpdateCoupon(e);
                 }}
-                className="add-product-form"
+                className="form"
             >
-                <div className="product-form-item">
-                    <label for="product-name" className="product-form-label">
+                <div className="form-item">
+                    <label for="product-name" className="form-label">
                         Code
                     </label>
                     <input
                         type="text"
                         name="product-name"
-                        className="product-form-input"
+                        className="form-input"
                         onChange={(e) =>
                             setCoupon((prev) => {
                                 return { ...prev, name: e.target.value };
@@ -68,17 +69,14 @@ function AdminUpdateCoupon() {
                         required
                     />
                 </div>
-                <div className="product-form-item">
-                    <label
-                        for="product-discount"
-                        className="product-form-label"
-                    >
+                <div className="form-item">
+                    <label for="product-discount" className="form-label">
                         Discount
                     </label>
                     <input
                         type="number"
                         name="product-discount"
-                        className="product-form-input"
+                        className="form-input"
                         onChange={(e) =>
                             setCoupon((prev) => {
                                 return {
@@ -93,17 +91,14 @@ function AdminUpdateCoupon() {
                         required
                     />
                 </div>
-                <div className="product-form-item">
-                    <label
-                        for="product-maxDiscount"
-                        className="product-form-label"
-                    >
+                <div className="form-item">
+                    <label for="product-maxDiscount" className="form-label">
                         Maximum Discount
                     </label>
                     <input
                         type="number"
                         name="product-maxDiscount"
-                        className="product-form-input"
+                        className="form-input"
                         onChange={(e) =>
                             setCoupon((prev) => {
                                 return {
@@ -116,14 +111,14 @@ function AdminUpdateCoupon() {
                         min={1}
                     />
                 </div>
-                <div className="product-form-item">
-                    <label for="coupon-expiry" className="product-form-label">
+                <div className="form-item">
+                    <label for="coupon-expiry" className="form-label">
                         Expiry
                     </label>
                     <input
                         type="date"
                         name="coupon-expiry"
-                        className="product-form-input"
+                        className="form-input"
                         onChange={(e) =>
                             setCoupon((prev) => {
                                 return { ...prev, expiry: e.target.value };

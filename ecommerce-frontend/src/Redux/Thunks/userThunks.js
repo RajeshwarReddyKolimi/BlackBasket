@@ -227,17 +227,15 @@ export const updateCartItemQuantity = createAsyncThunk(
     }
 );
 
-export const toWishlist = createAsyncThunk(
-    "/toWishlist",
+export const addToSaveLater = createAsyncThunk(
+    "/addToSaveLater",
     async (productId, { dispatch, rejectWithValue }) => {
         try {
             const token = await findToken();
 
             const response = await axios.put(
-                `${apiUrl}/product/wishlist`,
-                {
-                    productId,
-                },
+                `${apiUrl}/product/wishlist/${productId}`,
+                {},
                 {
                     headers: {
                         "Content-Type": "application/json",
@@ -245,6 +243,29 @@ export const toWishlist = createAsyncThunk(
                     },
                 }
             );
+            return response.data;
+        } catch (error) {
+            console.error("Error:", error);
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
+export const removeFromSaveLater = createAsyncThunk(
+    "/removeFromSaveLater",
+    async (productId, { dispatch, rejectWithValue }) => {
+        try {
+            const token = await findToken();
+            const response = await axios.delete(
+                `${apiUrl}/product/wishlist/${productId}`,
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+
             return response.data;
         } catch (error) {
             console.error("Error:", error);

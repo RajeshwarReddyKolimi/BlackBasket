@@ -47,7 +47,7 @@ function App() {
                 <BrowserRouter>
                     <UserHeader />
                     <Routes>
-                        <Route index element={<Home />} />
+                        <Route index element={<Dashboard />} />
                         <Route path="/admin/login" element={<AdminLogin />} />
                         <Route path="/admin/" element={<AdminDashboard />} />
                         <Route
@@ -137,6 +137,8 @@ function App() {
                         <Route path="/payment" element={<Payment />} />
                     </Routes>
                     <UserFooter />
+
+                    <div className="nav-item-right-buffer"></div>
                 </BrowserRouter>
             </div>
         </Provider>

@@ -110,11 +110,12 @@ function AdminProductPage() {
                     </div>
                 </div>
                 <div className="product-page-button-container">
-                    <button className="button-full">
-                        <NavLink to={`/admin/product/update/${id}`}>
-                            <BiEdit />
-                        </NavLink>
-                    </button>
+                    <NavLink
+                        to={`/admin/product/update/${id}`}
+                        className="button-full"
+                    >
+                        <BiEdit />
+                    </NavLink>
                     <button className="button-full" onClick={deleteProd}>
                         <MdDelete />
                     </button>

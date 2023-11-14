@@ -12,7 +12,7 @@ function UserFooter() {
     }, [dispatch]);
     return (
         <footer className="footer">
-            <ul className="footer-list flex-buffer">
+            <ul className="footer-list flex-grow-2">
                 <header className="footer-list-item footer-list-header">
                     Shop
                 </header>
@@ -29,45 +29,66 @@ function UserFooter() {
                 </div>
             </ul>
 
-            <ul className="footer-list">
+            <ul className="footer-list flex-grow-1">
                 <header className="footer-list-item footer-list-header">
                     Account
                 </header>
-                <NavLink to="#" className="footer-list-item">
+                <NavLink
+                    to="/user/account/profile"
+                    className="footer-list-item"
+                >
                     Profile
                 </NavLink>
                 <NavLink to="#" className="footer-list-item">
                     Login and Security
                 </NavLink>
-                <NavLink to="#" className="footer-list-item">
+                <NavLink to="/user/address" className="footer-list-item">
                     Address
                 </NavLink>
-                <NavLink to="#" className="footer-list-item">
+                <NavLink to="/user/coupons" className="footer-list-item">
                     Coupons
                 </NavLink>
-                <NavLink to="#" className="footer-list-item">
+                <NavLink to="/user/orders" className="footer-list-item">
                     Orders
                 </NavLink>
-                <NavLink to="#" className="footer-list-item">
+                <NavLink to="/user/support" className="footer-list-item">
                     Help
                 </NavLink>
             </ul>
 
-            <ul className="footer-list">
+            <ul className="footer-list flex-grow-1">
                 <header className="footer-list-item footer-list-header">
-                    Follow
+                    Follow me
                 </header>
-                <NavLink to="#" className="footer-list-item">
-                    Twitter
-                </NavLink>
-                <NavLink to="#" className="footer-list-item">
+                <NavLink
+                    to="https://github.com/RajeshwarReddyKolimi"
+                    className="footer-list-item"
+                >
                     Github
                 </NavLink>
-                <NavLink to="#" className="footer-list-item">
+                <NavLink
+                    to="https://www.linkedin.com/in/rajeshwar-reddy-kolimi/"
+                    className="footer-list-item"
+                >
+                    LinkedIn
+                </NavLink>
+                <NavLink
+                    to="https://twitter.com/RajeshwarKolimi"
+                    className="footer-list-item"
+                >
+                    Twitter
+                </NavLink>
+                <NavLink
+                    to="https://www.instagram.com/rajeshwarreddykolimi/?utm_source=qr&igshid=MzNlNGNkZWQ4Mg%3D%3D"
+                    className="footer-list-item"
+                >
                     Instagram
                 </NavLink>
-                <NavLink to="#" className="footer-list-item">
-                    LinkedIn
+                <NavLink
+                    to="https://portfolio-rajeshwar.netlify.app/"
+                    className="footer-list-item"
+                >
+                    Portfolio
                 </NavLink>
             </ul>
         </footer>

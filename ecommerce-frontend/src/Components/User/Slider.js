@@ -3,53 +3,66 @@ import "../../styles/slider.css";
 import { SlArrowRight, SlArrowLeft } from "react-icons/sl";
 import { Link } from "react-router-dom";
 import { AiFillStar } from "react-icons/ai";
+import { useDispatch, useSelector } from "react-redux";
+import { getSliders } from "../../Redux/Thunks/sliderThunks";
+import apiUrl, { pageUrl } from "../../apiUrl";
 export default function Slider() {
+    const dispatch = useDispatch();
     const sliderRef = useRef(null);
     const [slidePos, setSlidePos] = useState(0);
-    const [list, setList] = useState([]);
-    // useEffect(() => {
-    //     sliderRef.current.style.transform = `translateX(${slidePos}vw)`;
-    //     const intervalId = setInterval(() => {
-    //         if (slidePos > -500) {
-    //             setSlidePos(slidePos - 100);
-    //         } else {
-    //             setSlidePos(0);
-    //         }
-    //     }, 5000);
-    //     return () => {
-    //         clearInterval(intervalId);
-    //     };
-    // }, [slidePos]);
+    const sliders = useSelector((state) => state.slider.sliders);
     useEffect(() => {
-        setList([1, 2, 3, 4, 5]);
-    }, []);
+        sliderRef.current.style.transform = `translateX(${slidePos}vw)`;
+        const intervalId = setInterval(() => {
+            if (slidePos > -200) {
+                setSlidePos(slidePos - 100);
+            } else {
+                setSlidePos(0);
+            }
+        }, 5000);
+        return () => {
+            clearInterval(intervalId);
+        };
+    }, [slidePos]);
+    useEffect(() => {
+        dispatch(getSliders());
+    }, [dispatch]);
     function slideprev() {
         if (slidePos < 0) {
             setSlidePos(slidePos + 100);
-        } else setSlidePos(-500);
+        } else setSlidePos(-200);
     }
     function slidenext() {
-        if (slidePos > -500) {
+        if (slidePos > -200) {
             setSlidePos(slidePos - 100);
         } else setSlidePos(0);
     }
     return (
         <div className="slider-container">
-            <div className="slider" ref={sliderRef}>
-                {list.map((li, key) => (
-                    <Link to="" key={key} className="slider-item">
-                        <div className="slider-item-inner">
+            <div
+                className="slider"
+                ref={sliderRef}
+                style={{ width: sliders.length * "100vw" }}
+            >
+                {sliders.map((slider, key) => (
+                    <Link
+                        to={`${pageUrl}${slider && slider.link}`}
+                        key={key}
+                        className="slider-item"
+                    >
+                        <div
+                            className="slider-item-inner"
+                            style={{ background: slider.color }}
+                        >
                             <div className="slider-info">
-                                <div className="slider-1">UPTO 80% OFF</div>
-                                <div className="slider-2">Smart Phones</div>
-                                <div className="slider-3">
-                                    Apple | Samsung | Realme
-                                </div>
+                                <div className="slider-1">{slider.first}</div>
+                                <div className="slider-2">{slider.second}</div>
+                                <div className="slider-3">{slider.third}</div>
                                 <div className="tc">t&c apply</div>
                             </div>
                             <img
                                 className="slider-img"
-                                src={`https://res.cloudinary.com/dxihuk20v/image/upload/v1699353319/cemnns2ez38lf7aoztsp.png`}
+                                src={slider.image}
                                 alt="Image"
                             />
                         </div>

@@ -3,10 +3,11 @@ import {
     createProduct,
     uploadProductImages,
 } from "../../Redux/Thunks/productThunks";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 function AdminAddProduct() {
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const [product, setProduct] = useState({
         title: "",
@@ -34,6 +35,8 @@ function AdminAddProduct() {
             formData.append("images", file);
         }
         dispatch(createProduct({ formData }));
+
+        navigate(-1);
     }
     return (
         <div className="section">

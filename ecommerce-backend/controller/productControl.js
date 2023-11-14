@@ -52,6 +52,7 @@ const updateProduct = asyncHandler(async (req, res) => {
     const productId = req.params.id;
     try {
         const formData = req.body;
+        console.log(formData);
         const slug = req.body.title ? slugify(req.body.title) : "";
         req.body.slug = slug;
         const updateProduct = await Product.findByIdAndUpdate(
@@ -69,7 +70,6 @@ const updateProduct = asyncHandler(async (req, res) => {
 const deleteProduct = asyncHandler(async (req, res) => {
     try {
         const { id } = req.params;
-        console.log(id);
         const deleteProd = await Product.findByIdAndDelete(id);
         res.json(deleteProd);
     } catch (error) {
@@ -103,7 +103,6 @@ const searchProducts = asyncHandler(async (req, res) => {
             categories,
             category,
         } = req.query;
-        console.log(req.query);
         const query = {
             $or: [
                 { title: { $regex: new RegExp(searchTerm, "i") } },
@@ -242,9 +241,32 @@ const getAllProducts = asyncHandler(async (req, res) => {
     }
 });
 
-const addToWishlist = asyncHandler(async (req, res) => {
+const addToSaveLater = asyncHandler(async (req, res) => {
     const { _id } = req.user;
-    const { productId } = req.body;
+    const { id: productId } = req.params;
+    try {
+        const user = await User.findById(_id);
+        const alreadyAdded = user.wishlist.find(
+            (_id) => _id.toString() === productId.toString()
+        );
+        if (!alreadyAdded) {
+            let user = await User.findByIdAndUpdate(
+                _id,
+                {
+                    $push: { wishlist: productId },
+                },
+                { new: true }
+            );
+            await user.save();
+            res.json(user.wishlist);
+        }
+    } catch (error) {
+        throw new Error(error);
+    }
+});
+const removeFromSaveLater = asyncHandler(async (req, res) => {
+    const { _id } = req.user;
+    const { id: productId } = req.params;
     try {
         const user = await User.findById(_id);
         const alreadyAdded = user.wishlist.find(
@@ -255,16 +277,6 @@ const addToWishlist = asyncHandler(async (req, res) => {
                 _id,
                 {
                     $pull: { wishlist: productId },
-                },
-                { new: true }
-            );
-            await user.save();
-            res.json(user.wishlist);
-        } else {
-            let user = await User.findByIdAndUpdate(
-                _id,
-                {
-                    $push: { wishlist: productId },
                 },
                 { new: true }
             );
@@ -285,7 +297,7 @@ const addToCart = asyncHandler(async (req, res) => {
             (cartItem) => cartItem.product.toString() === productId.toString()
         );
         if (existingCartItem) {
-            existingCartItem.quantity += 1;
+            if (existingCartItem.quantity < 5) existingCartItem.quantity += 1;
         } else {
             user.cart.items.push({ product: productId, quantity: 1 });
         }
@@ -404,7 +416,6 @@ const getRating = asyncHandler(async (req, res) => {
         rating = product.ratings.find(
             (userId) => userId?.postedby?.userId?.toString() === _id.toString()
         );
-        console.log(rating);
         res.json(rating);
     } catch (error) {
         throw new Error(error);
@@ -435,7 +446,8 @@ module.exports = {
     getAllProducts,
     updateProduct,
     deleteProduct,
-    addToWishlist,
+    addToSaveLater,
+    removeFromSaveLater,
     addToCart,
     updateRating,
     getRating,

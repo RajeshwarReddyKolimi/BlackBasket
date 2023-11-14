@@ -7,6 +7,7 @@ import couponSlice from "./Reducers/couponSlice";
 import brandSlice from "./Reducers/brandSlice";
 import colorSlice from "./Reducers/colorSlice";
 import categorySlice from "./Reducers/categorySlice";
+import sliderSlice from "./Reducers/sliderSlice";
 const store = configureStore({
     reducer: {
         user: userSlice.reducer,
@@ -17,6 +18,7 @@ const store = configureStore({
         brand: brandSlice.reducer,
         color: colorSlice.reducer,
         category: categorySlice.reducer,
+        slider: sliderSlice.reducer,
     },
 });
 export default store;

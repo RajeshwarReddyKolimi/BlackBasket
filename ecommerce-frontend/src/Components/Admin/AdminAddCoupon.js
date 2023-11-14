@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { createCoupon } from "../../Redux/Thunks/couponThunks";
+import { useNavigate } from "react-router-dom";
 
 function AdminAddCoupon() {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [coupon, setCoupon] = useState({
         name: "",
         expiry: null,
@@ -13,6 +15,7 @@ function AdminAddCoupon() {
     function handleAddCoupon(e) {
         e.preventDefault();
         dispatch(createCoupon(coupon));
+        navigate(-1);
     }
     return (
         <div>

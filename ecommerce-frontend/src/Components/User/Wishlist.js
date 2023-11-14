@@ -6,25 +6,25 @@ import ProductCard from "../Products/ProductCard";
 import { Navigate } from "react-router-dom";
 import "../../styles/product.css";
 import Empty from "../Empty";
+import WishlistCard from "./WishlistCard";
 function Wishlist() {
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(getWishlist());
     }, []);
     const wishlistData = useSelector((state) => state.user.userData.wishlist);
-
     const isUserLogged = useSelector((state) => state.user.isUserLogged);
-    if (!isUserLogged) return <Navigate to="/" replace />;
+    if (!isUserLogged) return <Navigate to="/user/login" replace />;
     return (
-        <div>
-            <h2>Wishlist Products</h2>
+        <div className="section">
+            <div className="header-title">Saved for Later</div>
             <div className="products-container">
                 {wishlistData && wishlistData.length > 0 ? (
                     wishlistData.map((item, key) => (
-                        <ProductCard key={key} item={item} />
+                        <WishlistCard key={key} item={item} />
                     ))
                 ) : (
-                    <Empty text="No items in Wishlist" />
+                    <Empty text="No items saved for later" />
                 )}
             </div>
         </div>

@@ -3,7 +3,7 @@ import { NavLink, Navigate } from "react-router-dom";
 import UserNavSearch from "./UserNavSearch";
 import "../../styles/navbar.css";
 import { BsCart3, BsChevronDown } from "react-icons/bs";
-import { BiMenu } from "react-icons/bi";
+import { BiMenu, BiBookmark } from "react-icons/bi";
 import { GoHome } from "react-icons/go";
 import { FaRegUser } from "react-icons/fa";
 import { AiOutlineDown, AiOutlineHeart } from "react-icons/ai";
@@ -48,12 +48,12 @@ function UserHeader() {
                 >
                     <NavLink
                         to="/"
-                        className="nav-item navbar-category-header nav-item-home-left"
+                        className="nav-item navbar-header nav-item-home-left"
                     >
                         Home
                     </NavLink>
                     <div className="navbar-category nav-item-left">
-                        <li className="navbar-category-header nav-item">
+                        <li className="navbar-header nav-item">
                             Categories
                             <BsChevronDown className="react-icon-small" />
                         </li>
@@ -63,6 +63,7 @@ function UserHeader() {
                                     <NavLink
                                         to={`/product/search?id=${category.name}`}
                                         className="navbar-category-dropdown-item"
+                                        onClick={() => setShowMenu(false)}
                                     >
                                         <img
                                             src={category.image}
@@ -78,11 +79,12 @@ function UserHeader() {
                                         </div>
                                     </NavLink>
                                 ))}
+                            <div className="nav-item-category-buffer"></div>
                         </div>
                     </div>
                     <NavLink
                         to="/user/support"
-                        className="nav-item navbar-category-header nav-item-left nav-item-home-left"
+                        className="nav-item navbar-header nav-item-left nav-item-home-left"
                     >
                         Help
                     </NavLink>
@@ -113,7 +115,7 @@ function UserHeader() {
                         className="nav-item nav-item-right"
                     >
                         <div>
-                            <AiOutlineHeart className="react-icon" />
+                            <BiBookmark className="react-icon" />
 
                             <div className="nav-list-count">
                                 <span>

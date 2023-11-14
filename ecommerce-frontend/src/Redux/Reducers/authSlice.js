@@ -7,7 +7,6 @@ import {
     getCart,
     removeFromCart,
     addToCart,
-    toWishlist,
     getWishlist,
     userSignup,
     applyCoupon,
@@ -19,6 +18,8 @@ import {
     updateCartItemQuantity,
     deleteAccount,
     getUserCoupons,
+    addToSaveLater,
+    removeFromSaveLater,
 } from "../Thunks/userThunks";
 import { createQuery } from "../Thunks/enquiryThunks";
 
@@ -139,6 +140,24 @@ const userSlice = createSlice({
         builder.addCase(addToCart.rejected, (state, action) => {
             state.errorMessage = "Cannot Add to Cart";
         });
+        builder.addCase(addToSaveLater.pending, setLoadingState);
+        builder.addCase(addToSaveLater.fulfilled, (state, action) => {
+            state.errorMessage = "";
+            state.userData.wishlist = action.payload;
+            state.userData.wishlistSize = state.userData.wishlist.length;
+        });
+        builder.addCase(addToSaveLater.rejected, (state, action) => {
+            state.errorMessage = "Cannot Add to Cart";
+        });
+        builder.addCase(removeFromSaveLater.pending, setLoadingState);
+        builder.addCase(removeFromSaveLater.fulfilled, (state, action) => {
+            state.errorMessage = "";
+            state.userData.wishlist = action.payload;
+            state.userData.wishlistSize = state.userData.wishlist.length;
+        });
+        builder.addCase(removeFromSaveLater.rejected, (state, action) => {
+            state.errorMessage = "Cannot Add to Cart";
+        });
         builder.addCase(updateCartItemQuantity.pending, setLoadingState);
         builder.addCase(updateCartItemQuantity.fulfilled, (state, action) => {
             state.errorMessage = "";
@@ -195,16 +214,6 @@ const userSlice = createSlice({
         });
         builder.addCase(createOrder.rejected, (state, action) => {
             state.errorMessage = "Cannot Create Order";
-        });
-
-        builder.addCase(toWishlist.pending, setLoadingState);
-        builder.addCase(toWishlist.fulfilled, (state, action) => {
-            state.errorMessage = "";
-            state.userData.wishlist = action.payload;
-            state.userData.wishlistSize = state.userData.wishlist.length;
-        });
-        builder.addCase(toWishlist.rejected, (state, action) => {
-            state.errorMessage = "Cannot Wishlist";
         });
 
         builder.addCase(getWishlist.pending, setLoadingState);

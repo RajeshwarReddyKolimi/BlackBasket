@@ -6,7 +6,7 @@ import {
     toWishlist,
 } from "../../Redux/Thunks/userThunks";
 import { uploadProductImages } from "../../Redux/Thunks/productThunks";
-import "../../styles/product.css";
+import "../../styles/home.css";
 import { AiFillHeart, AiFillStar } from "react-icons/ai";
 import { NavLink, Navigate, useNavigate } from "react-router-dom";
 import ConfirmPopup from "../ConfirmPopup";
@@ -17,7 +17,7 @@ import apiUrl from "../../apiUrl";
 import { addItem } from "../../Redux/Reducers/authSlice";
 import { MdVerified } from "react-icons/md";
 
-function ProductCard(props) {
+function HomeProductCard(props) {
     const navigate = useNavigate();
     const [showCartMessage, setShowCartMessage] = useState(false);
     const { item } = props;
@@ -54,9 +54,9 @@ function ProductCard(props) {
     const id = item && item._id;
 
     return (
-        <div className="product-card">
+        <div className="home-product-card">
             <NavLink to={`/product/${id}`}>
-                <div className="product-card-image-container">
+                <div className="home-product-card-image-container">
                     <img
                         src={`${
                             item && item.images && item.images[0]
@@ -64,17 +64,17 @@ function ProductCard(props) {
                                 : ""
                         }`}
                         alt="image"
-                        className="product-card-poster-image"
+                        className="home-product-card-poster-image"
                     />
                 </div>
             </NavLink>
 
-            <div className="product-card-info-container">
+            <div className="home-product-card-info-container">
                 <NavLink to={`/product/${id}`}>
-                    <div className="product-card-brand">
+                    <div className="home-product-card-brand">
                         {item && item.brand}
                     </div>
-                    <div className="product-card-title">
+                    <div className="home-product-card-title">
                         {item && item.title}
                     </div>
                 </NavLink>
@@ -129,4 +129,4 @@ function ProductCard(props) {
     );
 }
 
-export default ProductCard;
+export default HomeProductCard;

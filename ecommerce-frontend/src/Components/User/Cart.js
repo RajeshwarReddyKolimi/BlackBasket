@@ -18,13 +18,13 @@ function Cart() {
         dispatch(getCart());
     }, [dispatch]);
 
-    if (!isUserLogged) return <Navigate to="/" replace />;
+    if (!isUserLogged) return <Navigate to="/user/login" replace />;
 
     return (
         <div className="cart-page">
             <div className="header-title">Products</div>
             {cartData && cartData.items && cartData.items.length > 0 ? (
-                <div className="cart-products-container">
+                <div className="products-container">
                     {cartData.items.map((item, key) => (
                         <CartCard key={key} item={item} />
                     ))}
@@ -41,10 +41,14 @@ function Cart() {
                     </div>
                 </div>
             </div>
-            {cartData && cartData.items && cartData.items.length > 0 && (
+            {cartData && cartData.items && cartData.items.length > 0 ? (
                 <NavLink to="/user/checkout" className="button-full">
                     Checkout
                 </NavLink>
+            ) : (
+                <button className="button-full button-disabled" disabled>
+                    Checkout
+                </button>
             )}
         </div>
     );

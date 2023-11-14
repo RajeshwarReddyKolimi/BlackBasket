@@ -26,13 +26,12 @@ function Dashboard() {
     function logout() {
         dispatch(userLogout());
     }
-    if (!isUserLogged) return <Navigate to="/" replace />;
     return (
         <div>
             <Slider />
             <ShopByCategory />
-            <BestSellers />
             <ShopByBrand />
+            <BestSellers />
             <RecentProducts />
             <TopRated />
         </div>

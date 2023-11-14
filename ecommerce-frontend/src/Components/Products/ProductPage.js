@@ -1,15 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, NavLink, Navigate, useParams } from "react-router-dom";
+import {
+    Link,
+    NavLink,
+    Navigate,
+    useNavigate,
+    useParams,
+} from "react-router-dom";
 import { getProducts } from "../../Redux/Thunks/productThunks";
 import { AiFillStar } from "react-icons/ai";
 import { IoIosShareAlt } from "react-icons/io";
 import {
     addToCart,
+    addToSaveLater,
     getUserDetails,
-    toWishlist,
 } from "../../Redux/Thunks/userThunks";
-import { MdEmail, MdVerified } from "react-icons/md";
+import { MdEmail, MdSaveAlt, MdVerified } from "react-icons/md";
 import ProductReviewCard from "./ProductReviewCard";
 import Empty from "../Empty";
 import ConfirmPopup from "../ConfirmPopup";
@@ -33,6 +39,7 @@ import { BiCopy } from "react-icons/bi";
 
 function ProductPage() {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const { id } = useParams();
     const isUserLogged = useSelector((state) => state.user.isUserLogged);
     const [showPopup, setShowPopup] = useState(false);
@@ -41,16 +48,17 @@ function ProductPage() {
         dispatch(getUserDetails());
     }, []);
     function addCart() {
-        if (!isUserLogged) return <Navigate to="/user/login" replace />;
-
+        if (!isUserLogged) return navigate("/user/login");
         dispatch(addToCart(product._id));
     }
     function wishlist() {
-        dispatch(toWishlist(product._id));
+        if (!isUserLogged) return navigate("/user/login");
+        dispatch(addToSaveLater(product._id));
     }
     const products = useSelector((state) => state.product.products);
     const product = products.find((item) => item._id.toString() === id);
-    const productLink = `http://localhost:3000/product/${id}`;
+    // const productLink = `http://localhost:3000/product/${id}`;
+    const productLink = `https://blackbasket-by-rajeshwar.netlify.app/product/${id}`;
     return (
         <div className="product-page">
             <div className="product-page-image-container">
@@ -81,7 +89,7 @@ function ProductPage() {
                             >
                                 <BsTwitter
                                     className="share-option-icon"
-                                    style={{ color: "" }}
+                                    style={{ color: "#1da1f2" }}
                                 />
                             </TwitterShareButton>
                             <TelegramShareButton
@@ -92,7 +100,7 @@ function ProductPage() {
                             >
                                 <BsTelegram
                                     className="share-option-icon"
-                                    style={{ color: "" }}
+                                    style={{ color: "#0088cc" }}
                                 />
                             </TelegramShareButton>
                             <LinkedinShareButton
@@ -103,7 +111,7 @@ function ProductPage() {
                             >
                                 <BsLinkedin
                                     className="share-option-icon"
-                                    style={{ color: "" }}
+                                    style={{ color: "#0a66c2" }}
                                 />
                             </LinkedinShareButton>
                             <FacebookShareButton
@@ -114,7 +122,7 @@ function ProductPage() {
                             >
                                 <BsFacebook
                                     className="share-option-icon"
-                                    style={{ color: "" }}
+                                    style={{ color: "#1877f2" }}
                                 />
                             </FacebookShareButton>
                             <EmailShareButton
@@ -136,7 +144,7 @@ function ProductPage() {
                             >
                                 <BsWhatsapp
                                     className="share-option-icon"
-                                    style={{ color: "" }}
+                                    style={{ color: "#25d366" }}
                                 />
                             </WhatsappShareButton>
                             <div
@@ -149,7 +157,7 @@ function ProductPage() {
                             >
                                 <BiCopy
                                     className="share-option-icon"
-                                    style={{ color: "" }}
+                                    style={{ color: "grey" }}
                                 />
                             </div>
                         </div>
@@ -216,8 +224,9 @@ function ProductPage() {
                             setShowPopup={setShowPopup}
                         />
                     )}
-                    <button className="button-full" onClick={wishlist}>
-                        Wishlist
+                    <button className="button-full " onClick={wishlist}>
+                        <MdSaveAlt />
+                        <span>Save for Later</span>
                     </button>
                 </div>
                 <div className="product-page-description">

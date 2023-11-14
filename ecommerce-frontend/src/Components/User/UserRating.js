@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Navigate, useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { getUserDetails } from "../../Redux/Thunks/userThunks";
 import { useDispatch, useSelector } from "react-redux";
 import findToken from "../../findToken";
@@ -8,6 +8,7 @@ import "../../styles/forms.css";
 import apiUrl from "../../apiUrl";
 
 function UserRating() {
+    const navigate = useNavigate();
     const [userStar, setUserStar] = useState();
     const [userComment, setUserComment] = useState("");
     const { id } = useParams();
@@ -35,7 +36,7 @@ function UserRating() {
                     },
                 }
             );
-            return <Navigate to="/user/orders" replace />;
+            navigate(-1);
         } catch (error) {
             console.error("Fetch error:", error);
         }

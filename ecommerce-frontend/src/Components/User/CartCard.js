@@ -1,8 +1,8 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
+    addToSaveLater,
     removeFromCart,
-    toWishlist,
     updateCartItemQuantity,
 } from "../../Redux/Thunks/userThunks";
 import { NavLink, Navigate } from "react-router-dom";
@@ -22,12 +22,11 @@ function CartCard(props) {
     function updateProductQuantity(value) {
         dispatch(updateCartItemQuantity({ productId: product._id, value }));
     }
-
     function removeCart() {
         dispatch(removeFromCart(product._id));
     }
     function wishlist() {
-        dispatch(toWishlist(product._id));
+        dispatch(addToSaveLater(product._id));
     }
     const isUserLogged = useSelector((state) => state.user.isUserLogged);
     if (!isUserLogged) return <Navigate to="/" replace />;
@@ -54,8 +53,12 @@ function CartCard(props) {
                     />
                     <span className="cart-card-quantity">{item.quantity} </span>
                     <AiOutlinePlus
-                        onClick={() => updateProductQuantity(1)}
-                        className="button-icon"
+                        onClick={() => {
+                            if (item.quantity < 5) updateProductQuantity(1);
+                        }}
+                        className={`button-icon ${
+                            item.quantity >= 5 && "button-disabled"
+                        }`}
                     />
                 </div>
             </div>

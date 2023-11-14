@@ -66,7 +66,6 @@ export const uploadProductImages = createAsyncThunk(
     async ({ formData, productId }, { dispatch, rejectWithValue }) => {
         try {
             const token = await findToken();
-            console.log(productId);
             const response = await axios.put(
                 `${apiUrl}/product/upload/${productId.toString()}`,
                 formData,

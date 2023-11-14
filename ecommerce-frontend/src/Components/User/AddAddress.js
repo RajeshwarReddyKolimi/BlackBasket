@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addUserAddress } from "../../Redux/Thunks/userThunks";
 import "../../styles/forms.css";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 function AddAddress() {
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const [address, setAddress] = useState({
         userName: "",
@@ -18,6 +19,7 @@ function AddAddress() {
     function addAddress(e) {
         e.preventDefault();
         dispatch(addUserAddress(address));
+        navigate(-1);
     }
     const isUserLogged = useSelector((state) => state.user.isUserLogged);
 

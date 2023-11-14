@@ -6,8 +6,9 @@
     flex-wrap: wrap;
     padding: 1rem;
     width: 100%;
-    height: 100%;
+    height: auto;
     gap: 1rem;
+    flex-grow: 1;
 }
 
 .footer-list {
@@ -15,6 +16,7 @@
     flex-direction: column;
     align-items: start;
     gap: 0.5rem;
+    max-width: 500px;
 }
 .footer-list-container {
     width: 100%;
@@ -28,4 +30,10 @@
 }
 .footer-list-header {
     font-weight: 600;
+}
+.flex-grow-1 {
+    flex-grow: 2;
+}
+.flex-grow-2 {
+    flex-grow: 2;
 }

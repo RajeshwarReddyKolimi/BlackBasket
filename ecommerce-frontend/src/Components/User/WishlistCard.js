@@ -3,12 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import {
     addToCart,
     getUserDetails,
+    removeFromSaveLater,
     toWishlist,
 } from "../../Redux/Thunks/userThunks";
 import { uploadProductImages } from "../../Redux/Thunks/productThunks";
 import "../../styles/product.css";
 import { AiFillHeart, AiFillStar } from "react-icons/ai";
-import { NavLink, Navigate, useNavigate } from "react-router-dom";
+import { NavLink, Navigate } from "react-router-dom";
 import ConfirmPopup from "../ConfirmPopup";
 import ResultPopup from "../ResultPopup";
 import findToken from "../../findToken";
@@ -17,19 +18,21 @@ import apiUrl from "../../apiUrl";
 import { addItem } from "../../Redux/Reducers/authSlice";
 import { MdVerified } from "react-icons/md";
 
-function ProductCard(props) {
-    const navigate = useNavigate();
+function WishlistCard(props) {
     const [showCartMessage, setShowCartMessage] = useState(false);
     const { item } = props;
     const dispatch = useDispatch();
     const isUserLogged = useSelector((state) => state.user.isUserLogged);
 
+    const id = item && item._id;
     useEffect(() => {
         dispatch(getUserDetails());
     }, [dispatch]);
-
+    async function removeFromSaved() {
+        dispatch(removeFromSaveLater(id));
+    }
     async function addCart() {
-        if (!isUserLogged) return navigate("/user/login");
+        if (!isUserLogged) return <Navigate to="/user/login" replace />;
         try {
             const token = await findToken();
             const response = await axios.put(
@@ -50,8 +53,6 @@ function ProductCard(props) {
             console.log("Error:", error);
         }
     }
-
-    const id = item && item._id;
 
     return (
         <div className="product-card">
@@ -115,18 +116,26 @@ function ProductCard(props) {
                         -{Math.round(item && item.discount)}%
                     </span>
                 </div>
-                <button className="button-full" onClick={addCart}>
-                    Add to Cart
-                    {showCartMessage && (
-                        <ResultPopup
-                            successMessage={`Added to cart : ${item.title}`}
-                            setFunction={setShowCartMessage}
-                        />
-                    )}
-                </button>
+                <div className="button-container">
+                    <button className="button-full" onClick={addCart}>
+                        Add to Cart
+                        {showCartMessage && (
+                            <ResultPopup
+                                successMessage={`Added to cart : ${item.title}`}
+                                setFunction={setShowCartMessage}
+                            />
+                        )}
+                    </button>
+                    <button
+                        className="button-danger-full"
+                        onClick={removeFromSaved}
+                    >
+                        Remove
+                    </button>
+                </div>
             </div>
         </div>
     );
 }
 
-export default ProductCard;
+export default WishlistCard;

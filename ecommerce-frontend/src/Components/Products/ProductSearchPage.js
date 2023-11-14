@@ -371,7 +371,7 @@ function ProductSearchPage() {
             </div>
             <div className="filter-result-container section">
                 <div className="section-header">
-                    <div className="header-title">Showing results for {id}</div>
+                    <div className="header-title">{id}</div>
                     <button
                         className="filter-button button"
                         onClick={() => {

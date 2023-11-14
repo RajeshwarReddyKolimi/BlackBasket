@@ -3,10 +3,20 @@
     padding: 0;
     box-sizing: border-box;
 }
+html {
+    overflow-x: hidden;
+}
 body {
     font-family: "Anuphan", sans-serif;
     font-family: "Rubik", sans-serif;
     text-align: center;
+    min-height: 100vh;
+    width: 100%;
+    overflow-x: hidden;
+}
+.App {
+    display: flex;
+    flex-direction: column;
     min-height: 100vh;
 }
 ::-webkit-scrollbar {
@@ -69,7 +79,6 @@ button {
 li {
     list-style: none;
 }
-
 .flex-buffer {
     flex-grow: 1;
 }
@@ -168,6 +177,7 @@ li {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
+    align-items: center;
     gap: 0.5rem;
 }
 .button-container-flex {
@@ -189,6 +199,11 @@ li {
     border-color: var(--highlight-color-dark);
     background-color: var(--highlight-color-dark);
 }
+
+.button-disabled {
+    cursor: not-allowed;
+}
+
 .react-icon {
     font-size: 1.5rem;
 }
@@ -311,4 +326,16 @@ li {
 }
 .rupee-symbol {
     font-size: 1em;
+}
+
+.nav-item-right-buffer {
+    display: none;
+}
+
+@media screen and (max-width: 748px) {
+    .nav-item-right-buffer {
+        display: block;
+        height: 4rem;
+        width: 100%;
+    }
 }

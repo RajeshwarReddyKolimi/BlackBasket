@@ -73,3 +73,14 @@
         padding: 0.5rem;
     }
 }
+
+@media screen and (max-width: 425px) {
+    .cart-card {
+        flex-direction: column;
+        align-items: center;
+    }
+    .cart-card-image-container {
+        width: 150px;
+        height: 150px;
+    }
+}

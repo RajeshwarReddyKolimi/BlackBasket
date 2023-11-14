@@ -8,6 +8,7 @@ import ProductCard from "../Products/ProductCard";
 import findToken from "../../findToken";
 import axios from "axios";
 import apiUrl from "../../apiUrl";
+import HomeProductCard from "./HomeProductCard";
 function RecentProducts() {
     useEffect(() => {
         search();
@@ -32,10 +33,10 @@ function RecentProducts() {
     return (
         <div className="home-section">
             <span className="home-header-title">Recently Added</span>
-            <div className="products-container">
+            <div className="home-products-container">
                 {productsData &&
                     productsData.map((item, key) => (
-                        <ProductCard key={key} item={item} />
+                        <HomeProductCard key={key} item={item} />
                     ))}
             </div>
         </div>

@@ -2,9 +2,12 @@
     padding: 1rem;
 }
 .order-products-container {
-    display: flex;
-    flex-direction: column;
+    width: 100%;
+    display: grid;
     gap: 0.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    align-items: center;
+    justify-content: space-around;
 }
 .order-list-item {
     text-align: left;
@@ -112,5 +115,20 @@
 @media screen and (max-width: 564px) {
     .order-card {
         padding: 0.5rem;
+    }
+}
+
+@media screen and (max-width: 425px) {
+    .order-products-container {
+        padding: 0;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+    .order-card {
+        flex-direction: column;
+        align-items: center;
+    }
+    .order-card-image-container {
+        width: 150px;
+        height: 150px;
     }
 }
