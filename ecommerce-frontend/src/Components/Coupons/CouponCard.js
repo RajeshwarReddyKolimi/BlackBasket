@@ -9,7 +9,7 @@ function CouponCard(props) {
         dispatch(deleteCoupon(coupon._id));
     }
     return (
-        <div className="container-sm border border-dark m-2">
+        <div className="coupon-container">
             <h4>{coupon.name}</h4>
             <h5>{coupon.expiry}</h5>
             <h4>{coupon.discount}</h4>

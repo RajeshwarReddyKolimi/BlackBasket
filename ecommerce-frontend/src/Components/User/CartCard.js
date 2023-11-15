@@ -52,19 +52,19 @@ function CartCard(props) {
                     </div>
                 </NavLink>
                 <div className="button-container-flex">
-                    <AiOutlineMinus
-                        className="button-icon"
-                        onClick={() => updateProductQuantity(-1)}
-                    />
+                    <div className="button-icon">
+                        <AiOutlineMinus
+                            className="reaact-icon"
+                            onClick={() => updateProductQuantity(-1)}
+                        />
+                    </div>
                     <span className="cart-card-quantity">{item.quantity} </span>
-                    <AiOutlinePlus
-                        onClick={() => {
-                            if (item.quantity < 5) updateProductQuantity(1);
-                        }}
-                        className={`button-icon ${
-                            item.quantity >= 5 && "button-disabled"
-                        }`}
-                    />
+                    <div className="button-icon">
+                        <AiOutlinePlus
+                            className="reaact-icon"
+                            onClick={() => updateProductQuantity(1)}
+                        />
+                    </div>
                 </div>
             </div>
             <div className="cart-card-info-container">

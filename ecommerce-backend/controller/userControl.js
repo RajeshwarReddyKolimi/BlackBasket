@@ -97,7 +97,8 @@ const getUserDetails = asyncHandler(async (req, res) => {
         }
     )
         .populate("cart")
-        .populate("wishlist");
+        .populate("wishlist")
+        .populate("queries.query");
     if (getUser) res.json(getUser);
     else throw new Error("User not found");
 });
@@ -386,6 +387,7 @@ const updateAddress = asyncHandler(async (req, res) => {
 const applyCoupon = asyncHandler(async (req, res) => {
     const { _id } = req.user;
     const { couponCode } = req.body;
+    const currentTime = Date.now();
     validateMongodbId(_id);
     try {
         const user = await User.findById(_id);
@@ -394,6 +396,8 @@ const applyCoupon = asyncHandler(async (req, res) => {
         );
         if (!isValidCoupon) throw new Error("Invalid Coupon");
         const coupon = await Coupon.findById(isValidCoupon.coupon);
+        if (coupon.expiry < currentTime) throw new Error("Coupon Expired");
+        console.log("thrown Error faild");
         const discount = coupon.discount;
         const maxDiscount = coupon.maxDiscount;
         const total = user.cart.totalPrice;
@@ -495,6 +499,8 @@ const getUserCoupons = asyncHandler(async (req, res) => {
     validateMongodbId(_id);
     try {
         const user = await User.findById(_id).populate("coupons.coupon");
+        user.coupons.sort((a, b) => b.coupon.expiry - a.coupon.expiry);
+        console.log(user.coupons);
         res.json(user.coupons);
     } catch (error) {
         throw new Error(error);

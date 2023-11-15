@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
-import { getUserDetails } from "../../Redux/Thunks/userThunks";
+import { getUserDetails, updateRating } from "../../Redux/Thunks/userThunks";
 import { useDispatch, useSelector } from "react-redux";
 import findToken from "../../findToken";
 import axios from "axios";
@@ -37,7 +37,8 @@ function UpdateRating() {
                     Authorization: `Bearer ${token}`,
                 },
             });
-            setCurrentRating(response.data[0]);
+            setUserStar(response.data.star);
+            setUserComment(response.data.comment);
             return <Navigate to="/user/orders" replace />;
         } catch (error) {
             console.error("Fetch error:", error);
@@ -45,26 +46,8 @@ function UpdateRating() {
     }
     async function handleUpdateRating(e) {
         e.preventDefault();
-        const token = await findToken();
-        try {
-            const response = await axios.put(
-                `${apiUrl}/product/rating`,
-                {
-                    star: userStar,
-                    productId: id,
-                    comment: userComment,
-                },
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            );
-            navigate(-1);
-        } catch (error) {
-            console.error("Fetch error:", error);
-        }
+        dispatch(updateRating({ id, userStar, userComment }));
+        navigate(-1);
     }
     return (
         <div className="section">
@@ -87,14 +70,14 @@ function UpdateRating() {
                         Rating
                     </label>
                     <input
-                        defaultValue={currentRating && currentRating.star}
                         type="number"
                         min="1"
                         max="5"
                         step="1"
                         name="user-rating"
-                        className="form-input "
+                        className="form-input"
                         onChange={(e) => setUserStar(e.target.value)}
+                        value={userStar}
                         required
                     />
                 </div>
@@ -103,7 +86,7 @@ function UpdateRating() {
                         Review
                     </label>
                     <input
-                        defaultValue={currentRating && currentRating.comment}
+                        defaultValue={userComment}
                         type="text"
                         className="form-input"
                         name="user-review"

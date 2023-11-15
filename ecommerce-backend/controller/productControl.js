@@ -89,10 +89,8 @@ const getAProduct = asyncHandler(async (req, res) => {
 
 const searchProducts = asyncHandler(async (req, res) => {
     try {
-        const perPage = 20;
         const {
             id: searchTerm,
-            page,
             sort,
             brands,
             maxPrice,
@@ -102,7 +100,9 @@ const searchProducts = asyncHandler(async (req, res) => {
             colors,
             categories,
             category,
+            limit,
         } = req.query;
+        const page = req.query.page ? req.query.page : 1;
         const query = {
             $or: [
                 { title: { $regex: new RegExp(searchTerm, "i") } },
@@ -111,6 +111,8 @@ const searchProducts = asyncHandler(async (req, res) => {
                 { color: { $regex: new RegExp(searchTerm, "i") } },
             ],
         };
+
+        const perPage = limit ? limit : 20;
         const filters = [];
         if (brands) {
             const selectedBrands = brands.split(",");
@@ -180,12 +182,19 @@ const searchProducts = asyncHandler(async (req, res) => {
         if (sort && sortOptions[sort]) {
             sortQuery = sortOptions[sort];
         }
-        const getProduct = await Product.find(query)
+        const getProducts = await Product.find(query)
             .sort(sortQuery)
             .skip((page - 1) * perPage)
             .limit(perPage)
             .exec();
-        res.json(getProduct);
+        const moreResults = await Product.find(query)
+            .sort(sortQuery)
+            .skip(page * perPage)
+            .limit(1)
+            .countDocuments()
+            .exec();
+        const hasMoreResults = moreResults > 0;
+        res.json({ getProducts, hasMoreResults });
     } catch (error) {
         console.log(error);
         throw new Error(error);
@@ -267,7 +276,6 @@ const addToSaveLater = asyncHandler(async (req, res) => {
 const removeFromSaveLater = asyncHandler(async (req, res) => {
     const { _id } = req.user;
     const { id: productId } = req.params;
-    console.log(id);
     try {
         const user = await User.findById(_id);
         const alreadyAdded = user.wishlist.find(
@@ -282,8 +290,10 @@ const removeFromSaveLater = asyncHandler(async (req, res) => {
                 { new: true }
             );
             await user.save();
+            res.json(user.wishlist);
+        } else {
+            throw new Error("Something went wrong");
         }
-        res.json(user.wishlist);
     } catch (error) {
         throw new Error(error);
     }

@@ -18,7 +18,10 @@ const createCoupon = asyncHandler(async (req, res) => {
                 },
             }
         );
-        res.json(newCoupon);
+        const time = Date.now();
+        const allCoupons = await Coupon.find();
+        allCoupons.sort((a, b) => b.expiry - a.expiry);
+        res.json(allCoupons);
     } catch (error) {
         // console.log(error);
         throw new Error(error);
@@ -27,8 +30,10 @@ const createCoupon = asyncHandler(async (req, res) => {
 
 const getAllCoupons = asyncHandler(async (req, res) => {
     try {
-        const getCoupons = await Coupon.find();
-        res.json(getCoupons);
+        const time = Date.now();
+        const allCoupons = await Coupon.find();
+        allCoupons.sort((a, b) => b.expiry - a.expiry);
+        res.json(allCoupons);
     } catch (error) {
         throw new Error(error);
     }
@@ -55,10 +60,22 @@ const updateCoupon = asyncHandler(async (req, res) => {
             new: true,
         });
         const update = await User.updateMany(
-            {},
-            { $set: { coupons: { code: coupon.name.toUpperCase() } } }
+            {
+                coupons: { coupon: id },
+            },
+            {
+                $set: {
+                    coupons: {
+                        coupon: updCoupon._id,
+                        code: coupon.name.toUpperCase(),
+                    },
+                },
+            }
         );
-        res.json(updCoupon);
+        const time = Date.now();
+        const allCoupons = await Coupon.find();
+        allCoupons.sort((a, b) => b.expiry - a.expiry);
+        res.json(allCoupons);
     } catch (error) {
         throw new Error(error);
     }
@@ -73,7 +90,10 @@ const deleteCoupon = asyncHandler(async (req, res) => {
             {},
             { $pull: { coupons: delCoupon._id } }
         );
-        res.json(delCoupon);
+        const time = Date.now();
+        const allCoupons = await Coupon.find();
+        allCoupons.sort((a, b) => b.expiry - a.expiry);
+        res.json(allCoupons);
     } catch (error) {
         throw new Error(error);
     }

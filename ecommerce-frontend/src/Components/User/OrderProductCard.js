@@ -6,7 +6,6 @@ import "../../styles/orders.css";
 import findToken from "../../findToken";
 import axios from "axios";
 import apiUrl from "../../apiUrl";
-import { BiSolidEditAlt } from "react-icons/bi";
 function OrderProductCard(props) {
     const { item } = props;
     const [currentRating, setCurrentRating] = useState({
@@ -33,7 +32,6 @@ function OrderProductCard(props) {
                 }
             );
             setCurrentRating(response.data);
-
             return <Navigate to="/user/orders" replace />;
         } catch (error) {
             console.error("Fetch error:", error);

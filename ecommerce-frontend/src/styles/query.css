@@ -1,0 +1,24 @@
+.query-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+.query-card {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    background-color: var(--highlight-bg-color);
+}
+
+.query-title {
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+.query-status {
+    font-weight: 500;
+}
+.query-info {
+    /* max-height: 3rem;
+    overflow: hidden; */
+}

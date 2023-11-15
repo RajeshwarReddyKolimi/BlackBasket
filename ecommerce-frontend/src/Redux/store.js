@@ -9,6 +9,7 @@ import colorSlice from "./Reducers/colorSlice";
 import categorySlice from "./Reducers/categorySlice";
 import sliderSlice from "./Reducers/sliderSlice";
 import globalSlice from "./Reducers/globalSlice";
+import homeListSlice from "./Reducers/homeListSlice";
 const store = configureStore({
     reducer: {
         user: userSlice.reducer,
@@ -21,6 +22,7 @@ const store = configureStore({
         color: colorSlice.reducer,
         category: categorySlice.reducer,
         slider: sliderSlice.reducer,
+        homeList: homeListSlice.reducer,
     },
 });
 export default store;

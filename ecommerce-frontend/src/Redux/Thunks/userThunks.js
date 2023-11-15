@@ -294,7 +294,6 @@ export const removeFromSaveLater = createAsyncThunk(
                     },
                 }
             );
-
             dispatch(setSuccessMessage("Removed from save for later"));
             return response.data;
         } catch (error) {
@@ -440,6 +439,57 @@ export const createOrder = createAsyncThunk(
     }
 );
 
+export const updateRating = createAsyncThunk(
+    "/user/delete",
+    async ({ id, userStar, userComment }, { dispatch, rejectWithValue }) => {
+        const token = await findToken();
+        try {
+            const response = await axios.put(
+                `${apiUrl}/product/rating`,
+                {
+                    star: userStar,
+                    productId: id,
+                    comment: userComment,
+                },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+            dispatch(setSuccessMessage("Rating Updated"));
+            return response.data;
+        } catch (error) {
+            dispatch(setErrorMessage("Something went wrong: Try again"));
+            console.error("Fetch error:", error);
+            return rejectWithValue(error.message);
+        }
+    }
+);
+export const deleteAddress = createAsyncThunk(
+    "/user/address/delete",
+    async ({ id }, { dispatch, rejectWithValue }) => {
+        try {
+            const token = await findToken();
+            const response = await axios.delete(
+                `${apiUrl}/user/address/${id}`,
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+            dispatch(setSuccessMessage("Address Deleted"));
+            return response.data;
+        } catch (error) {
+            dispatch(setErrorMessage("Something went wrong: Try again"));
+            console.error("Fetch error:", error);
+            return rejectWithValue(error.message);
+        }
+    }
+);
 export const deleteAccount = createAsyncThunk(
     "/user/delete",
     async (credentials, { dispatch, rejectWithValue }) => {

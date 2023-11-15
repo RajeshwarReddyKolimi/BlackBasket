@@ -10,7 +10,7 @@ function AdminCoupons() {
     const couponsData = useSelector((state) => state.coupon.coupons);
     useEffect(() => {
         dispatch(getCoupons());
-    }, []);
+    }, [dispatch]);
     return (
         <div>
             <h3>All Coupons</h3>

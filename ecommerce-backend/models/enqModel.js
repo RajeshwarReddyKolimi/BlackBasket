@@ -21,10 +21,14 @@ var enquirySchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    postedBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+    },
     status: {
         type: String,
         default: "Submitted",
-        enum: ["Submitted", "Resolved", "Contacted", "In Progress"],
+        enum: ["Submitted", "Resolved", "In Progress"],
     },
 });
 

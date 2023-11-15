@@ -12,11 +12,11 @@ function UserCoupons() {
     useEffect(() => {
         dispatch(getUserDetails());
         dispatch(getUserCoupons());
-    }, []);
+    }, [dispatch]);
     if (!isUserLogged) return <Navigate to="/user/login" replace />;
     return (
-        <div>
-            <h3>My Coupons</h3>
+        <div className="section">
+            <div className="header-title">My Coupons</div>
             {couponsData && couponsData.length > 0 ? (
                 <div className="coupon-container">
                     {couponsData.map((coupon, key) => (

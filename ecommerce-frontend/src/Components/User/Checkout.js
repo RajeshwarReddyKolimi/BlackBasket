@@ -14,9 +14,13 @@ import apiUrl from "../../apiUrl";
 import "../../styles/checkout.css";
 import "../../styles/forms.css";
 import ConfirmPopup from "../ConfirmPopup";
-import { setErrorMessage } from "../../Redux/Reducers/globalSlice";
+import {
+    setErrorMessage,
+    setSuccessMessage,
+} from "../../Redux/Reducers/globalSlice";
 
 function Checkout() {
+    const currentTime = Date.now();
     const dispatch = useDispatch();
     const cartData = useSelector((state) => state.user.userData.cart);
     const userAddress = useSelector((state) => state.user.userData.address);
@@ -34,7 +38,6 @@ function Checkout() {
         dispatch(getCart());
         dispatch(getUserCoupons());
     }, [dispatch]);
-
     async function applyCoupon(e, couponCode) {
         e.preventDefault();
         try {
@@ -51,9 +54,11 @@ function Checkout() {
                     },
                 }
             );
+            dispatch(setSuccessMessage("Coupon Applied"));
             setCouponDiscount(response.data.discount);
             setFinalPrice(response.data.finalPrice);
         } catch (error) {
+            dispatch(setErrorMessage(error.response.data.message));
             setCouponDiscount(0);
             setFinalPrice(cartData.totalPrice);
             console.error("Fetch error:", error);
@@ -178,22 +183,36 @@ function Checkout() {
                     </form>
                     {coupons && (
                         <div className="coupon-list">
-                            {coupons.map((coupon, key) => (
-                                <label key={key} className="checkbox-label">
-                                    <input
-                                        type="checkbox"
-                                        value={coupon.code}
-                                        checked={selectedCoupon.includes(
-                                            coupon.code
-                                        )}
-                                        className="checkbox-input"
-                                        onChange={(e) => {
-                                            setSelectedCoupon(e.target.value);
-                                        }}
-                                    />
-                                    <div>{coupon.code}</div>
-                                </label>
-                            ))}
+                            {coupons.map((coupon, key) => {
+                                if (
+                                    !(
+                                        new Date(
+                                            coupon.coupon.expiry
+                                        ).getTime() < currentTime
+                                    )
+                                )
+                                    return (
+                                        <label
+                                            key={key}
+                                            className="checkbox-label"
+                                        >
+                                            <input
+                                                type="checkbox"
+                                                value={coupon.code}
+                                                checked={selectedCoupon.includes(
+                                                    coupon.code
+                                                )}
+                                                className="checkbox-input"
+                                                onChange={(e) => {
+                                                    setSelectedCoupon(
+                                                        e.target.value
+                                                    );
+                                                }}
+                                            />
+                                            <div>{coupon.code}</div>
+                                        </label>
+                                    );
+                            })}
                         </div>
                     )}
                     <div className="final-price-container">

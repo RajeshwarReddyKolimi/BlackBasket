@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUserDetails } from "../../Redux/Thunks/userThunks";
 import { NavLink, Navigate } from "react-router-dom";
 import UserAddressCard from "./UserAddressCard";
+import Empty from "../Empty";
 
 function UserAddress() {
     const dispatch = useDispatch();
@@ -23,10 +24,13 @@ function UserAddress() {
                 </NavLink>
             </div>
             <div className="address-container">
-                {userAddress &&
+                {userAddress && userAddress.length > 0 ? (
                     userAddress.map((address, key) => (
                         <UserAddressCard key={key} address={address} />
-                    ))}
+                    ))
+                ) : (
+                    <Empty text="No Saved Addresses" />
+                )}
             </div>
         </div>
     );

@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
-import { getUserDetails } from "../../Redux/Thunks/userThunks";
+import { getUserDetails, updateRating } from "../../Redux/Thunks/userThunks";
 import { useDispatch, useSelector } from "react-redux";
-import findToken from "../../findToken";
-import axios from "axios";
 import "../../styles/forms.css";
-import apiUrl from "../../apiUrl";
 
 function UserRating() {
     const navigate = useNavigate();
@@ -20,26 +17,8 @@ function UserRating() {
     if (!isUserLogged) return <Navigate to="/user/login" replace />;
     async function handleUpdateRating(e) {
         e.preventDefault();
-        const token = await findToken();
-        try {
-            const response = await axios.put(
-                `${apiUrl}/product/rating`,
-                {
-                    star: userStar,
-                    productId: id,
-                    comment: userComment,
-                },
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            );
-            navigate(-1);
-        } catch (error) {
-            console.error("Fetch error:", error);
-        }
+        dispatch(updateRating({ id, userStar, userComment }));
+        navigate(-1);
     }
     return (
         <div className="section">

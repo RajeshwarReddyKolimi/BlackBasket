@@ -1,24 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-    addToCart,
-    getUserDetails,
-    toWishlist,
-} from "../../Redux/Thunks/userThunks";
-import { uploadProductImages } from "../../Redux/Thunks/productThunks";
+import { addToCart, getUserDetails } from "../../Redux/Thunks/userThunks";
 import "../../styles/product.css";
 import { AiFillHeart, AiFillStar } from "react-icons/ai";
 import { NavLink, Navigate, useNavigate } from "react-router-dom";
-import ConfirmPopup from "../ConfirmPopup";
-import findToken from "../../findToken";
-import axios from "axios";
-import apiUrl from "../../apiUrl";
-import { addItem } from "../../Redux/Reducers/authSlice";
 import { MdVerified } from "react-icons/md";
-import {
-    setErrorMessage,
-    setSuccessMessage,
-} from "../../Redux/Reducers/globalSlice";
 
 function ProductCard(props) {
     const navigate = useNavigate();

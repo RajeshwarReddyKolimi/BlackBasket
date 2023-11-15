@@ -1,5 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { createCoupon, deleteCoupon, getCoupons } from "../Thunks/couponThunks";
+import {
+    createCoupon,
+    deleteCoupon,
+    getCoupons,
+    updateCoupon,
+} from "../Thunks/couponThunks";
 const couponSlice = createSlice({
     name: "Coupon",
     initialState: {
@@ -17,15 +22,19 @@ const couponSlice = createSlice({
 
         builder.addCase(createCoupon.pending, setLoadingState);
         builder.addCase(createCoupon.fulfilled, (state, action) => {
-            state.coupons.push(action.payload);
+            state.coupons = action.payload;
         });
         builder.addCase(createCoupon.rejected, (state, action) => {});
 
+        builder.addCase(updateCoupon.pending, setLoadingState);
+        builder.addCase(updateCoupon.fulfilled, (state, action) => {
+            state.coupons = action.payload;
+        });
+        builder.addCase(updateCoupon.rejected, (state, action) => {});
+
         builder.addCase(deleteCoupon.pending, setLoadingState);
         builder.addCase(deleteCoupon.fulfilled, (state, action) => {
-            state.coupons = state.coupons.filter(
-                (coupon) => coupon._id !== action.payload._id
-            );
+            state.coupons = action.payload;
         });
         builder.addCase(deleteCoupon.rejected, (state, action) => {});
     },

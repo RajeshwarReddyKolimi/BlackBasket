@@ -134,19 +134,7 @@ const userSchema = new mongoose.Schema(
         ],
         queries: [
             {
-                subject: {
-                    type: String,
-                    required: true,
-                },
-                description: {
-                    type: String,
-                    required: true,
-                },
-                status: {
-                    type: String,
-                    default: "Submitted",
-                    enum: ["Submitted", "Resolved", "Contacted", "In Progress"],
-                },
+                query: { type: mongoose.Schema.Types.ObjectId, ref: "Enquiry" },
             },
         ],
         passwordChangedAt: Date,

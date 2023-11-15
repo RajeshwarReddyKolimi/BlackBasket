@@ -1,11 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
 import "../../styles/slider.css";
 import { SlArrowRight, SlArrowLeft } from "react-icons/sl";
-import { Link } from "react-router-dom";
-import { AiFillStar } from "react-icons/ai";
+import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getSliders } from "../../Redux/Thunks/sliderThunks";
-import apiUrl, { pageUrl } from "../../apiUrl";
+import { pageUrl } from "../../apiUrl";
 export default function Slider() {
     const dispatch = useDispatch();
     const sliderRef = useRef(null);
@@ -50,8 +49,8 @@ export default function Slider() {
                 }}
             >
                 {sliders.map((slider, key) => (
-                    <Link
-                        to={`${pageUrl}/${slider && slider.link}`}
+                    <NavLink
+                        to={`${pageUrl}${slider && slider.link}`}
                         key={key}
                         className="slider-item"
                     >
@@ -63,7 +62,8 @@ export default function Slider() {
                                 <div className="slider-1">{slider.first}</div>
                                 <div className="slider-2">{slider.second}</div>
                                 <div className="slider-3">{slider.third}</div>
-                                <div className="tc">t&c apply</div>
+
+                                <div className="tc">t&c apply </div>
                             </div>
                             <img
                                 className="slider-img"
@@ -71,7 +71,7 @@ export default function Slider() {
                                 alt="Image"
                             />
                         </div>
-                    </Link>
+                    </NavLink>
                 ))}
             </div>
             <SlArrowLeft onClick={slideprev} className="slider-prev" />

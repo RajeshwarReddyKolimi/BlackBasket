@@ -19,6 +19,7 @@ import {
     getUserCoupons,
     addToSaveLater,
     removeFromSaveLater,
+    deleteAddress,
 } from "../Thunks/userThunks";
 import { createQuery } from "../Thunks/enquiryThunks";
 
@@ -166,9 +167,14 @@ const userSlice = createSlice({
         builder.addCase(getWishlist.pending, setLoadingState);
         builder.addCase(getWishlist.fulfilled, (state, action) => {
             state.userData.wishlist = action.payload;
-            state.userData.wishlistSize = state.userData.wishlist.length;
         });
         builder.addCase(getWishlist.rejected, (state, action) => {});
+
+        builder.addCase(deleteAddress.pending, setLoadingState);
+        builder.addCase(deleteAddress.fulfilled, (state, action) => {
+            state.userData.address = action.payload;
+        });
+        builder.addCase(deleteAddress.rejected, (state, action) => {});
 
         builder.addCase(deleteAccount.pending, setLoadingState);
         builder.addCase(deleteAccount.fulfilled, (state, action) => {

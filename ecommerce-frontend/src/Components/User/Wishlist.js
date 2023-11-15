@@ -11,7 +11,7 @@ function Wishlist() {
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(getWishlist());
-    }, []);
+    }, [dispatch]);
     const wishlistData = useSelector((state) => state.user.userData.wishlist);
     const isUserLogged = useSelector((state) => state.user.isUserLogged);
     if (!isUserLogged) return <Navigate to="/user/login" replace />;

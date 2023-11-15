@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { NavLink, Navigate } from "react-router-dom";
-import "../../styles/product.css";
+import "../../styles/query.css";
 import { getUserDetails } from "../../Redux/Thunks/userThunks";
 import Empty from "../Empty";
 
@@ -22,11 +22,18 @@ function UserSupport() {
                 <div className="header-title">Queries</div>
             </div>
             {queries && queries.length > 0 ? (
-                <div className="products-container">
+                <div className="query-container">
                     {queries.map((item, key) => (
-                        <div key={key}>
-                            <h5>{item && item.subject}</h5>
-                            <div>{item && item.description} </div>
+                        <div className="query-card" key={key}>
+                            <div className="query-title">
+                                {item.query && item.query.subject}
+                            </div>
+                            <div className={`query-status `}>
+                                {item.query && item.query.status}
+                            </div>
+                            <div className="query-info">
+                                {item.query && item.query.description}{" "}
+                            </div>
                         </div>
                     ))}
                 </div>

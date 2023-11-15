@@ -13,6 +13,8 @@ import "../../styles/search.css";
 import "../../styles/forms.css";
 import { BsChevronDown, BsMenuDown, BsSortDown } from "react-icons/bs";
 import { AiOutlineClose } from "react-icons/ai";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+
 import Empty from "../Empty";
 function ProductSearchPage() {
     const dispatch = useDispatch();
@@ -30,15 +32,16 @@ function ProductSearchPage() {
     const [showBrands, setShowBrands] = useState(false);
     const [showColors, setShowColors] = useState(false);
     const [showCategories, setShowCategories] = useState(false);
-
+    const [page, setPage] = useState(1);
     const [searchParams, setSearchParams] = useSearchParams();
     const id = searchParams.get("id");
     const [searchResult, setSearchResult] = useState();
 
     const [showFilters, setShowFilters] = useState(false);
+    const [moreResults, setMoreResults] = useState(true);
 
     const [query, setQuery] = useState(
-        `sort=${sortBy}&brands=${selectedBrands}&minPrice=${selectedMinPrice}&maxPrice=${selectedMaxPrice}&colors=${selectedColors}&categories=${selectedCategories}&discount=${selectedDiscount}&star=${selectedStar}`
+        `page=${page}&sort=${sortBy}&brands=${selectedBrands}&minPrice=${selectedMinPrice}&maxPrice=${selectedMaxPrice}&colors=${selectedColors}&categories=${selectedCategories}&discount=${selectedDiscount}&star=${selectedStar}`
     );
     const reset = () => {
         setSelectedMaxPrice("");
@@ -89,11 +92,12 @@ function ProductSearchPage() {
     }, []);
     useEffect(() => {
         search();
-    }, [id]);
+    }, [id, page]);
 
     useEffect(() => {
         setQuery(
-            `sort=${sortBy}&brands=${selectedBrands}&minPrice=${selectedMinPrice}&maxPrice=${selectedMaxPrice}&colors=${selectedColors}&categories=${selectedCategories}&discount=${selectedDiscount}&star=${selectedStar}`
+            (query) =>
+                `sort=${sortBy}&brands=${selectedBrands}&minPrice=${selectedMinPrice}&maxPrice=${selectedMaxPrice}&colors=${selectedColors}&categories=${selectedCategories}&discount=${selectedDiscount}&star=${selectedStar}`
         );
     }, [
         sortBy,
@@ -104,6 +108,7 @@ function ProductSearchPage() {
         selectedMaxPrice,
         selectedStar,
         selectedDiscount,
+        page,
     ]);
 
     function handleFilter(e) {
@@ -111,18 +116,26 @@ function ProductSearchPage() {
         search();
     }
 
+    async function handlePrev() {
+        setPage((prevPage) => prevPage - 1);
+    }
+
+    async function handleNext() {
+        setPage((prevPage) => prevPage + 1);
+    }
     async function search() {
         try {
             const token = await findToken();
             const response = await axios.get(
-                `${apiUrl}/product/search?id=${id}&${query}`,
+                `${apiUrl}/product/search?id=${id}&${query}&page=${page}`,
                 {
                     headers: {
                         "Content-Type": "application/json",
                     },
                 }
             );
-            setSearchResult(response.data);
+            setSearchResult(response.data.getProducts);
+            setMoreResults(response.data.hasMoreResults);
         } catch (error) {
             console.error("Fetch error:", error);
         }
@@ -374,7 +387,29 @@ function ProductSearchPage() {
             ></div>
             <div className="filter-result-container section">
                 <div className="section-header">
-                    <div className="header-title">{id}</div>
+                    {/* <div className="button-container">
+                        <button
+                            className={` button-icon ${
+                                page <= 1 && "button-disabled"
+                            }`}
+                            onClick={() => {
+                                if (page > 1) handlePrev();
+                            }}
+                        >
+                            <FiChevronLeft className="react-icon" />
+                        </button>
+                        <span>{page}</span>
+                        <button
+                            className={` button-icon ${
+                                !moreResults && "button-disabled"
+                            }`}
+                            onClick={() => {
+                                if (moreResults) handleNext();
+                            }}
+                        >
+                            <FiChevronRight className="react-icon" />
+                        </button>
+                    </div> */}
                     <button
                         className="filter-button button"
                         onClick={() => {
@@ -385,6 +420,7 @@ function ProductSearchPage() {
                         <BsSortDown />
                     </button>
                 </div>
+
                 <div className="products-container">
                     {searchResult && searchResult.length > 0 ? (
                         searchResult.map((product, key) => (
@@ -393,6 +429,29 @@ function ProductSearchPage() {
                     ) : (
                         <Empty text="No results" />
                     )}
+                </div>
+                <div className="button-container">
+                    <button
+                        className={` button-icon ${
+                            page <= 1 && "button-disabled"
+                        }`}
+                        onClick={() => {
+                            if (page > 1) handlePrev();
+                        }}
+                    >
+                        <FiChevronLeft className="react-icon" />
+                    </button>
+                    <span>{page}</span>
+                    <button
+                        className={` button-icon ${
+                            !moreResults && "button-disabled"
+                        }`}
+                        onClick={() => {
+                            if (moreResults) handleNext();
+                        }}
+                    >
+                        <FiChevronRight className="react-icon" />
+                    </button>
                 </div>
             </div>
         </div>

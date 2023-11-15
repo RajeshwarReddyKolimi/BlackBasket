@@ -18,21 +18,24 @@ function AdminAddCoupon() {
         navigate(-1);
     }
     return (
-        <div>
+        <div className="section">
+            <div className="section-header">
+                <div className="header-title">Add Coupon</div>
+            </div>
             <form
                 onSubmit={(e) => {
                     handleAddCoupon(e);
                 }}
-                className="add-product-form"
+                className="form"
             >
-                <div className="product-form-item">
-                    <label for="product-name" className="product-form-label">
+                <div className="form-item">
+                    <label for="product-name" className="form-label">
                         Code
                     </label>
                     <input
                         type="text"
                         name="product-name"
-                        className="product-form-input"
+                        className="form-input"
                         onChange={(e) =>
                             setCoupon((prev) => {
                                 return { ...prev, name: e.target.value };
@@ -41,17 +44,14 @@ function AdminAddCoupon() {
                         required
                     />
                 </div>
-                <div className="product-form-item">
-                    <label
-                        for="product-discount"
-                        className="product-form-label"
-                    >
+                <div className="form-item">
+                    <label for="product-discount" className="form-label">
                         Discount
                     </label>
                     <input
                         type="number"
                         name="product-discount"
-                        className="product-form-input"
+                        className="form-input"
                         onChange={(e) =>
                             setCoupon((prev) => {
                                 return { ...prev, discount: e.target.value };
@@ -62,17 +62,14 @@ function AdminAddCoupon() {
                         required
                     />
                 </div>
-                <div className="product-form-item">
-                    <label
-                        for="product-maxDiscount"
-                        className="product-form-label"
-                    >
+                <div className="form-item">
+                    <label for="product-maxDiscount" className="form-label">
                         Maximum Discount
                     </label>
                     <input
                         type="number"
                         name="product-maxDiscount"
-                        className="product-form-input"
+                        className="form-input"
                         onChange={(e) =>
                             setCoupon((prev) => {
                                 return { ...prev, maxDiscount: e.target.value };
@@ -81,14 +78,14 @@ function AdminAddCoupon() {
                         min={1}
                     />
                 </div>
-                <div className="product-form-item">
-                    <label for="coupon-expiry" className="product-form-label">
+                <div className="form-item">
+                    <label for="coupon-expiry" className="form-label">
                         Expiry
                     </label>
                     <input
                         type="date"
                         name="coupon-expiry"
-                        className="product-form-input"
+                        className="form-input"
                         onChange={(e) =>
                             setCoupon((prev) => {
                                 return { ...prev, expiry: e.target.value };

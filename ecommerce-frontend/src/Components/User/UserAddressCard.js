@@ -2,11 +2,8 @@ import React, { useState } from "react";
 import { NavLink, Navigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import "../../styles/address.css";
-import axios from "axios";
-import findToken from "../../findToken";
-import apiUrl from "../../apiUrl";
-import { updateAddress } from "../../Redux/Reducers/authSlice";
 import ConfirmPopup from "../ConfirmPopup";
+import { deleteAddress } from "../../Redux/Thunks/userThunks";
 function UserAddressCard(props) {
     const [showConfirmPopup, setShowConfirmPopup] = useState(false);
     const dispatch = useDispatch();
@@ -22,22 +19,8 @@ function UserAddressCard(props) {
     }${address.landmark ? address.landmark + "\n" : ""}${
         address.pincode ? address.pincode + "\n" : ""
     }${address.mobile}`;
-    async function deleteAddress() {
-        try {
-            const token = await findToken();
-            const response = await axios.delete(
-                `${apiUrl}/user/address/${address._id}`,
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            );
-            dispatch(updateAddress(response.data));
-        } catch (error) {
-            console.log(error);
-        }
+    async function dltAddress() {
+        dispatch(deleteAddress({ id: address._id }));
     }
     return (
         <div className="address-item">
@@ -58,7 +41,7 @@ function UserAddressCard(props) {
                 </button>
                 {showConfirmPopup && (
                     <ConfirmPopup
-                        action={deleteAddress}
+                        action={dltAddress}
                         text="Are you sure you want to delete this Address?"
                         setShowConfirmPopup={setShowConfirmPopup}
                     />
