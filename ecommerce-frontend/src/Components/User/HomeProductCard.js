@@ -1,13 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-    addToCart,
-    getUserDetails,
-    toWishlist,
-} from "../../Redux/Thunks/userThunks";
+import { addToCart, getUserDetails } from "../../Redux/Thunks/userThunks";
 import "../../styles/home.css";
-import { AiFillHeart, AiFillStar } from "react-icons/ai";
-import { NavLink, Navigate, useNavigate } from "react-router-dom";
+import { AiFillStar } from "react-icons/ai";
+import { NavLink, useNavigate } from "react-router-dom";
 import { MdVerified } from "react-icons/md";
 function HomeProductCard(props) {
     const navigate = useNavigate();
@@ -36,7 +32,7 @@ function HomeProductCard(props) {
                                 ? item.images[0]
                                 : ""
                         }`}
-                        alt="image"
+                        alt=""
                         className="home-product-card-poster-image"
                     />
                 </div>

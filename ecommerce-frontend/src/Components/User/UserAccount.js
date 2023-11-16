@@ -15,7 +15,7 @@ function UserAccount() {
     const isUserLogged = useSelector((state) => state.user.isUserLogged);
     useEffect(() => {
         dispatch(getUserDetails());
-    }, []);
+    }, [dispatch]);
     if (!isUserLogged) return <Navigate to="/user/login" replace />;
     function logout() {
         dispatch(userLogout());
@@ -36,19 +36,13 @@ function UserAccount() {
                     <div className="account-option-header">Profile</div>
                     <div>Edit Name, Email, Mobile</div>
                 </NavLink>
-                <NavLink to="#" className={"account-options-items"}>
-                    <div className="account-option-header">
-                        Login and Security
-                    </div>
-                    <div>Edit Password, Security Options</div>
-                </NavLink>
                 <NavLink to="/user/orders" className={"account-options-items"}>
-                    <div className="account-option-header">Your Orders</div>
+                    <div className="account-option-header">Orders</div>
                     <div>View, Track all your Orders</div>
                 </NavLink>
                 <NavLink to="/user/address" className={"account-options-items"}>
-                    <div className="account-option-header">Your Addresses</div>
-                    <div>Add, delete, update your addresses</div>
+                    <div className="account-option-header">Address</div>
+                    <div>View, add, delete, update your addresses</div>
                 </NavLink>
                 <NavLink to="/user/coupons" className={"account-options-items"}>
                     <div className="account-option-header">Coupons</div>
@@ -56,7 +50,7 @@ function UserAccount() {
                 </NavLink>
                 <NavLink to="/user/support" className={"account-options-items"}>
                     <div className="account-option-header">Support</div>
-                    <div>Mail your Query</div>
+                    <div>View Tickets</div>
                 </NavLink>
             </div>
             <div className="button-container-flex">

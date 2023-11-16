@@ -1,33 +1,11 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, NavLink, Navigate, useParams } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import { deleteProduct, getProducts } from "../../Redux/Thunks/productThunks";
 import { AiFillStar } from "react-icons/ai";
-import { IoIosShareAlt } from "react-icons/io";
-import {
-    addToCart,
-    getUserDetails,
-    toWishlist,
-} from "../../Redux/Thunks/userThunks";
-import { MdDelete, MdEmail, MdVerified } from "react-icons/md";
+import { MdDelete, MdVerified } from "react-icons/md";
 import Empty from "../Empty";
-import {
-    TwitterShareButton,
-    TelegramShareButton,
-    LinkedinShareButton,
-    FacebookShareButton,
-    EmailShareButton,
-    WhatsappShareButton,
-} from "react-share";
-import {
-    BsClipboard,
-    BsFacebook,
-    BsLinkedin,
-    BsTelegram,
-    BsTwitter,
-    BsWhatsapp,
-} from "react-icons/bs";
-import { BiCopy, BiEdit } from "react-icons/bi";
+import { BiEdit } from "react-icons/bi";
 import ProductReviewCard from "../Products/ProductReviewCard";
 
 function AdminProductPage() {
@@ -35,14 +13,13 @@ function AdminProductPage() {
     const { id } = useParams();
     useEffect(() => {
         dispatch(getProducts());
-    }, []);
+    }, [dispatch, id]);
 
     function deleteProd() {
         dispatch(deleteProduct(id));
     }
     const products = useSelector((state) => state.product.products);
     const product = products.find((item) => item._id.toString() === id);
-    const productLink = `http://localhost:3000/product/${id}`;
     return (
         <div className="product-page">
             <div className="product-page-image-container">

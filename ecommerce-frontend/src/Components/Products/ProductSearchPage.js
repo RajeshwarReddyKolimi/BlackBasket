@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import findToken from "../../findToken";
 import ProductCard from "./ProductCard";
 import axios from "axios";
 import "../../styles/product.css";
@@ -11,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import apiUrl from "../../apiUrl";
 import "../../styles/search.css";
 import "../../styles/forms.css";
-import { BsChevronDown, BsMenuDown, BsSortDown } from "react-icons/bs";
+import { BsChevronDown, BsSortDown } from "react-icons/bs";
 import { AiOutlineClose } from "react-icons/ai";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
@@ -41,7 +40,7 @@ function ProductSearchPage() {
     const [moreResults, setMoreResults] = useState(true);
 
     const [query, setQuery] = useState(
-        `page=${page}&sort=${sortBy}&brands=${selectedBrands}&minPrice=${selectedMinPrice}&maxPrice=${selectedMaxPrice}&colors=${selectedColors}&categories=${selectedCategories}&discount=${selectedDiscount}&star=${selectedStar}`
+        `sort=${sortBy}&brands=${selectedBrands}&minPrice=${selectedMinPrice}&maxPrice=${selectedMaxPrice}&colors=${selectedColors}&categories=${selectedCategories}&discount=${selectedDiscount}&star=${selectedStar}`
     );
     const reset = () => {
         setSelectedMaxPrice("");
@@ -89,7 +88,7 @@ function ProductSearchPage() {
         dispatch(getCategories());
         dispatch(getColors());
         dispatch(getBrands());
-    }, []);
+    }, [dispatch]);
     useEffect(() => {
         search();
     }, [id, page]);
@@ -125,7 +124,6 @@ function ProductSearchPage() {
     }
     async function search() {
         try {
-            const token = await findToken();
             const response = await axios.get(
                 `${apiUrl}/product/search?id=${id}&${query}&page=${page}`,
                 {
@@ -387,29 +385,6 @@ function ProductSearchPage() {
             ></div>
             <div className="filter-result-container section">
                 <div className="section-header">
-                    {/* <div className="button-container">
-                        <button
-                            className={` button-icon ${
-                                page <= 1 && "button-disabled"
-                            }`}
-                            onClick={() => {
-                                if (page > 1) handlePrev();
-                            }}
-                        >
-                            <FiChevronLeft className="react-icon" />
-                        </button>
-                        <span>{page}</span>
-                        <button
-                            className={` button-icon ${
-                                !moreResults && "button-disabled"
-                            }`}
-                            onClick={() => {
-                                if (moreResults) handleNext();
-                            }}
-                        >
-                            <FiChevronRight className="react-icon" />
-                        </button>
-                    </div> */}
                     <button
                         className="filter-button button"
                         onClick={() => {

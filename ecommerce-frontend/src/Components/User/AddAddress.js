@@ -11,13 +11,63 @@ function AddAddress() {
         houseNo: "",
         street: "",
         village: "",
-        City: "",
+        city: "",
         landmark: "",
         pincode: "",
         mobile: "",
     });
+    const [errors, setErrors] = useState({
+        userName: "",
+        houseNo: "",
+        city: "",
+        pincode: "",
+        mobile: "",
+    });
+
+    const validatePincode = (pincode) => {
+        const pincodePattern = /^\d{6}$/;
+        return pincodePattern.test(pincode);
+    };
+
+    const validateMobile = (mobile) => {
+        const mobilePattern = /^\d{10}$/;
+        return mobilePattern.test(mobile);
+    };
     function addAddress(e) {
         e.preventDefault();
+        if (address.userName.trim() === "") {
+            setErrors((prev) => ({ ...prev, userName: "required" }));
+            return;
+        }
+        if (address.houseNo.trim() === "") {
+            setErrors((prev) => ({ ...prev, houseNo: "required" }));
+            return;
+        }
+        if (address.city.trim() === "") {
+            setErrors((prev) => ({ ...prev, city: "required" }));
+            return;
+        }
+        if (address.pincode.trim() === "") {
+            setErrors((prev) => ({ ...prev, pincode: "required" }));
+            return;
+        }
+        if (address.mobile.trim() === "") {
+            setErrors((prev) => ({ ...prev, mobile: "required" }));
+            return;
+        }
+        if (!validatePincode(address.pincode)) {
+            setErrors((prev) => ({ ...prev, pincode: "Invalid pincode" }));
+            return;
+        }
+        if (!validateMobile(address.mobile)) {
+            setErrors((prev) => ({ ...prev, mobile: "Invalid mobile number" }));
+            return;
+        }
+        setErrors({
+            email: "",
+            password: "",
+        });
+
         dispatch(addUserAddress(address));
         navigate(-1);
     }
@@ -39,7 +89,10 @@ function AddAddress() {
             </div>
             <form onSubmit={(e) => addAddress(e)} className="form">
                 <div className="form-item">
-                    <label for="address-userName" className="form-label">
+                    <label
+                        for="address-userName"
+                        className="form-label form-required"
+                    >
                         {" "}
                         UserName :{" "}
                     </label>
@@ -48,29 +101,37 @@ function AddAddress() {
                         type="text"
                         name="address-userName"
                         className="form-input"
-                        onChange={(e) =>
+                        onChange={(e) => {
                             setAddress((prev) => {
                                 return { ...prev, userName: e.target.value };
-                            })
-                        }
+                            });
+                            setErrors((prev) => ({ ...prev, userName: "" }));
+                        }}
                     />
+                    <span className="form-error">{errors.userName}</span>
                 </div>
                 <div className="form-item">
-                    <label for="address-house" className="form-label">
+                    <label
+                        for="address-house"
+                        className="form-label form-required"
+                    >
                         {" "}
-                        House no. :{" "}
+                        House/ Room no./ Apartment :{" "}
                     </label>
 
                     <input
                         type="text"
                         name="address-house"
                         className="form-input"
-                        onChange={(e) =>
+                        onChange={(e) => {
                             setAddress((prev) => {
                                 return { ...prev, houseNo: e.target.value };
-                            })
-                        }
+                            });
+
+                            setErrors((prev) => ({ ...prev, houseNo: "" }));
+                        }}
                     />
+                    <span className="form-error">{errors.houseNo}</span>
                 </div>
                 <div className="form-item">
                     <label for="address-street" className="form-label">
@@ -90,24 +151,10 @@ function AddAddress() {
                     />
                 </div>
                 <div className="form-item">
-                    <label for="address-village" className="form-label">
-                        {" "}
-                        Village :{" "}
-                    </label>
-
-                    <input
-                        type="text"
-                        name="address-village"
-                        className="form-input"
-                        onChange={(e) =>
-                            setAddress((prev) => {
-                                return { ...prev, village: e.target.value };
-                            })
-                        }
-                    />
-                </div>
-                <div className="form-item">
-                    <label for="address-city" className="form-label">
+                    <label
+                        for="address-city"
+                        className="form-label form-required"
+                    >
                         {" "}
                         City :{" "}
                     </label>
@@ -116,12 +163,15 @@ function AddAddress() {
                         type="text"
                         name="address-city"
                         className="form-input"
-                        onChange={(e) =>
+                        onChange={(e) => {
                             setAddress((prev) => {
                                 return { ...prev, city: e.target.value };
-                            })
-                        }
+                            });
+
+                            setErrors((prev) => ({ ...prev, city: "" }));
+                        }}
                     />
+                    <span className="form-error">{errors.city}</span>
                 </div>
                 <div className="form-item">
                     <label for="address-landmark" className="form-label">
@@ -141,7 +191,10 @@ function AddAddress() {
                     />
                 </div>
                 <div className="form-item">
-                    <label for="address-pincode" className="form-label">
+                    <label
+                        for="address-pincode"
+                        className="form-label form-required"
+                    >
                         {" "}
                         Pincode :{" "}
                     </label>
@@ -150,15 +203,21 @@ function AddAddress() {
                         type="text"
                         name="address-pincode"
                         className="form-input"
-                        onChange={(e) =>
+                        onChange={(e) => {
                             setAddress((prev) => {
                                 return { ...prev, pincode: e.target.value };
-                            })
-                        }
+                            });
+
+                            setErrors((prev) => ({ ...prev, pincode: "" }));
+                        }}
                     />
+                    <span className="form-error">{errors.pincode}</span>
                 </div>
                 <div className="form-item">
-                    <label for="address-mobile" className="form-label">
+                    <label
+                        for="address-mobile"
+                        className="form-label form-required"
+                    >
                         {" "}
                         Mobile no. :{" "}
                     </label>
@@ -167,12 +226,15 @@ function AddAddress() {
                         type="text"
                         name="address-mobile"
                         className="form-input"
-                        onChange={(e) =>
+                        onChange={(e) => {
                             setAddress((prev) => {
                                 return { ...prev, mobile: e.target.value };
-                            })
-                        }
+                            });
+
+                            setErrors((prev) => ({ ...prev, mobile: "" }));
+                        }}
                     />
+                    <span className="form-error">{errors.mobile}</span>
                 </div>
             </form>
         </div>

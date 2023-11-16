@@ -1,10 +1,7 @@
 import React, { useState } from "react";
-import {
-    createProduct,
-    uploadProductImages,
-} from "../../Redux/Thunks/productThunks";
-import { Navigate, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { createProduct } from "../../Redux/Thunks/productThunks";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 function AdminAddProduct() {
     const navigate = useNavigate();

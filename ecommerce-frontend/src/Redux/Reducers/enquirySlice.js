@@ -1,5 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { createQuery } from "../Thunks/enquiryThunks";
+import { createSlice } from "@reduxjs/toolkit";
 
 const enquirySlice = createSlice({
     name: "Enquiry",
@@ -11,8 +10,5 @@ const enquirySlice = createSlice({
         description: "",
     },
     reducers: {},
-    extraReducers: (builder) => {
-        const setLoadingState = (state) => {};
-    },
 });
 export default enquirySlice;

@@ -1,13 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Navigate, useParams } from "react-router-dom";
-import ProductCard from "../Products/ProductCard";
-import CartCard from "./CartCard";
 import "../../styles/orders.css";
 import "../../styles/address.css";
-import UserAddressCard from "./UserAddressCard";
-import UserCouponCard from "./UserCouponCard";
-import findToken from "../../findToken";
 import axios from "axios";
 import apiUrl from "../../apiUrl";
 import OrderProductCard from "./OrderProductCard";
@@ -15,16 +10,12 @@ function UserOrderCard() {
     const { id } = useParams();
     useEffect(() => {
         getUserOrderById(id);
-    }, []);
+    }, [id]);
     const [order, setOrder] = useState({});
     async function getUserOrderById(id) {
         try {
-            const token = await findToken();
             const response = await axios.get(`${apiUrl}/user/orders/${id}`, {
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
+                withCredentials: true,
             });
             setOrder(response.data);
         } catch (error) {

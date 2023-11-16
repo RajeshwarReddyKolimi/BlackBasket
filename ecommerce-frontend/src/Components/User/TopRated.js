@@ -15,7 +15,7 @@ function TopRated() {
         dispatch(topRated());
     }
     return (
-        <div className="home-section">
+        <div className="home-section home-section-last">
             <span className="home-header-title">Top Rated</span>
             <div className="home-products-container">
                 {productsData &&

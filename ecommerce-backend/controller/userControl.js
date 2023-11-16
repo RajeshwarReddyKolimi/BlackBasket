@@ -19,9 +19,9 @@ const createUser = asyncHandler(async (req, res) => {
         if (!findUser) {
             const newUser = new User(userDetails);
             const coupons = await Coupon.find({});
-            const couponIds = coupons.map((coupon) => coupon._id);
-
-            newUser.coupons = couponIds;
+            newUser.coupons = coupons.map((coupon) => {
+                return { coupon: coupon._id, code: coupon.name };
+            });
             const updUser = await newUser.save();
 
             const refreshToken = await generateRefreshToken(newUser._id);
@@ -134,21 +134,21 @@ const logoutUser = asyncHandler(async (req, res) => {
 });
 
 const updateUser = asyncHandler(async (req, res) => {
-    const { id } = req.user;
-    validateMongodbId(id);
+    const { _id } = req.user;
+    validateMongodbId(_id);
     try {
         const isEmail = await User.findOne({ email: req.body.email });
-        if (isEmail && isEmail._id.toString() !== id.toString()) {
+        if (isEmail && isEmail._id.toString() !== _id.toString()) {
             throw new Error("Email already exists");
             res.status(500);
         }
         const isMobile = await User.findOne({ mobile: req.body.mobile });
-        if (isMobile && isMobile._id.toString() !== id.toString()) {
+        if (isMobile && isMobile._id.toString() !== _id.toString()) {
             throw new Error("Mobile no. already exists");
             res.status(500);
         }
         const updUser = await User.findByIdAndUpdate(
-            id,
+            _id,
             {
                 firstName: req?.body.firstName,
                 lastName: req?.body.lastName,
@@ -500,7 +500,6 @@ const getUserCoupons = asyncHandler(async (req, res) => {
     try {
         const user = await User.findById(_id).populate("coupons.coupon");
         user.coupons.sort((a, b) => b.coupon.expiry - a.coupon.expiry);
-        console.log(user.coupons);
         res.json(user.coupons);
     } catch (error) {
         throw new Error(error);
@@ -509,10 +508,10 @@ const getUserCoupons = asyncHandler(async (req, res) => {
 
 const deleteAccount = asyncHandler(async (req, res) => {
     const { _id } = req.user;
-    validateMongodbId(id);
-    const delUser = await User.findByIdAndDelete(id);
+    validateMongodbId(_id);
+    const delUser = await User.findByIdAndDelete(_id);
     if (delUser) {
-        res.json({ id });
+        res.json({ _id });
     } else throw new Error("User not found");
 });
 module.exports = {

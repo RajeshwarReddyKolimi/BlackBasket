@@ -1,13 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-    addToCart,
-    getUserDetails,
-    removeFromSaveLater,
-} from "../../Redux/Thunks/userThunks";
+import { addToCart, removeFromSaveLater } from "../../Redux/Thunks/userThunks";
 import "../../styles/product.css";
-import { AiFillHeart, AiFillStar } from "react-icons/ai";
-import { NavLink, Navigate, useNavigate } from "react-router-dom";
+import { AiFillStar } from "react-icons/ai";
+import { NavLink, useNavigate } from "react-router-dom";
 import ConfirmPopup from "../ConfirmPopup";
 import { MdDelete, MdVerified } from "react-icons/md";
 
@@ -37,7 +33,7 @@ function WishlistCard(props) {
                                 ? item.images[0]
                                 : ""
                         }`}
-                        alt="image"
+                        alt=""
                         className="product-card-poster-image"
                     />
                 </div>

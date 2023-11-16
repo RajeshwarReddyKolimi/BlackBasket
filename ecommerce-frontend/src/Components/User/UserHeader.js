@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { NavLink, Navigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import UserNavSearch from "./UserNavSearch";
 import "../../styles/navbar.css";
 import { BsCart3, BsChevronDown } from "react-icons/bs";
-import { BiMenu, BiBookmark } from "react-icons/bi";
+import { BiBookmark } from "react-icons/bi";
 import { GoHome } from "react-icons/go";
 import { FaRegUser } from "react-icons/fa";
-import { AiOutlineDown, AiOutlineHeart } from "react-icons/ai";
+import { GrAppsRounded } from "react-icons/gr";
 import { useDispatch, useSelector } from "react-redux";
 import { getCart, getUserDetails } from "../../Redux/Thunks/userThunks";
 import { getCategories } from "../../Redux/Thunks/categoryThunks";
@@ -32,7 +32,11 @@ function UserHeader() {
     return (
         <div className="navbar-buffer">
             <nav className="user-navbar">
-                <NavLink to="/" className="nav-item">
+                <NavLink
+                    to="/"
+                    className="nav-item"
+                    onClick={() => setShowMenu(false)}
+                >
                     <div className="logo">
                         Black
                         <br />
@@ -49,6 +53,7 @@ function UserHeader() {
                     <NavLink
                         to="/"
                         className="nav-item navbar-header nav-item-home-left"
+                        onClick={() => setShowMenu(false)}
                     >
                         Home
                     </NavLink>
@@ -86,62 +91,69 @@ function UserHeader() {
                     <NavLink
                         to="/user/support"
                         className="nav-item navbar-header nav-item-left nav-item-home-left"
+                        onClick={() => setShowMenu(false)}
                     >
                         Help
                     </NavLink>
                 </div>
 
                 <div className="flex-buffer"></div>
-                <UserNavSearch />
+                <div className="nav-item" onClick={() => setShowMenu(false)}>
+                    <UserNavSearch />
+                </div>
                 <div className={`nav-item-right-container`}>
                     <NavLink
                         to="/"
                         className="nav-item-home-right nav-item-right"
+                        onClick={() => setShowMenu(false)}
                     >
                         <GoHome className="react-icon" />
+
+                        <div className="nav-item-title">Home</div>
                     </NavLink>
                     <NavLink
                         to="/user/cart"
                         className="nav-item nav-item-right"
+                        onClick={() => setShowMenu(false)}
                     >
-                        <div>
-                            <BsCart3 className="react-icon" />
+                        <div className="nav-list-count-container">
                             <div className="nav-list-count">
-                                <span>{isUserLogged ? cartSize : 0}</span>
+                                {isUserLogged ? cartSize : 0}
                             </div>
+                            <BsCart3 className="react-icon" />
                         </div>
+                        <div className="nav-item-title">Cart</div>
                     </NavLink>
                     <NavLink
                         to="/user/wishlist"
                         className="nav-item nav-item-right"
+                        onClick={() => setShowMenu(false)}
                     >
-                        <div>
-                            <BiBookmark className="react-icon" />
-
+                        <div className="nav-list-count-container">
                             <div className="nav-list-count">
-                                <span>
-                                    {isUserLogged &&
-                                    userData &&
-                                    userData.wishlist
-                                        ? userData.wishlist.length
-                                        : 0}
-                                </span>
+                                {isUserLogged && userData && userData.wishlist
+                                    ? userData.wishlist.length
+                                    : 0}
                             </div>
+                            <BiBookmark className="react-icon" />
                         </div>
+                        <div className="nav-item-title">Saved</div>
                     </NavLink>
                     <NavLink
                         to="/user/account"
                         className="nav-item nav-item-right"
+                        onClick={() => setShowMenu(false)}
                     >
-                        <div>
-                            <FaRegUser className="react-icon" />
-                        </div>
+                        <FaRegUser className="react-icon" />
+                        <div className="nav-item-title">Account</div>
                     </NavLink>
                     <button
-                        className="nav-item nav-menu"
+                        className="nav-item nav-item-right nav-menu"
                         onClick={() => setShowMenu((prev) => !prev)}
                     >
-                        <BiMenu className="react-icon" />
+                        <GrAppsRounded className="react-icon" />
+
+                        <div className="nav-item-title">Category</div>
                     </button>
                 </div>
             </nav>

@@ -101,8 +101,8 @@ const searchProducts = asyncHandler(async (req, res) => {
             categories,
             category,
             limit,
+            page,
         } = req.query;
-        const page = req.query.page ? req.query.page : 1;
         const query = {
             $or: [
                 { title: { $regex: new RegExp(searchTerm, "i") } },

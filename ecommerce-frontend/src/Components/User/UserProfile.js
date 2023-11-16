@@ -8,7 +8,7 @@ function UserProfile() {
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(getUserDetails());
-    }, []);
+    }, [dispatch]);
     const userData = useSelector((state) => state.user.userData);
     const isUserLogged = useSelector((state) => state.user.isUserLogged);
 
@@ -16,7 +16,7 @@ function UserProfile() {
     return (
         <div className="section">
             <div className="section-header">
-                <div className="header-title">Your Profile</div>
+                <div className="header-title">My Profile</div>
 
                 <NavLink to="/user/account/profile/update" className="button">
                     <span>Edit</span>

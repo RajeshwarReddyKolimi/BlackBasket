@@ -24,5 +24,6 @@ const store = configureStore({
         slider: sliderSlice.reducer,
         homeList: homeListSlice.reducer,
     },
+    devTools: false,
 });
 export default store;

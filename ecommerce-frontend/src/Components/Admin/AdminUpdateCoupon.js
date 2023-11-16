@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { createCoupon, updateCoupon } from "../../Redux/Thunks/couponThunks";
-import findToken from "../../findToken";
+
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import apiUrl from "../../apiUrl";
@@ -21,12 +21,8 @@ function AdminUpdateCoupon() {
     }, []);
     async function getCouponById(id) {
         try {
-            const token = await findToken();
             const response = await axios.get(`${apiUrl}/coupon/${id}`, {
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
+                withCredentials: true,
             });
             const res = response.data;
             setCoupon({

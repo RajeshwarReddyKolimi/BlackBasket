@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { deleteCoupon, getCoupons } from "../../Redux/Thunks/couponThunks";
-import { useDispatch, useSelector } from "react-redux";
-import { NavLink, Navigate } from "react-router-dom";
+import { deleteCoupon } from "../../Redux/Thunks/couponThunks";
+import { useDispatch } from "react-redux";
+import { NavLink } from "react-router-dom";
 import "../../styles/coupons.css";
 import { MdContentCopy, MdDelete } from "react-icons/md";
 import { BiEdit } from "react-icons/bi";

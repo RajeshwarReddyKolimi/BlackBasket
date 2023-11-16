@@ -3,36 +3,21 @@ import axios from "axios";
 import apiUrl from "../../apiUrl";
 import { setErrorMessage, setSuccessMessage } from "../Reducers/globalSlice";
 
-async function findToken() {
-    const cookie = document.cookie
-        .split(";")
-        .find((cookie) => cookie.startsWith("refreshToken="));
-    let token = "";
-    if (cookie) token = cookie.split("=")[1];
-    return token;
-}
-
 export const createCoupon = createAsyncThunk(
     "/admin/coupon/create",
     async (coupon, { dispatch, rejectWithValue }) => {
-        const token = await findToken();
         try {
             const response = await axios.post(
                 `${apiUrl}/coupon`,
                 {
                     coupon,
                 },
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
+                { withCredentials: true }
             );
             dispatch(setSuccessMessage("Coupon created"));
             return response.data;
         } catch (error) {
-            dispatch(setErrorMessage(error));
+            dispatch(setErrorMessage(error.response.data.message));
             console.error("Fetch error:", error);
             return rejectWithValue(error.message);
         }
@@ -42,24 +27,18 @@ export const createCoupon = createAsyncThunk(
 export const updateCoupon = createAsyncThunk(
     "/admin/coupon/update",
     async ({ coupon, id }, { dispatch, rejectWithValue }) => {
-        const token = await findToken();
         try {
             const response = await axios.put(
                 `${apiUrl}/coupon/${id}`,
                 {
                     coupon,
                 },
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
+                { withCredentials: true }
             );
             dispatch(setSuccessMessage("Coupon Updated"));
             return response.data;
         } catch (error) {
-            dispatch(setErrorMessage(error));
+            dispatch(setErrorMessage(error.response.data.message));
             console.error("Fetch error:", error);
             return rejectWithValue(error.message);
         }
@@ -70,12 +49,8 @@ export const getCoupons = createAsyncThunk(
     "/admin/coupon/get",
     async (credentials, { dispatch, rejectWithValue }) => {
         try {
-            const token = await findToken();
             const response = await axios.get(`${apiUrl}/coupon`, {
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
+                withCredentials: true,
             });
             return response.data;
         } catch (error) {
@@ -89,18 +64,14 @@ export const deleteCoupon = createAsyncThunk(
     "/admin/coupon/",
     async (credentials, { dispatch, rejectWithValue }) => {
         try {
-            const token = await findToken();
             const id = credentials;
             const response = await axios.delete(`${apiUrl}/coupon/${id}`, {
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
+                withCredentials: true,
             });
             dispatch(setSuccessMessage("Coupon Deleted"));
             return response.data;
         } catch (error) {
-            dispatch(setErrorMessage(error));
+            dispatch(setErrorMessage(error.response.data.message));
             console.error("Fetch error:", error);
             return rejectWithValue(error.message);
         }

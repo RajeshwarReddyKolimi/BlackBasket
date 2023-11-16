@@ -1,14 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import {
-    adminLogin,
-    adminLogout,
-    blockUser,
-    deleteUser,
-    getAdminDetails,
-    getUserById,
-    getUsers,
-    unblockUser,
-} from "../Thunks/adminThunks";
+import { createSlice } from "@reduxjs/toolkit";
 import {
     createSlider,
     deleteSlider,

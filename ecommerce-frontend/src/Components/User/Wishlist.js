@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux/es/hooks/useSelector";
 import { useDispatch } from "react-redux";
 import { getWishlist } from "../../Redux/Thunks/userThunks";
-import ProductCard from "../Products/ProductCard";
 import { Navigate } from "react-router-dom";
 import "../../styles/product.css";
 import Empty from "../Empty";

@@ -1,27 +1,71 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { userLogin } from "../../Redux/Thunks/userThunks";
-import Dashboard from "./Dashboard";
-import Home from "../Home";
-import { NavLink, Navigate, useNavigate } from "react-router-dom";
-function UserLogin(props) {
+import { NavLink, Navigate } from "react-router-dom";
+
+function UserLogin() {
     const dispatch = useDispatch();
     const [credentials, setCredentials] = useState({
         email: "",
         password: "",
     });
-    async function login(e) {
+
+    const [errors, setErrors] = useState({
+        email: "",
+        password: "",
+    });
+
+    const validatePassword = (password) => {
+        const passwordPattern =
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+        return passwordPattern.test(password);
+    };
+
+    const validateEmail = (email) => {
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailPattern.test(email);
+    };
+
+    const login = (e) => {
         e.preventDefault();
+        if (credentials.email === "") {
+            setErrors((prev) => ({ ...prev, email: "required" }));
+            return;
+        }
+        if (!credentials.email || !validateEmail(credentials.email)) {
+            setErrors((prev) => ({ ...prev, email: "Invalid email address" }));
+            return;
+        }
+        if (credentials.password === "") {
+            setErrors((prev) => ({ ...prev, password: "required" }));
+            return;
+        }
+        if (!credentials.password || !validatePassword(credentials.password)) {
+            setErrors((prev) => ({
+                ...prev,
+                password:
+                    "Must be at least 8 characters long and include at least 1 lowercase letter, 1 uppercase letter, 1 digit, and 1 special character.",
+            }));
+            return;
+        }
+
+        setErrors({
+            email: "",
+            password: "",
+        });
+
         dispatch(userLogin(credentials));
-    }
+    };
+
     const isUserLogged = useSelector((state) => state.user.isUserLogged);
-    const isAdminLogged = useSelector((state) => state.user.isAdminLogged);
+
     if (isUserLogged) return <Navigate to="/user/dashboard" replace />;
-    else if (isAdminLogged) return <Navigate to="/admin/dashboard" replace />;
+
     return (
         <div>
-            <form onSubmit={(e) => login(e)} className="login-form">
+            <form onSubmit={login} className="login-form">
                 <div className="login-form-header">User Login</div>
+
                 <div className="login-form-item">
                     <label htmlFor="user-email" className="login-form-label">
                         {" "}
@@ -31,13 +75,15 @@ function UserLogin(props) {
                         type="text"
                         name="user-email"
                         className="login-form-input"
-                        onChange={(e) =>
-                            setCredentials((prev) => {
-                                return { ...prev, email: e.target.value };
-                            })
-                        }
-                        required
+                        onChange={(e) => {
+                            setCredentials((prev) => ({
+                                ...prev,
+                                email: e.target.value,
+                            }));
+                            setErrors((prev) => ({ ...prev, email: "" }));
+                        }}
                     />
+                    <span className="form-error">{errors.email}</span>
                 </div>
 
                 <div className="login-form-item">
@@ -47,18 +93,22 @@ function UserLogin(props) {
                     </label>
 
                     <input
-                        type="text"
+                        type="password"
                         name="user-password"
                         className="login-form-input"
-                        onChange={(e) =>
-                            setCredentials((prev) => {
-                                return { ...prev, password: e.target.value };
-                            })
-                        }
-                        required
+                        onChange={(e) => {
+                            setCredentials((prev) => ({
+                                ...prev,
+                                password: e.target.value,
+                            }));
+                            setErrors((prev) => ({ ...prev, password: "" }));
+                        }}
                     />
+                    <span className="form-error">{errors.password}</span>
                 </div>
+
                 <button className="button-inverse-full">Login</button>
+
                 <div className="login-form-footer">
                     Didn't have an account?{" "}
                     <NavLink to="/user/signup">Signup</NavLink>

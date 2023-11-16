@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { NavLink, Navigate } from "react-router-dom";
-import Products from "../Products/Products";
 import { adminLogout, getAdminDetails } from "../../Redux/Thunks/adminThunks";
 
 function AdminDashboard() {

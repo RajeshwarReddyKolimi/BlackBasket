@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { createCoupon, getCoupons } from "../../Redux/Thunks/couponThunks";
 import UserCouponCard from "./UserCouponCard";
 import { getUserCoupons, getUserDetails } from "../../Redux/Thunks/userThunks";
 import { Navigate } from "react-router-dom";

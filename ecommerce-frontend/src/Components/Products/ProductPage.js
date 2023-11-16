@@ -1,12 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-    Link,
-    NavLink,
-    Navigate,
-    useNavigate,
-    useParams,
-} from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getProducts } from "../../Redux/Thunks/productThunks";
 import { AiFillStar } from "react-icons/ai";
 import { IoIosShareAlt } from "react-icons/io";
@@ -18,7 +12,6 @@ import {
 import { MdEmail, MdSaveAlt, MdVerified } from "react-icons/md";
 import ProductReviewCard from "./ProductReviewCard";
 import Empty from "../Empty";
-import ConfirmPopup from "../ConfirmPopup";
 import {
     TwitterShareButton,
     TelegramShareButton,
@@ -28,7 +21,6 @@ import {
     WhatsappShareButton,
 } from "react-share";
 import {
-    BsClipboard,
     BsFacebook,
     BsLinkedin,
     BsTelegram,
@@ -46,7 +38,7 @@ function ProductPage() {
     useEffect(() => {
         dispatch(getProducts());
         dispatch(getUserDetails());
-    }, []);
+    }, [dispatch, id]);
     function addCart() {
         if (!isUserLogged) return navigate("/user/login");
         dispatch(addToCart(product._id));

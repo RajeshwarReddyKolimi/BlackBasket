@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, Navigate } from "react-router-dom";
-import { AiFillStar, AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
+import { AiFillStar } from "react-icons/ai";
 import "../../styles/orders.css";
-import findToken from "../../findToken";
+
 import axios from "axios";
 import apiUrl from "../../apiUrl";
 function OrderProductCard(props) {
@@ -15,21 +15,14 @@ function OrderProductCard(props) {
         _id: "",
     });
     const product = item.product;
-    const dispatch = useDispatch();
     useEffect(() => {
         getRating();
     }, []);
     async function getRating() {
-        const token = await findToken();
         try {
             const response = await axios.get(
                 `${apiUrl}/product/rating/${product._id}`,
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
+                { withCredentials: true }
             );
             setCurrentRating(response.data);
             return <Navigate to="/user/orders" replace />;
@@ -50,7 +43,7 @@ function OrderProductCard(props) {
                                     ? product.images[0]
                                     : ""
                             }`}
-                            alt="image"
+                            alt=""
                             className="order-card-poster-image"
                         />
                     </div>

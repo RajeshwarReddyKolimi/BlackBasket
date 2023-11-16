@@ -1,5 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getBrands } from "../Thunks/brandThunks";
+import { createSlice } from "@reduxjs/toolkit";
 import { bestSellers, recent, topRated } from "../Thunks/homeListThunks";
 const homeListSlice = createSlice({
     name: "homeList",

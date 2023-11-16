@@ -1,12 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { addToCart, toWishlist } from "../../Redux/Thunks/userThunks";
-import {
-    createProduct,
-    deleteProduct,
-    updateProduct,
-    uploadProductImages,
-} from "../../Redux/Thunks/productThunks";
+import { deleteProduct } from "../../Redux/Thunks/productThunks";
 import "../../styles/product.css";
 import { AiFillStar } from "react-icons/ai";
 import { NavLink } from "react-router-dom";

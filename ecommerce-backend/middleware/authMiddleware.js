@@ -5,10 +5,8 @@ const dotenv = require("dotenv").config();
 const asyncHandler = require("express-async-handler");
 
 const userAuth = asyncHandler(async (req, res, next) => {
-    let token;
-    if (req?.headers?.authorization?.startsWith("Bearer")) {
-        token = req.headers.authorization.split(" ")[1];
-
+    if (req?.cookies?.refreshToken) {
+        const token = req.cookies.refreshToken;
         try {
             const decoded = jwt.verify(token, process.env.JWT_KEY);
             const user = await User.findById(decoded?.id);
@@ -23,9 +21,8 @@ const userAuth = asyncHandler(async (req, res, next) => {
 });
 
 const adminAuth = asyncHandler(async (req, res, next) => {
-    let token;
-    if (req?.headers?.authorization?.startsWith("Bearer")) {
-        token = req.headers.authorization.split(" ")[1];
+    if (req?.cookies?.refreshToken) {
+        const token = req.cookies.refreshToken;
         try {
             if (token) {
                 const decoded = jwt.verify(token, process.env.JWT_KEY);

@@ -1,12 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../../styles/navbar.css";
 import { AiOutlineSearch } from "react-icons/ai";
-import {
-    Navigate,
-    useLocation,
-    useNavigate,
-    useSearchParams,
-} from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 function UserNavSearch() {
     const [searchValue, setSearchValue] = useState("");
     const navigate = useNavigate();

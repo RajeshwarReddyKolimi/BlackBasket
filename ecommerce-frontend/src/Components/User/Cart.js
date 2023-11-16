@@ -24,7 +24,7 @@ function Cart() {
         <div className="cart-page">
             <div className="header-title">Products</div>
             {cartData && cartData.items && cartData.items.length > 0 ? (
-                <div className="products-container">
+                <div className="cart-products-container">
                     {cartData.items.map((item, key) => (
                         <CartCard key={key} item={item} />
                     ))}

@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { deleteCoupon, getCoupons } from "../../Redux/Thunks/couponThunks";
-import { useDispatch, useSelector } from "react-redux";
-import { Navigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import "../../styles/coupons.css";
 import { MdContentCopy } from "react-icons/md";
 function UserCouponCard(props) {
@@ -9,7 +7,11 @@ function UserCouponCard(props) {
     const [isExpired, setIsExpired] = useState(false);
     const dispatch = useDispatch();
     useEffect(() => {
-        if (new Date(coupon.expiry).getTime() < Date.now()) {
+        if (
+            coupon &&
+            coupon.expiry &&
+            new Date(coupon.expiry).getTime() < Date.now()
+        ) {
             setIsExpired(true);
         }
     }, [dispatch, coupon]);
@@ -31,7 +33,7 @@ function UserCouponCard(props) {
 
     return (
         <div>
-            {coupon ? (
+            {coupon && (
                 <div
                     className={`coupon-card ${
                         isExpired && "coupon-card-expired"
@@ -66,8 +68,6 @@ function UserCouponCard(props) {
                             : `Valid Till : ${formattedExpiry}`}
                     </div>
                 </div>
-            ) : (
-                <h4>No coupons available</h4>
             )}
         </div>
     );

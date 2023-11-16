@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addUserAddress } from "../../Redux/Thunks/userThunks";
-import "../../styles/userAccount.css";
 import { Navigate, useNavigate } from "react-router-dom";
 import { createQuery } from "../../Redux/Thunks/enquiryThunks";
 import "../../styles/forms.css";

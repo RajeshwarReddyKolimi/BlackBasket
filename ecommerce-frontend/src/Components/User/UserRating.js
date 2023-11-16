@@ -13,7 +13,7 @@ function UserRating() {
     const isUserLogged = useSelector((state) => state.user.isUserLogged);
     useEffect(() => {
         dispatch(getUserDetails());
-    }, []);
+    }, [dispatch]);
     if (!isUserLogged) return <Navigate to="/user/login" replace />;
     async function handleUpdateRating(e) {
         e.preventDefault();

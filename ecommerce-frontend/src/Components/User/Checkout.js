@@ -2,13 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, Navigate, useNavigate } from "react-router-dom";
 import {
-    applyCoupon,
     createOrder,
     getCart,
     getUserCoupons,
     getUserDetails,
 } from "../../Redux/Thunks/userThunks";
-import findToken from "../../findToken";
+
 import axios from "axios";
 import apiUrl from "../../apiUrl";
 import "../../styles/checkout.css";
@@ -41,18 +40,12 @@ function Checkout() {
     async function applyCoupon(e, couponCode) {
         e.preventDefault();
         try {
-            const token = await findToken();
             const response = await axios.put(
                 `${apiUrl}/user/applyCoupon`,
                 {
                     couponCode,
                 },
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
+                { withCredentials: true }
             );
             dispatch(setSuccessMessage("Coupon Applied"));
             setCouponDiscount(response.data.discount);

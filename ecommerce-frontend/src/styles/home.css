@@ -6,6 +6,9 @@
     flex-direction: column;
     gap: 0.5rem;
 }
+.home-section-last {
+    border-bottom: none;
+}
 .home-header-title {
     font-size: 1.2rem;
     font-weight: 600;

@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from "./Components/Home";
 import { Provider } from "react-redux";
 import store from "./Redux/store";
 import Products from "./Components/Products/Products";
 import Cart from "./Components/User/Cart";
 import Wishlist from "./Components/User/Wishlist";
 import Checkout from "./Components/User/Checkout";
-import Payment from "./Components/User/Payment";
 import AdminLogin from "./Components/Admin/AdminLogin";
 import AdminDashboard from "./Components/Admin/AdminDashboard";
 import Dashboard from "./Components/User/Dashboard";
@@ -16,10 +14,8 @@ import UserLogin from "./Components/User/UserLogin";
 import UserSignup from "./Components/User/UserSignup";
 import AdminProducts from "./Components/Admin/AdminProducts";
 import AdminUsers from "./Components/Admin/AdminUsers";
-import Coupons from "./Components/Coupons/Coupons";
 import UserCoupons from "./Components/User/UserCoupons";
 import UserHeader from "./Components/User/UserHeader";
-import UserFooter from "./Components/User/UserFooter";
 import UserAccount from "./Components/User/UserAccount";
 import UserProfile from "./Components/User/UserProfile";
 import UpdateUserProfile from "./Components/User/UpdateUserProfile";
@@ -86,7 +82,11 @@ function App() {
                             path="/admin/coupon/add/"
                             element={<AdminAddCoupon />}
                         />
-                        <Route path="/coupons" element={<Coupons />} />
+                        <Route
+                            path="/admin/product/:id"
+                            element={<AdminProductPage />}
+                        />
+
                         <Route path="/user/login" element={<UserLogin />} />
                         <Route path="/user/signup" element={<UserSignup />} />
                         <Route path="/user/dashboard" element={<Dashboard />} />
@@ -120,10 +120,7 @@ function App() {
                             path="/product/search"
                             element={<ProductSearchPage />}
                         />
-                        <Route
-                            path="/admin/product/:id"
-                            element={<AdminProductPage />}
-                        />
+
                         <Route path="/product/:id" element={<ProductPage />} />
                         <Route path="/user/cart" element={<Cart />} />
                         <Route
@@ -141,10 +138,7 @@ function App() {
                             element={<UserCreateQuery />}
                         />
                         <Route path="/user/checkout" element={<Checkout />} />
-                        <Route path="/payment" element={<Payment />} />
                     </Routes>
-                    <UserFooter />
-
                     <div className="nav-item-right-buffer"></div>
                 </BrowserRouter>
             </div>

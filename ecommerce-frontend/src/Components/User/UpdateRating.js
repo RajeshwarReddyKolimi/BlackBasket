@@ -2,19 +2,13 @@ import React, { useEffect, useState } from "react";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { getUserDetails, updateRating } from "../../Redux/Thunks/userThunks";
 import { useDispatch, useSelector } from "react-redux";
-import findToken from "../../findToken";
+
 import axios from "axios";
 import "../../styles/forms.css";
 import apiUrl from "../../apiUrl";
 
 function UpdateRating() {
     const navigate = useNavigate();
-    const [currentRating, setCurrentRating] = useState({
-        star: 0,
-        comment: "",
-        productId: "",
-        _id: "",
-    });
     const [userStar, setUserStar] = useState();
     const [userComment, setUserComment] = useState("");
     const { id } = useParams();
@@ -23,19 +17,15 @@ function UpdateRating() {
     isUserLogged = useSelector((state) => state.user.isUserLogged);
     useEffect(() => {
         dispatch(getUserDetails());
-    }, []);
+    }, [dispatch]);
     useEffect(() => {
         if (isUserLogged) getRating();
     }, []);
     if (!isUserLogged) return <Navigate to="/user/login" replace />;
     async function getRating() {
-        const token = await findToken();
         try {
             const response = await axios.get(`${apiUrl}/product/rating/${id}`, {
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
+                withCredentials: true,
             });
             setUserStar(response.data.star);
             setUserComment(response.data.comment);
