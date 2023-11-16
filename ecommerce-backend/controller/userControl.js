@@ -29,7 +29,10 @@ const createUser = asyncHandler(async (req, res) => {
             await newUser.save();
             res.cookie("refreshToken", refreshToken, {
                 httpOnly: true,
+                secure: true,
                 maxAge: 3 * 24 * 60 * 60 * 1000,
+                path: "/",
+                sameSite: "None",
             });
             res.json({ token: refreshToken });
         } else {
@@ -57,10 +60,15 @@ const loginUser = asyncHandler(async (req, res) => {
                 );
                 res.cookie("refreshToken", refreshToken, {
                     httpOnly: true,
+                    secure: true,
                     maxAge: 3 * 24 * 60 * 60 * 1000,
+                    path: "/",
+                    sameSite: "None",
                 });
+
+                console.log(res.getHeaders());
                 res.json({
-                    token: refreshToken,
+                    message: "Success",
                 });
             } else throw new Error("Invalid password");
         } else throw new Error("User not found");
@@ -85,6 +93,7 @@ const handleRefreshToken = asyncHandler(async (req, res) => {
 
 const getUserDetails = asyncHandler(async (req, res) => {
     const { refreshToken } = req.cookies;
+    console.log(req.cookies);
     const getUser = await User.findOne(
         { refreshToken },
         {

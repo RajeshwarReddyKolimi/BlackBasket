@@ -42,7 +42,6 @@ const userSlice = createSlice({
         builder.addCase(userSignup.pending, setLoadingState);
         builder.addCase(userSignup.fulfilled, (state, action) => {
             state.isUserLogged = true;
-            document.cookie = `refreshToken=${action.payload.token}; path=/; expires=Wed, 30 Nov 2023 07:28:00 GMT;`;
             state.userData = {};
         });
         builder.addCase(userSignup.rejected, (state, action) => {
@@ -52,7 +51,6 @@ const userSlice = createSlice({
         builder.addCase(userLogin.pending, setLoadingState);
         builder.addCase(userLogin.fulfilled, (state, action) => {
             state.isUserLogged = true;
-            document.cookie = `refreshToken=${action.payload.token}; path=/; expires=Wed, 30 Nov 2023 07:28:00 GMT;`;
         });
         builder.addCase(userLogin.rejected, (state, action) => {
             console.log(action.payload);

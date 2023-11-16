@@ -8,9 +8,13 @@ export const userSignup = createAsyncThunk(
     "/signup",
     async (userDetails, { dispatch, rejectWithValue }) => {
         try {
-            const response = await axios.post(`${apiUrl}/user/register`, {
-                userDetails,
-            });
+            const response = await axios.post(
+                `${apiUrl}/user/register`,
+                {
+                    userDetails,
+                },
+                { withCredentials: true }
+            );
             dispatch(setSuccessMessage("Successfully Signed up"));
             return response.data;
         } catch (error) {
@@ -25,11 +29,16 @@ export const userLogin = createAsyncThunk(
     "/login",
     async (credentials, { dispatch, rejectWithValue }) => {
         try {
-            const response = await axios.post(`${apiUrl}/user/login`, {
-                email: credentials.email,
-                password: credentials.password,
-            });
+            const response = await axios.post(
+                `${apiUrl}/user/login`,
+                {
+                    email: credentials.email,
+                    password: credentials.password,
+                },
+                { withCredentials: true }
+            );
             dispatch(setSuccessMessage("Successfully Logged in!"));
+            console.log(response);
             return response.data;
         } catch (error) {
             dispatch(setErrorMessage(error.response.data.message));

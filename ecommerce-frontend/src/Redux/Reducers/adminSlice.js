@@ -25,15 +25,12 @@ const adminSlice = createSlice({
         builder.addCase(adminLogin.pending, setLoadingState);
         builder.addCase(adminLogin.fulfilled, (state, action) => {
             state.isAdminLogged = true;
-            document.cookie = `refreshToken=${action.payload.token}; path=/; expires=Wed, 30 Nov 2023 07:28:00 GMT;`;
         });
         builder.addCase(adminLogin.rejected, (state, action) => {});
         builder.addCase(adminLogout.pending, setLoadingState);
         builder.addCase(adminLogout.fulfilled, (state, action) => {
             state.isAdminLogged = false;
             state.adminData = {};
-
-            document.cookie = `refreshToken=; path=/; expires=Wed, 21 Oct 1970 07:28:00 GMT;`;
         });
         builder.addCase(adminLogout.rejected, (state, action) => {});
         builder.addCase(getAdminDetails.pending, setLoadingState);

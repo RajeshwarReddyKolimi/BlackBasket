@@ -5,6 +5,7 @@ const dotenv = require("dotenv").config();
 const asyncHandler = require("express-async-handler");
 
 const userAuth = asyncHandler(async (req, res, next) => {
+    console.log(req.cookies);
     if (req?.cookies?.refreshToken) {
         const token = req.cookies.refreshToken;
         try {
