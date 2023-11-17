@@ -10,7 +10,6 @@ export const getProducts = createAsyncThunk(
             const response = await axios.get(`${apiUrl}/product/`);
             return response.data;
         } catch (error) {
-            console.error("Error:", error);
             return rejectWithValue(error);
         }
     }
@@ -30,7 +29,7 @@ export const createProduct = createAsyncThunk(
             return response.data;
         } catch (error) {
             dispatch(setErrorMessage(error.response.data.message));
-            console.error("Error:", error);
+
             return rejectWithValue(error);
         }
     }
@@ -53,7 +52,7 @@ export const updateProduct = createAsyncThunk(
             return response.data;
         } catch (error) {
             dispatch(setErrorMessage(error.response.data.message));
-            console.error("Error:", error);
+
             return rejectWithValue(error);
         }
     }
@@ -76,7 +75,7 @@ export const uploadProductImages = createAsyncThunk(
             return response.data;
         } catch (error) {
             dispatch(setErrorMessage(error.response.data.message));
-            console.error("Error:", error);
+
             return rejectWithValue(error);
         }
     }
@@ -94,7 +93,7 @@ export const deleteProduct = createAsyncThunk(
             return response.data;
         } catch (error) {
             dispatch(setErrorMessage(error.response.data.message));
-            console.error("Error:", error);
+
             return rejectWithValue(error);
         }
     }
@@ -109,7 +108,6 @@ export const getProductById = createAsyncThunk(
             });
             return response.data;
         } catch (error) {
-            console.error("Error:", error);
             return rejectWithValue(error);
         }
     }

@@ -19,7 +19,8 @@ export const userSignup = createAsyncThunk(
             return response.data;
         } catch (error) {
             dispatch(setErrorMessage(error.response.data.message));
-            console.error("Fetch error:", error);
+
+            console.error(error.message);
             return rejectWithValue(error.message);
         }
     }
@@ -41,7 +42,7 @@ export const userLogin = createAsyncThunk(
             return response.data;
         } catch (error) {
             dispatch(setErrorMessage(error.response.data.message));
-            console.error("Fetch error:", error);
+            console.error(error.message);
             return rejectWithValue(error.message);
         }
     }
@@ -58,7 +59,8 @@ export const userLogout = createAsyncThunk(
             return response.data;
         } catch (error) {
             dispatch(setErrorMessage(error.response.data.message));
-            console.error("Fetch error:", error);
+
+            console.error(error.message);
             return rejectWithValue(error.message);
         }
     }
@@ -73,7 +75,7 @@ export const getUserDetails = createAsyncThunk(
             });
             return response.data;
         } catch (error) {
-            console.error("Fetch error:", error);
+            console.error(error.message);
             return rejectWithValue(error.message);
         }
     }
@@ -100,7 +102,8 @@ export const updateUserDetails = createAsyncThunk(
             return response.data;
         } catch (error) {
             dispatch(setErrorMessage(error.response.data.message));
-            console.error("Fetch error:", error);
+
+            console.error(error.message);
             return rejectWithValue(error.message);
         }
     }
@@ -121,7 +124,8 @@ export const addUserAddress = createAsyncThunk(
             return response.data;
         } catch (error) {
             dispatch(setErrorMessage(error.response.data.message));
-            console.error("Fetch error:", error);
+
+            console.error(error.message);
             return rejectWithValue(error.message);
         }
     }
@@ -142,7 +146,8 @@ export const updateUserAddress = createAsyncThunk(
             return response.data;
         } catch (error) {
             dispatch(setErrorMessage(error.response.data.message));
-            console.error("Fetch error:", error);
+
+            console.error(error.message);
             return rejectWithValue(error.message);
         }
     }
@@ -162,9 +167,9 @@ export const removeFromCart = createAsyncThunk(
             dispatch(setSuccessMessage("Removed from Cart"));
             return response.data;
         } catch (error) {
-            console.error("Error:", error);
-
             dispatch(setErrorMessage(error.response.data.message));
+
+            console.error(error.message);
             return rejectWithValue(error.message);
         }
     }
@@ -184,9 +189,9 @@ export const addToCart = createAsyncThunk(
             dispatch(setSuccessMessage("Added to Cart"));
             return response.data;
         } catch (error) {
-            console.error("Error:", error);
-
             dispatch(setErrorMessage(error.response.data.message));
+
+            console.error(error.message);
             return rejectWithValue(error.message);
         }
     }
@@ -208,9 +213,9 @@ export const updateCartItemQuantity = createAsyncThunk(
             dispatch(setSuccessMessage("Quantity Updated"));
             return response.data;
         } catch (error) {
-            console.error("Error:", error);
-
             dispatch(setErrorMessage(error.response.data.message));
+
+            console.error(error.message);
             return rejectWithValue(error.message);
         }
     }
@@ -230,7 +235,8 @@ export const addToSaveLater = createAsyncThunk(
             return response.data;
         } catch (error) {
             dispatch(setErrorMessage(error.response.data.message));
-            console.error("Error:", error);
+
+            console.error(error.message);
             return rejectWithValue(error.message);
         }
     }
@@ -247,9 +253,9 @@ export const removeFromSaveLater = createAsyncThunk(
             dispatch(setSuccessMessage("Removed from save for later"));
             return response.data;
         } catch (error) {
-            console.error("Error:", error);
-
             dispatch(setErrorMessage(error.response.data.message));
+
+            console.error(error.message);
             return rejectWithValue(error.message);
         }
     }
@@ -264,6 +270,7 @@ export const getWishlist = createAsyncThunk(
             });
             return response.data;
         } catch (error) {
+            console.error(error.message);
             return rejectWithValue(error.message);
         }
     }
@@ -278,7 +285,7 @@ export const getCart = createAsyncThunk(
             });
             return response.data;
         } catch (error) {
-            console.error("Fetch error:", error);
+            console.error(error.message);
             return rejectWithValue(error.message);
         }
     }
@@ -292,7 +299,7 @@ export const getUserCoupons = createAsyncThunk(
             });
             return response.data;
         } catch (error) {
-            console.error("Fetch error:", error);
+            console.error(error.message);
             return rejectWithValue(error.message);
         }
     }
@@ -307,7 +314,7 @@ export const getUserOrders = createAsyncThunk(
             });
             return response.data;
         } catch (error) {
-            console.error("Fetch error:", error);
+            console.error(error.message);
             return rejectWithValue(error.message);
         }
     }
@@ -328,9 +335,9 @@ export const applyCoupon = createAsyncThunk(
             dispatch(setSuccessMessage("Coupon applied"));
             return response.data;
         } catch (error) {
-            console.error("Fetch error:", error);
-
             dispatch(setErrorMessage(error.response.data.message));
+
+            console.error(error.message);
             return rejectWithValue(error.message);
         }
     }
@@ -357,7 +364,8 @@ export const createOrder = createAsyncThunk(
             return response.data;
         } catch (error) {
             dispatch(setErrorMessage(error.response.data.message));
-            console.error("Fetch error:", error);
+
+            console.error(error.message);
             return rejectWithValue(error.message);
         }
     }
@@ -380,7 +388,8 @@ export const updateRating = createAsyncThunk(
             return response.data;
         } catch (error) {
             dispatch(setErrorMessage(error.response.data.message));
-            console.error("Fetch error:", error);
+
+            console.error(error.message);
             return rejectWithValue(error.message);
         }
     }
@@ -397,7 +406,8 @@ export const deleteAddress = createAsyncThunk(
             return response.data;
         } catch (error) {
             dispatch(setErrorMessage(error.response.data.message));
-            console.error("Fetch error:", error);
+
+            console.error(error.message);
             return rejectWithValue(error.message);
         }
     }
@@ -414,7 +424,8 @@ export const deleteAccount = createAsyncThunk(
             return response.data;
         } catch (error) {
             dispatch(setErrorMessage(error.response.data.message));
-            console.error("Fetch error:", error);
+
+            console.error(error.message);
             return rejectWithValue(error.message);
         }
     }

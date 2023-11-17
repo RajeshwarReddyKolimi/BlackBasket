@@ -8,8 +8,6 @@ export const getCategories = createAsyncThunk(
         try {
             const response = await axios.get(`${apiUrl}/productCategory`);
             return response.data;
-        } catch (error) {
-            console.error("Error:", error);
-        }
+        } catch (error) {}
     }
 );

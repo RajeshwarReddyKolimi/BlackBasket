@@ -16,6 +16,8 @@ export const adminLogin = createAsyncThunk(
         } catch (error) {
             dispatch(setErrorMessage(error.response.data.message));
             console.error("Fetch error:", error);
+
+            console.error(error.message);
             return rejectWithValue(error.message);
         }
     }
@@ -33,6 +35,8 @@ export const adminLogout = createAsyncThunk(
         } catch (error) {
             dispatch(setErrorMessage(error.response.data.message));
             console.error("Fetch error:", error);
+
+            console.error(error.message);
             return rejectWithValue(error.message);
         }
     }
@@ -47,7 +51,7 @@ export const getAdminDetails = createAsyncThunk(
             });
             if (response.status < 300) return response.data;
         } catch (error) {
-            console.error("Fetched error:", error);
+            console.error(error.message);
             return rejectWithValue(error.message);
         }
     }
@@ -63,7 +67,8 @@ export const getUsers = createAsyncThunk(
             if (response.status < 300) return response.data;
         } catch (error) {
             dispatch(setErrorMessage(error.response.data.message));
-            console.error("Fetched error:", error);
+
+            console.error(error.message);
             return rejectWithValue(error.message);
         }
     }
@@ -83,7 +88,8 @@ export const blockUser = createAsyncThunk(
             if (response.status < 300) return response.data;
         } catch (error) {
             dispatch(setErrorMessage(error.response.data.message));
-            console.error("Fetched error:", error);
+
+            console.error(error.message);
             return rejectWithValue(error.message);
         }
     }
@@ -104,7 +110,8 @@ export const unblockUser = createAsyncThunk(
             if (response.status < 300) return response.data;
         } catch (error) {
             dispatch(setErrorMessage(error.response.data.message));
-            console.error("Fetched error:", error);
+
+            console.error(error.message);
             return rejectWithValue(error.message);
         }
     }
@@ -124,7 +131,8 @@ export const deleteUser = createAsyncThunk(
             if (response.status < 300) return response.data;
         } catch (error) {
             dispatch(setErrorMessage(error.response.data.message));
-            console.error("Fetched error:", error);
+
+            console.error(error.message);
             return rejectWithValue(error.message);
         }
     }
@@ -142,7 +150,8 @@ export const getUserById = createAsyncThunk(
             if (response.status < 300) return response.data;
         } catch (error) {
             dispatch(setErrorMessage(error.response.data.message));
-            console.error("Fetched error:", error);
+
+            console.error(error.message);
             return rejectWithValue(error.message);
         }
     }

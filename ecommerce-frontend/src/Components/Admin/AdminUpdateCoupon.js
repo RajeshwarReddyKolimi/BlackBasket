@@ -31,9 +31,7 @@ function AdminUpdateCoupon() {
                 maxDiscount: res.maxDiscount && res.maxDiscount,
                 expiry: new Date(res.expiry).toISOString().slice(0, 10),
             });
-        } catch (error) {
-            console.error("Fetch error:", error);
-        }
+        } catch (error) {}
     }
     function handleUpdateCoupon(e) {
         e.preventDefault();

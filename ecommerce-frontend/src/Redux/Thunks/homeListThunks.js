@@ -13,9 +13,7 @@ export const recent = createAsyncThunk("/getRecent", async (_, thunkAPI) => {
             }
         );
         return response.data;
-    } catch (error) {
-        console.error("Fetch error:", error);
-    }
+    } catch (error) {}
 });
 
 export const topRated = createAsyncThunk(

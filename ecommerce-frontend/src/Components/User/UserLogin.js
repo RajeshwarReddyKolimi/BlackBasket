@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { userLogin } from "../../Redux/Thunks/userThunks";
 import { NavLink, Navigate } from "react-router-dom";
-
+import "../../styles/login.css";
 function UserLogin() {
     const dispatch = useDispatch();
     const [credentials, setCredentials] = useState({
@@ -62,8 +62,13 @@ function UserLogin() {
     if (isUserLogged) return <Navigate to="/user/dashboard" replace />;
 
     return (
-        <div>
+        <div className="login-page-overlay">
             <form onSubmit={login} className="login-form">
+                <div className="logo">
+                    Black
+                    <br />
+                    Basket
+                </div>
                 <div className="login-form-header">User Login</div>
 
                 <div className="login-form-item">

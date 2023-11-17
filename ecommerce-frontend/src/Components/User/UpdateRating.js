@@ -30,9 +30,7 @@ function UpdateRating() {
             setUserStar(response.data.star);
             setUserComment(response.data.comment);
             return <Navigate to="/user/orders" replace />;
-        } catch (error) {
-            console.error("Fetch error:", error);
-        }
+        } catch (error) {}
     }
     async function handleUpdateRating(e) {
         e.preventDefault();

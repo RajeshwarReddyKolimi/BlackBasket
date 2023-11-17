@@ -26,7 +26,7 @@
     --highlight-color-dark: rgb(16, 104, 247);
     --highlight-bg-color: #444444;
     --highlight-bg-alpha-color: #3b82f61a;
-    --box-shadow-color: #555555;
+    --box-shadow-color: #777777;
     --box-shadow: 0 0 8px 1px var(--box-shadow-color);
     --box-shadow-small: 0 0 4px 0.5px var(--box-shadow-color);
     --success-color: #4bb543;
@@ -398,7 +398,7 @@ li {
     display: none;
 }
 
-@media screen and (max-width: 884px) {
+@media screen and (max-width: 930px) {
     .nav-item-right-buffer {
         display: block;
         height: 5rem;

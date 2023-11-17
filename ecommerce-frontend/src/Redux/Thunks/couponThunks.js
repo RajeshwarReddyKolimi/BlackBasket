@@ -18,7 +18,8 @@ export const createCoupon = createAsyncThunk(
             return response.data;
         } catch (error) {
             dispatch(setErrorMessage(error.response.data.message));
-            console.error("Fetch error:", error);
+
+            console.error(error.message);
             return rejectWithValue(error.message);
         }
     }
@@ -39,7 +40,8 @@ export const updateCoupon = createAsyncThunk(
             return response.data;
         } catch (error) {
             dispatch(setErrorMessage(error.response.data.message));
-            console.error("Fetch error:", error);
+
+            console.error(error.message);
             return rejectWithValue(error.message);
         }
     }
@@ -54,7 +56,7 @@ export const getCoupons = createAsyncThunk(
             });
             return response.data;
         } catch (error) {
-            console.error("Fetch error:", error);
+            console.error(error.message);
             return rejectWithValue(error.message);
         }
     }
@@ -72,7 +74,8 @@ export const deleteCoupon = createAsyncThunk(
             return response.data;
         } catch (error) {
             dispatch(setErrorMessage(error.response.data.message));
-            console.error("Fetch error:", error);
+
+            console.error(error.message);
             return rejectWithValue(error.message);
         }
     }

@@ -54,7 +54,6 @@ function Checkout() {
             dispatch(setErrorMessage(error.response.data.message));
             setCouponDiscount(0);
             setFinalPrice(cartData.totalPrice);
-            console.error("Fetch error:", error);
         }
     }
     function applyAddress(address) {

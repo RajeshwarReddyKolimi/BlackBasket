@@ -26,9 +26,7 @@ function OrderProductCard(props) {
             );
             setCurrentRating(response.data);
             return <Navigate to="/user/orders" replace />;
-        } catch (error) {
-            console.error("Fetch error:", error);
-        }
+        } catch (error) {}
     }
     const isUserLogged = useSelector((state) => state.user.isUserLogged);
     if (!isUserLogged) return <Navigate to="/" replace />;

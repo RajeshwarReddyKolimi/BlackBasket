@@ -119,8 +119,13 @@ function UserSignup() {
     if (isUserLogged) return <Navigate to="/user/dashboard" replace />;
 
     return (
-        <div>
+        <div className="login-page-overlay">
             <form onSubmit={signup} className="login-form">
+                <div className="logo">
+                    Black
+                    <br />
+                    Basket
+                </div>
                 <div className="login-form-header">User Signup</div>
                 <div className="login-form-item">
                     <label

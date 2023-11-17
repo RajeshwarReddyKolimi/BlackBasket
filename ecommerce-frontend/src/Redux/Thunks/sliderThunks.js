@@ -18,7 +18,8 @@ export const createSlider = createAsyncThunk(
             return response.data;
         } catch (error) {
             dispatch(setErrorMessage(error.response.data.message));
-            console.error("Fetch error:", error);
+
+            console.error(error.message);
             return rejectWithValue(error.message);
         }
     }
@@ -39,7 +40,8 @@ export const updateSlider = createAsyncThunk(
             return response.data;
         } catch (error) {
             dispatch(setErrorMessage(error.response.data.message));
-            console.error("Fetch error:", error);
+
+            console.error(error.message);
             return rejectWithValue(error.message);
         }
     }
@@ -56,7 +58,7 @@ export const getSliders = createAsyncThunk(
             });
             return response.data;
         } catch (error) {
-            console.error("Fetch error:", error);
+            console.error(error.message);
             return rejectWithValue(error.message);
         }
     }
@@ -74,7 +76,8 @@ export const deleteSlider = createAsyncThunk(
             return response.data;
         } catch (error) {
             dispatch(setErrorMessage(error.response.data.message));
-            console.error("Fetch error:", error);
+
+            console.error(error.message);
             return rejectWithValue(error.message);
         }
     }

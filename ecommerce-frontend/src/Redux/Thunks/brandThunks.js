@@ -8,8 +8,6 @@ export const getBrands = createAsyncThunk(
         try {
             const response = await axios.get(`${apiUrl}/brand`);
             return response.data;
-        } catch (error) {
-            console.error("Error:", error);
-        }
+        } catch (error) {}
     }
 );

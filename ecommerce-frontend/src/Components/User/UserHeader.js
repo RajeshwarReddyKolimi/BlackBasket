@@ -14,7 +14,6 @@ import { AiOutlineAppstore } from "react-icons/ai";
 function UserHeader() {
     const dispatch = useDispatch();
     const [showMenu, setShowMenu] = useState(false);
-    const [darkTheme, setDarkTheme] = useState(false);
     const isUserLogged = useSelector((state) => state.user.isUserLogged);
     const userData = useSelector((state) => state.user.userData);
     const categories = useSelector((state) => state.category.categories);
@@ -31,6 +30,21 @@ function UserHeader() {
         dispatch(getCart());
         dispatch(getCategories());
     }, [dispatch]);
+    const [darkTheme, setDarkTheme] = useState(false);
+    useEffect(() => {
+        setDarkTheme(localStorage.getItem("theme"));
+    }, []);
+    const toggleTheme = () => {
+        if (!darkTheme) {
+            document.body.classList.remove("dark-theme");
+            setDarkTheme(true);
+            localStorage.setItem("theme", true);
+        } else {
+            document.body.classList.add("dark-theme");
+            setDarkTheme(false);
+            localStorage.setItem("theme", false);
+        }
+    };
     return (
         <div className="navbar-buffer">
             <nav className="user-navbar">
@@ -109,8 +123,7 @@ function UserHeader() {
                 </div>
                 <button
                     onClick={() => {
-                        setDarkTheme((prev) => !prev);
-                        document.body.classList.toggle("dark-theme");
+                        toggleTheme();
                     }}
                 >
                     {darkTheme ? (

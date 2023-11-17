@@ -10,19 +10,26 @@ export default function Slider() {
     const sliderRef = useRef(null);
     const [slidePos, setSlidePos] = useState(0);
     const sliders = useSelector((state) => state.slider.sliders);
+    const sliderWidth =
+        sliders && sliders.length ? `${sliders.length * 100}vw` : "0px";
     const loading = useSelector((state) => state.slider.loading);
     useEffect(() => {
-        sliderRef.current.style.transform = `translateX(${slidePos}vw)`;
-        const intervalId = setInterval(() => {
-            if (slidePos > -200) {
-                setSlidePos(slidePos - 100);
-            } else {
-                setSlidePos(0);
-            }
-        }, 5000);
-        return () => {
-            clearInterval(intervalId);
-        };
+        if (sliderRef && sliderRef.current) {
+            sliderRef.current.style.transform = slidePos
+                ? `translateX(${slidePos}vw)`
+                : "0px";
+            const intervalId = setInterval(() => {
+                if (slidePos > -200) {
+                    setSlidePos(slidePos - 100);
+                } else {
+                    setSlidePos(0);
+                }
+            }, 5000);
+
+            return () => {
+                clearInterval(intervalId);
+            };
+        }
     }, [slidePos]);
     useEffect(() => {
         dispatch(getSliders());
@@ -38,55 +45,57 @@ export default function Slider() {
         } else setSlidePos(0);
     }
     return (
-        <div className="slider-container">
-            <div
-                className="slider"
-                ref={sliderRef}
-                style={{
-                    width:
-                        sliders && sliders.length
-                            ? sliders.length * 100 + "vw"
-                            : "0px",
-                }}
-            >
-                {loading ? (
-                    <div className="loading"></div>
-                ) : (
-                    sliders.map((slider, key) => (
-                        <NavLink
-                            to={`${pageUrl}${slider && slider.link}`}
-                            key={key}
-                            className="slider-item"
-                        >
-                            <div
-                                className="slider-item-inner"
-                                style={{ background: slider.color }}
+        <>
+            {" "}
+            {loading ? (
+                <div className="loading"></div>
+            ) : (
+                <div className="slider-container">
+                    <div
+                        className="slider"
+                        ref={sliderRef}
+                        style={{
+                            width: sliderWidth,
+                        }}
+                    >
+                        {sliders.map((slider, key) => (
+                            <NavLink
+                                to={`${pageUrl}${slider && slider.link}`}
+                                key={key}
+                                className="slider-item"
                             >
-                                <div className="slider-info">
-                                    <div className="slider-1">
-                                        {slider.first}
-                                    </div>
-                                    <div className="slider-2">
-                                        {slider.second}
-                                    </div>
-                                    <div className="slider-3">
-                                        {slider.third}
-                                    </div>
+                                <div
+                                    className="slider-item-inner"
+                                    style={{
+                                        background: slider && slider.color,
+                                    }}
+                                >
+                                    <div className="slider-info">
+                                        <div className="slider-1">
+                                            {slider.first}
+                                        </div>
+                                        <div className="slider-2">
+                                            {slider.second}
+                                        </div>
+                                        <div className="slider-3">
+                                            {slider.third}
+                                        </div>
 
-                                    <div className="tc">t&c apply </div>
+                                        <div className="tc">t&c apply </div>
+                                    </div>
+                                    <img
+                                        className="slider-img"
+                                        src={slider.image}
+                                        alt="Image"
+                                    />
                                 </div>
-                                <img
-                                    className="slider-img"
-                                    src={slider.image}
-                                    alt="Image"
-                                />
-                            </div>
-                        </NavLink>
-                    ))
-                )}
-            </div>
-            <SlArrowLeft onClick={slideprev} className="slider-prev" />
-            <SlArrowRight onClick={slidenext} className="slider-next" />
-        </div>
+                            </NavLink>
+                        ))}
+                    </div>
+                    <SlArrowLeft onClick={slideprev} className="slider-prev" />
+                    <SlArrowRight onClick={slidenext} className="slider-next" />
+                </div>
+            )}
+        </>
     );
 }

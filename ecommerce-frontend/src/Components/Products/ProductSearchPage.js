@@ -134,9 +134,7 @@ function ProductSearchPage() {
             );
             setSearchResult(response.data.getProducts);
             setMoreResults(response.data.hasMoreResults);
-        } catch (error) {
-            console.error("Fetch error:", error);
-        }
+        } catch (error) {}
     }
     return (
         <div className="search-page">

@@ -18,9 +18,7 @@ function UserOrderCard() {
                 withCredentials: true,
             });
             setOrder(response.data);
-        } catch (error) {
-            console.error("Fetch error:", error);
-        }
+        } catch (error) {}
     }
     let date = "";
     if (order && order.time) {

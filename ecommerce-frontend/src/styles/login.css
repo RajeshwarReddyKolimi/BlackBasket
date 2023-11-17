@@ -1,14 +1,22 @@
+.login-page-overlay {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-y: scroll;
+}
 .login-form {
+    margin: 2rem 0;
     padding: 1.5rem 3rem;
-    width: 100%;
+    width: 90%;
     max-width: 400px;
-    margin: 1rem auto;
     box-shadow: var(--box-shadow);
     text-align: left;
-    border-radius: 0.2rem;
+    border-radius: 0.25rem;
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 1rem;
+    overflow-y: scroll;
 }
 .login-form-header {
     font-size: 1.5rem;
@@ -38,6 +46,15 @@
 .login-form-input:hover {
     outline: none;
 }
+.login-form-input:focus {
+    outline: 1px solid var(--highlight-color);
+}
 .login-form-footer {
     text-align: left;
+}
+
+@media screen and (max-width: 375px) {
+    .login-form {
+        padding: 2rem;
+    }
 }

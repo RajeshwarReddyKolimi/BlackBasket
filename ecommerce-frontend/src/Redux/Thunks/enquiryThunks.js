@@ -18,7 +18,8 @@ export const createQuery = createAsyncThunk(
             return response.data;
         } catch (error) {
             dispatch(setErrorMessage(error.response.data.message));
-            console.error("Fetch error:", error);
+
+            console.error(error.message);
             return rejectWithValue(error.message);
         }
     }

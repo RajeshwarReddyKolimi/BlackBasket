@@ -9,7 +9,6 @@ export const getColors = createAsyncThunk(
             const response = await axios.get(`${apiUrl}/color`);
             return response.data;
         } catch (error) {
-            console.error("Error:", error);
             return rejectWithValue(error);
         }
     }
