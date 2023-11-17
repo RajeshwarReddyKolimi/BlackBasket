@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import "../../styles/coupons.css";
 import { MdContentCopy } from "react-icons/md";
+import { setSuccessMessage } from "../../Redux/Reducers/globalSlice";
 function UserCouponCard(props) {
     const { coupon } = props;
     const [isExpired, setIsExpired] = useState(false);
@@ -29,6 +30,7 @@ function UserCouponCard(props) {
 
     async function copyCode() {
         await navigator.clipboard.writeText(coupon.name);
+        dispatch(setSuccessMessage("Copied"));
     }
 
     return (

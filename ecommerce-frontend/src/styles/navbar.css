@@ -89,7 +89,7 @@
     color: var(--nav-color);
     display: none;
     position: fixed;
-    top: 3.5rem;
+    top: 4rem;
     left: 50%;
     transform: translateX(-50%);
     background-color: var(--theme-color);
@@ -108,7 +108,7 @@
 }
 .navbar-category-dropdown-item:hover {
     background-color: var(--highlight-color);
-    color: var(--theme-color);
+    color: white;
 }
 
 .navbar-category-image {

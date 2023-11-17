@@ -18,6 +18,11 @@
 .account-options-items:hover {
     background-color: var(--box-shadow-color);
 }
+.profile-page {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+}
 .profile-container {
     width: 100%;
     display: flex;

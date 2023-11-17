@@ -14,7 +14,7 @@ function UserProfile() {
 
     if (!isUserLogged) return <Navigate to="/user/login" replace />;
     return (
-        <div className="section">
+        <div className="section profile-page">
             <div className="section-header">
                 <div className="header-title">My Profile</div>
 

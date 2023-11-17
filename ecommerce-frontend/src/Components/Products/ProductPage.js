@@ -29,6 +29,7 @@ import {
 } from "react-icons/bs";
 import { BiCopy } from "react-icons/bi";
 import { pageUrl } from "../../apiUrl";
+import { setSuccessMessage } from "../../Redux/Reducers/globalSlice";
 
 function ProductPage() {
     const dispatch = useDispatch();
@@ -49,8 +50,11 @@ function ProductPage() {
     }
     const products = useSelector((state) => state.product.products);
     const product = products.find((item) => item._id.toString() === id);
-    // const productLink = `http://localhost:3000/product/${id}`;
     const productLink = `${pageUrl}/product/${id}`;
+    async function copyCode() {
+        await navigator.clipboard.writeText(productLink);
+        dispatch(setSuccessMessage("Copied"));
+    }
     return (
         <div className="product-page">
             <div className="product-page-image-container">
@@ -139,14 +143,7 @@ function ProductPage() {
                                     style={{ color: "#25d366" }}
                                 />
                             </WhatsappShareButton>
-                            <div
-                                className="share-option"
-                                onClick={async () =>
-                                    await navigator.clipboard.writeText(
-                                        productLink
-                                    )
-                                }
-                            >
+                            <div className="share-option" onClick={copyCode}>
                                 <BiCopy
                                     className="share-option-icon"
                                     style={{ color: "grey" }}
