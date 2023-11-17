@@ -115,8 +115,16 @@ function UserLogin() {
                 <button className="button-inverse-full">Login</button>
 
                 <div className="login-form-footer">
-                    Didn't have an account?{" "}
-                    <NavLink to="/user/signup">Signup</NavLink>
+                    Don't have an account?{" "}
+                    <div className="button-container-flex">
+                        <div className="login-footer-button">Guest Login</div>
+                        <NavLink
+                            to="/user/signup"
+                            className="login-footer-button"
+                        >
+                            Signup
+                        </NavLink>
+                    </div>
                 </div>
             </form>
         </div>

@@ -50,9 +50,16 @@
     outline: 1px solid var(--highlight-color);
 }
 .login-form-footer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
     text-align: left;
 }
-
+.login-footer-button {
+    color: var(--highlight-color);
+    cursor: pointer;
+}
 @media screen and (max-width: 375px) {
     .login-form {
         padding: 2rem;

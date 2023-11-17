@@ -20,6 +20,7 @@ import {
     addToSaveLater,
     removeFromSaveLater,
     deleteAddress,
+    guestLogin,
 } from "../Thunks/userThunks";
 import { createQuery } from "../Thunks/enquiryThunks";
 
@@ -61,6 +62,17 @@ const userSlice = createSlice({
             state.isUserLogged = true;
         });
         builder.addCase(userLogin.rejected, (state, action) => {
+            state.userData = {};
+            state.isUserLogged = false;
+        });
+
+        builder.addCase(guestLogin.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(guestLogin.fulfilled, (state, action) => {
+            state.isUserLogged = true;
+        });
+        builder.addCase(guestLogin.rejected, (state, action) => {
             state.userData = {};
             state.isUserLogged = false;
         });

@@ -47,6 +47,27 @@ export const userLogin = createAsyncThunk(
         }
     }
 );
+export const guestLogin = createAsyncThunk(
+    "/guest/login",
+    async (credentials, { dispatch, rejectWithValue }) => {
+        try {
+            const response = await axios.post(
+                `${apiUrl}/user/login`,
+                {
+                    email: "guest@mail.com",
+                    password: "Guest@01",
+                },
+                { withCredentials: true }
+            );
+            dispatch(setSuccessMessage("Successfully Logged in!"));
+            return response.data;
+        } catch (error) {
+            dispatch(setErrorMessage(error.response.data.message));
+            console.error(error.message);
+            return rejectWithValue(error.message);
+        }
+    }
+);
 
 export const userLogout = createAsyncThunk(
     "/logout",
