@@ -66,7 +66,6 @@ const loginUser = asyncHandler(async (req, res) => {
                     sameSite: "None",
                 });
 
-                console.log(res.getHeaders());
                 res.json({
                     message: "Success",
                 });
@@ -93,7 +92,6 @@ const handleRefreshToken = asyncHandler(async (req, res) => {
 
 const getUserDetails = asyncHandler(async (req, res) => {
     const { refreshToken } = req.cookies;
-    console.log(req.cookies);
     const getUser = await User.findOne(
         { refreshToken },
         {
@@ -347,7 +345,6 @@ const addAddress = asyncHandler(async (req, res) => {
 const deleteAddress = asyncHandler(async (req, res) => {
     const { _id } = req.user;
     const { id: addressId } = req.params;
-    console.log(addressId);
     validateMongodbId(_id);
     try {
         const updateUser = await User.findByIdAndUpdate(

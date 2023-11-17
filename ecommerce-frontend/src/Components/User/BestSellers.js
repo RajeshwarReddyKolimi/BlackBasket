@@ -9,6 +9,7 @@ function BestSellers() {
     useEffect(() => {
         search();
     }, []);
+    const loading = useSelector((state) => state.homeList.bestSellersLoading);
     const productsData = useSelector((state) => state.homeList.bestSellers);
     const dispatch = useDispatch();
     async function search() {
@@ -18,10 +19,14 @@ function BestSellers() {
         <div className="home-section">
             <span className="home-header-title">Best Sellers</span>
             <div className="home-products-container">
-                {productsData &&
+                {loading ? (
+                    <div className="loading"></div>
+                ) : (
+                    productsData &&
                     productsData.map((item, key) => (
                         <HomeProductCard key={key} item={item} />
-                    ))}
+                    ))
+                )}
             </div>
         </div>
     );

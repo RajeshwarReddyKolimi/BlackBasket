@@ -89,14 +89,14 @@ function OrderProductCard(props) {
                     currentRating.star &&
                     currentRating.star !== 0 ? (
                         <NavLink
-                            className="button"
+                            className="button cart-button"
                             to={`/user/rating/edit/${product._id}`}
                         >
                             Edit Review
                         </NavLink>
                     ) : (
                         <NavLink
-                            className="button"
+                            className="button cart-button"
                             to={`/user/rating/${product._id}`}
                         >
                             Add Review

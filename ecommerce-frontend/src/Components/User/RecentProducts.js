@@ -10,6 +10,7 @@ function RecentProducts() {
         search();
     }, []);
     const productsData = useSelector((state) => state.homeList.recent);
+    const loading = useSelector((state) => state.homeList.recentLoading);
     const dispatch = useDispatch();
     async function search() {
         dispatch(recent());
@@ -18,10 +19,14 @@ function RecentProducts() {
         <div className="home-section">
             <span className="home-header-title">Recently Added</span>
             <div className="home-products-container">
-                {productsData &&
+                {loading ? (
+                    <div className="loading"></div>
+                ) : (
+                    productsData &&
                     productsData.map((item, key) => (
                         <HomeProductCard key={key} item={item} />
-                    ))}
+                    ))
+                )}
             </div>
         </div>
     );

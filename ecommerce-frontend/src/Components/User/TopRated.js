@@ -10,6 +10,8 @@ function TopRated() {
         search();
     }, []);
     const productsData = useSelector((state) => state.homeList.topRated);
+
+    const loading = useSelector((state) => state.homeList.topRatedLoading);
     const dispatch = useDispatch();
     async function search() {
         dispatch(topRated());
@@ -18,10 +20,14 @@ function TopRated() {
         <div className="home-section home-section-last">
             <span className="home-header-title">Top Rated</span>
             <div className="home-products-container">
-                {productsData &&
+                {loading ? (
+                    <div className="loading"></div>
+                ) : (
+                    productsData &&
                     productsData.map((item, key) => (
                         <HomeProductCard key={key} item={item} />
-                    ))}
+                    ))
+                )}
             </div>
         </div>
     );

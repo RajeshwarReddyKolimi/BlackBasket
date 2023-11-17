@@ -86,11 +86,11 @@ function WishlistCard(props) {
                     </span>
                 </div>
                 <div className="button-container">
-                    <button className="button-full" onClick={addCart}>
+                    <button className="button cart-button" onClick={addCart}>
                         Add to Cart
                     </button>
                     <button
-                        className="button-danger-full"
+                        className="button-danger cart-button"
                         onClick={() => setShowConfirmPopup(true)}
                     >
                         <MdDelete />

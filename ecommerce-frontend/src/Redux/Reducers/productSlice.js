@@ -10,30 +10,42 @@ import {
 const productSlice = createSlice({
     name: "Product",
     initialState: {
+        loading: false,
         products: [],
         searchedProduct: null,
     },
     reducers: {},
     extraReducers: (builder) => {
-        const setLoadingState = (state) => {};
+        const setLoadingState = (state) => {
+            state.loading = true;
+        };
 
         builder.addCase(getProducts.pending, setLoadingState);
         builder.addCase(getProducts.fulfilled, (state, action) => {
             state.products = action.payload;
+            state.loading = false;
         });
-        builder.addCase(getProducts.rejected, (state, action) => {});
+        builder.addCase(getProducts.rejected, (state, action) => {
+            state.loading = false;
+        });
 
         builder.addCase(getProductById.pending, setLoadingState);
         builder.addCase(getProductById.fulfilled, (state, action) => {
             state.searchedProduct = action.payload;
+            state.loading = false;
         });
-        builder.addCase(getProductById.rejected, (state, action) => {});
+        builder.addCase(getProductById.rejected, (state, action) => {
+            state.loading = false;
+        });
 
         builder.addCase(createProduct.pending, setLoadingState);
         builder.addCase(createProduct.fulfilled, (state, action) => {
             state.products.push(action.payload);
+            state.loading = false;
         });
-        builder.addCase(createProduct.rejected, (state, action) => {});
+        builder.addCase(createProduct.rejected, (state, action) => {
+            state.loading = false;
+        });
 
         builder.addCase(updateProduct.pending, setLoadingState);
         builder.addCase(updateProduct.fulfilled, (state, action) => {
@@ -44,8 +56,11 @@ const productSlice = createSlice({
             if (productIndex !== -1) {
                 state.products[productIndex] = updatedProduct;
             }
+            state.loading = false;
         });
-        builder.addCase(updateProduct.rejected, (state, action) => {});
+        builder.addCase(updateProduct.rejected, (state, action) => {
+            state.loading = false;
+        });
 
         builder.addCase(deleteProduct.pending, setLoadingState);
         builder.addCase(deleteProduct.fulfilled, (state, action) => {
@@ -53,8 +68,11 @@ const productSlice = createSlice({
             state.products = state.products.filter(
                 (product) => product._id !== deletedProductId
             );
+            state.loading = false;
         });
-        builder.addCase(deleteProduct.rejected, (state, action) => {});
+        builder.addCase(deleteProduct.rejected, (state, action) => {
+            state.loading = false;
+        });
     },
 });
 

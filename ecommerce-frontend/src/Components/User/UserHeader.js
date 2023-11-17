@@ -6,13 +6,15 @@ import { BsCart3, BsChevronDown } from "react-icons/bs";
 import { BiBookmark } from "react-icons/bi";
 import { GoHome } from "react-icons/go";
 import { FaRegUser } from "react-icons/fa";
-import { GrAppsRounded } from "react-icons/gr";
+import { MdLightMode, MdModeNight } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { getCart, getUserDetails } from "../../Redux/Thunks/userThunks";
 import { getCategories } from "../../Redux/Thunks/categoryThunks";
+import { AiOutlineAppstore } from "react-icons/ai";
 function UserHeader() {
     const dispatch = useDispatch();
     const [showMenu, setShowMenu] = useState(false);
+    const [darkTheme, setDarkTheme] = useState(false);
     const isUserLogged = useSelector((state) => state.user.isUserLogged);
     const userData = useSelector((state) => state.user.userData);
     const categories = useSelector((state) => state.category.categories);
@@ -85,7 +87,11 @@ function UserHeader() {
                                         </div>
                                     </NavLink>
                                 ))}
-                            <div className="nav-item-category-buffer"></div>
+                            <div
+                                className={`nav-item-category-buffer ${
+                                    showMenu && "nav-item-category-buffer-show"
+                                }`}
+                            ></div>
                         </div>
                     </div>
                     <NavLink
@@ -101,6 +107,19 @@ function UserHeader() {
                 <div className="nav-item" onClick={() => setShowMenu(false)}>
                     <UserNavSearch />
                 </div>
+                <button
+                    onClick={() => {
+                        setDarkTheme((prev) => !prev);
+                        document.body.classList.toggle("dark-theme");
+                    }}
+                >
+                    {darkTheme ? (
+                        <MdModeNight className="react-icon" />
+                    ) : (
+                        <MdLightMode className="react-icon" />
+                    )}
+                    <div className="nav-item-title">Theme</div>
+                </button>
                 <div className={`nav-item-right-container`}>
                     <NavLink
                         to="/"
@@ -151,8 +170,7 @@ function UserHeader() {
                         className="nav-item nav-item-right nav-menu"
                         onClick={() => setShowMenu((prev) => !prev)}
                     >
-                        <GrAppsRounded className="react-icon" />
-
+                        <AiOutlineAppstore className="react-icon" />
                         <div className="nav-item-title">Category</div>
                     </button>
                 </div>

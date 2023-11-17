@@ -95,12 +95,12 @@ function CartCard(props) {
                 <div className="button-container ">
                     <button
                         onClick={() => setShowConfirmPopup(true)}
-                        className="button-danger"
+                        className="button-danger cart-button"
                     >
                         <MdDelete />
                         Remove
                     </button>
-                    <button onClick={wishlist} className="button">
+                    <button onClick={wishlist} className="button cart-button">
                         <MdSaveAlt />
                         Save
                     </button>

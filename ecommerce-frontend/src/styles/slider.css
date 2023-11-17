@@ -36,6 +36,7 @@
     object-fit: contain;
 }
 .slider-info {
+    color: black;
     display: flex;
     flex-direction: column;
     gap: 0.5rem;

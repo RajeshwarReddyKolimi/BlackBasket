@@ -6,6 +6,7 @@ import "../../styles/home.css";
 function ShopByCategory() {
     const dispatch = useDispatch();
     const categories = useSelector((state) => state.category.categories);
+    const loading = useSelector((state) => state.category.loading);
     useEffect(() => {
         dispatch(getCategories());
     }, [dispatch]);
@@ -13,7 +14,10 @@ function ShopByCategory() {
         <div className="home-section">
             <span className="home-header-title">Shop By Category</span>
             <div className="home-section-container">
-                {categories &&
+                {loading ? (
+                    <div className="loading"></div>
+                ) : (
+                    categories &&
                     categories.map((category, key) => (
                         <NavLink
                             key={key}
@@ -34,7 +38,8 @@ function ShopByCategory() {
                                 {category.name.toLowerCase()}
                             </div>
                         </NavLink>
-                    ))}
+                    ))
+                )}
             </div>
         </div>
     );

@@ -13,6 +13,7 @@ function Cart() {
     const isUserLogged = useSelector((state) => state.user.isUserLogged);
     const cartData = useSelector((state) => state.user.userData.cart);
 
+    const loading = useSelector((state) => state.user.cartLoading);
     useEffect(() => {
         dispatch(getUserDetails());
         dispatch(getCart());
@@ -25,9 +26,13 @@ function Cart() {
             <div className="header-title">Products</div>
             {cartData && cartData.items && cartData.items.length > 0 ? (
                 <div className="cart-products-container">
-                    {cartData.items.map((item, key) => (
-                        <CartCard key={key} item={item} />
-                    ))}
+                    {loading ? (
+                        <div className="loading"></div>
+                    ) : (
+                        cartData.items.map((item, key) => (
+                            <CartCard key={key} item={item} />
+                        ))
+                    )}
                 </div>
             ) : (
                 <Empty text="Cart is Empty" />

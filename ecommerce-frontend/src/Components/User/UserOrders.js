@@ -12,15 +12,20 @@ function UserOrders() {
         dispatch(getUserDetails());
         dispatch(getUserOrders());
     }, [dispatch]);
+    const loading = useSelector((state) => state.user.orderLoading);
     if (!isUserLogged) return <Navigate to="/user/login" replace />;
     return (
         <div className="section">
             <div className="header-title">My Orders</div>
             {userOrders && userOrders.length > 0 ? (
                 <div className="order-list-container">
-                    {userOrders.map((order, key) => (
-                        <UserOrderListCard key={key} order={order} />
-                    ))}
+                    {loading ? (
+                        <div className="loading"></div>
+                    ) : (
+                        userOrders.map((order, key) => (
+                            <UserOrderListCard key={key} order={order} />
+                        ))
+                    )}
                 </div>
             ) : (
                 <Empty text="No orders" />

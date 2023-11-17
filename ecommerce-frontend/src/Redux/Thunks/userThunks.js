@@ -38,7 +38,6 @@ export const userLogin = createAsyncThunk(
                 { withCredentials: true }
             );
             dispatch(setSuccessMessage("Successfully Logged in!"));
-            console.log(response);
             return response.data;
         } catch (error) {
             dispatch(setErrorMessage(error.response.data.message));

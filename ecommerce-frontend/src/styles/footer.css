@@ -54,7 +54,9 @@
 .footer-icons:hover {
     background-color: var(--highlight-bg-color);
 }
-
+.happy-icon {
+    color: var(--success-color);
+}
 @media screen and (max-width: 375px) {
     .footer-icons {
         width: 2.5rem;

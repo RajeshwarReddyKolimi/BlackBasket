@@ -2,7 +2,9 @@
     padding: 1rem;
 }
 .order-products-container {
+    margin: auto;
     width: 100%;
+    max-width: 500px;
     display: grid;
     gap: 0.5rem;
     grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
@@ -29,7 +31,8 @@
 }
 .order-page {
     margin: auto;
-    width: 80%;
+    width: 100%;
+    max-width: 500px;
     display: flex;
     flex-direction: column;
     padding: 1rem;
@@ -42,7 +45,9 @@
     justify-content: space-around;
     flex-direction: row;
     width: 100%;
-    background-color: var(--highlight-bg-color);
+    /* background-color: var(--highlight-bg-color); */
+    box-shadow: var(--box-shadow-small);
+    border-radius: 0.2rem;
     padding: 1rem;
     gap: 0.8rem;
     text-align: left;

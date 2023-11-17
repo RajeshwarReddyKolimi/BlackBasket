@@ -6,6 +6,7 @@ import "../../styles/home.css";
 function ShopByBrand() {
     const dispatch = useDispatch();
     const brands = useSelector((state) => state.brand.brands);
+    const loading = useSelector((state) => state.brand.loading);
     useEffect(() => {
         dispatch(getBrands());
     }, [dispatch]);
@@ -13,7 +14,10 @@ function ShopByBrand() {
         <div className="home-section">
             <span className="home-header-title">Shop By Brand</span>
             <div className="home-section-container">
-                {brands &&
+                {loading ? (
+                    <div className="loading"></div>
+                ) : (
+                    brands &&
                     brands.map((brand, key) => (
                         <NavLink
                             key={key}
@@ -28,7 +32,8 @@ function ShopByBrand() {
                                 />
                             </div>
                         </NavLink>
-                    ))}
+                    ))
+                )}
             </div>
         </div>
     );

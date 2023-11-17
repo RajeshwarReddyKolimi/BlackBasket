@@ -1,3 +1,38 @@
+:root {
+    --theme-color: #ffffff;
+    --theme-alpha-color: #ffffffcc;
+    --theme-hover-color: #dddddd;
+    --theme-text-color: #000000;
+    --important-color: #df2e38;
+    --important-bg-color: rgba(255, 231, 233);
+    --highlight-color: #3b82f6;
+    --highlight-color-dark: rgb(16, 104, 247);
+    --highlight-bg-color: #ebf2fe;
+    --highlight-bg-alpha-color: #3b82f61a;
+    --box-shadow-color: #cccccc;
+    --box-shadow: 0 0 8px 1px var(--box-shadow-color);
+    --box-shadow-small: 0 0 4px 0.5px var(--box-shadow-color);
+    --success-color: #4bb543;
+    --success-bg-color: rgb(238, 255, 238);
+}
+.dark-theme {
+    --theme-color: #333333;
+    --theme-alpha-color: #353535cc;
+    --theme-hover-color: #3a3a3a;
+    --theme-text-color: white;
+    --important-color: #df2e38;
+    --important-bg-color: rgba(255, 231, 233);
+    --highlight-color: #3b82f6;
+    --highlight-color-dark: rgb(16, 104, 247);
+    --highlight-bg-color: #444444;
+    --highlight-bg-alpha-color: #3b82f61a;
+    --box-shadow-color: #555555;
+    --box-shadow: 0 0 8px 1px var(--box-shadow-color);
+    --box-shadow-small: 0 0 4px 0.5px var(--box-shadow-color);
+    --success-color: #4bb543;
+    --success-bg-color: rgb(238, 255, 238);
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -13,6 +48,9 @@ body {
     min-height: 100vh;
     width: 100%;
     overflow-x: hidden;
+    color: var(--theme-text-color);
+    background-color: var(--theme-color);
+    transition: color ease-in-out 0.4s;
 }
 .App {
     display: flex;
@@ -40,23 +78,6 @@ body::-webkit-scrollbar-thumb:hover {
     background-color: #555;
 }
 
-:root {
-    --theme-color: #ffffff;
-    --theme-alpha-color: #ffffffcc;
-    --theme-hover-color: #dddddd;
-    --theme-text-color: #000000;
-    --important-color: #df2e38;
-    --important-bg-color: rgba(255, 231, 233);
-    --highlight-color: #3b82f6;
-    --highlight-color-dark: rgb(16, 104, 247);
-    --highlight-bg-color: #ebf2fe;
-    --highlight-bg-alpha-color: #3b82f61a;
-    --box-shadow-color: #cccccc;
-    --box-shadow: 0 0 8px 1px var(--box-shadow-color);
-    --success-color: #4bb543;
-    --success-bg-color: rgb(238, 255, 238);
-}
-
 a {
     cursor: pointer;
     text-decoration: none;
@@ -75,8 +96,12 @@ button {
     border: none;
     background-color: inherit;
     cursor: pointer;
+    color: inherit;
 }
-
+input,
+select {
+    color: inherit;
+}
 li {
     list-style: none;
 }
@@ -84,11 +109,32 @@ li {
     flex-grow: 1;
 }
 
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.loading {
+    margin: 1rem auto;
+    border: 4px solid var(--highlight-color);
+    border-top: 4px solid var(--box-shadow-color);
+    border-left: 4px solid var(--box-shadow-color);
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    animation: rotate 1s linear infinite;
+}
+
 .logo {
     text-align: left;
     font-weight: 800;
     line-height: 12px;
 }
+
 .empty-icon-container {
     width: 100%;
     display: flex;
@@ -112,7 +158,7 @@ li {
 }
 .button:hover,
 .button-full:hover {
-    color: var(--theme-color);
+    color: white;
     background-color: var(--highlight-color);
 }
 .button-icon {
@@ -127,7 +173,7 @@ li {
 }
 
 .button-icon:hover {
-    color: var(--theme-color);
+    color: white;
     background-color: var(--highlight-color);
 }
 .button-danger {
@@ -138,7 +184,7 @@ li {
 }
 
 .button-danger:hover {
-    color: var(--theme-color);
+    color: white;
     background-color: var(--important-color);
 }
 .button-danger-full {
@@ -150,7 +196,7 @@ li {
 }
 
 .button-danger-full:hover {
-    color: var(--theme-color);
+    color: white;
     background-color: var(--important-color);
 }
 .button-success {
@@ -161,7 +207,7 @@ li {
 }
 
 .button-success:hover {
-    color: var(--theme-color);
+    color: white;
     background-color: var(--success-color);
 }
 .button-success-full {
@@ -173,7 +219,7 @@ li {
 }
 
 .button-success-full:hover {
-    color: var(--theme-color);
+    color: white;
     background-color: var(--success-color);
 }
 .button-container {
@@ -194,7 +240,7 @@ li {
 .button-inverse-full {
     width: 100%;
     padding: 0.5rem 1rem;
-    color: var(--theme-color);
+    color: white;
     background-color: var(--highlight-color);
     border: 2px solid var(--highlight-color);
 }
@@ -292,7 +338,7 @@ li {
 .final-price-container {
     margin: auto;
     width: 100%;
-    max-width: 300px;
+    max-width: 500px;
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
@@ -352,7 +398,7 @@ li {
     display: none;
 }
 
-@media screen and (max-width: 748px) {
+@media screen and (max-width: 884px) {
     .nav-item-right-buffer {
         display: block;
         height: 5rem;

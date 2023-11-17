@@ -6,13 +6,18 @@ import {
     BiLogoGithub,
     BiLogoLinkedinSquare,
     BiLogoInstagram,
+    BiHappy,
 } from "react-icons/bi";
 import { MdEmail } from "react-icons/md";
 import { BsGlobe } from "react-icons/bs";
+import { HiEmojiHappy } from "react-icons/hi";
 function UserFooter() {
     return (
         <footer className="footer">
-            <div className="footer-info">Happy Shopping😀</div>
+            <div className="footer-info">
+                Happy Shopping
+                <BiHappy className="happy-icon" />
+            </div>
             <div className="footer-list-container">
                 <header className="footer-list-header">Follow me</header>
                 <div className="footer-list">

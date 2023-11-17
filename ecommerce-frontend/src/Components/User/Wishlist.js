@@ -3,7 +3,7 @@ import { useSelector } from "react-redux/es/hooks/useSelector";
 import { useDispatch } from "react-redux";
 import { getWishlist } from "../../Redux/Thunks/userThunks";
 import { Navigate } from "react-router-dom";
-import "../../styles/product.css";
+import "../../styles/cart.css";
 import Empty from "../Empty";
 import WishlistCard from "./WishlistCard";
 function Wishlist() {
@@ -12,13 +12,16 @@ function Wishlist() {
         dispatch(getWishlist());
     }, [dispatch]);
     const wishlistData = useSelector((state) => state.user.userData.wishlist);
+    const loading = useSelector((state) => state.user.saveLaterLoading);
     const isUserLogged = useSelector((state) => state.user.isUserLogged);
     if (!isUserLogged) return <Navigate to="/user/login" replace />;
     return (
-        <div className="section">
+        <div className="section cart-page">
             <div className="header-title">Saved for Later</div>
-            <div className="products-container">
-                {wishlistData && wishlistData.length > 0 ? (
+            <div className="cart-products-container">
+                {loading ? (
+                    <div className="loading"></div>
+                ) : wishlistData && wishlistData.length > 0 ? (
                     wishlistData.map((item, key) => (
                         <WishlistCard key={key} item={item} />
                     ))
