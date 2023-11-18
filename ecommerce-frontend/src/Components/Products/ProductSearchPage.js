@@ -13,9 +13,7 @@ import "../../styles/forms.css";
 import { BsChevronDown, BsSortDown } from "react-icons/bs";
 import { AiOutlineClose } from "react-icons/ai";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
-
 import Empty from "../Empty";
-import UserNavSearch from "../User/UserNavSearch";
 function ProductSearchPage() {
     const dispatch = useDispatch();
     const brands = useSelector((state) => state.brand.brands);
@@ -38,7 +36,7 @@ function ProductSearchPage() {
     const [searchResult, setSearchResult] = useState();
 
     const [showFilters, setShowFilters] = useState(false);
-    const [moreResults, setMoreResults] = useState(true);
+    const [moreResults, setMoreResults] = useState(false);
 
     const [query, setQuery] = useState(
         `sort=${sortBy}&brands=${selectedBrands}&minPrice=${selectedMinPrice}&maxPrice=${selectedMaxPrice}&colors=${selectedColors}&categories=${selectedCategories}&discount=${selectedDiscount}&star=${selectedStar}`
@@ -85,6 +83,7 @@ function ProductSearchPage() {
             );
         }
     };
+    useEffect(() => {}, [page]);
     useEffect(() => {
         dispatch(getCategories());
         dispatch(getColors());
@@ -113,6 +112,7 @@ function ProductSearchPage() {
 
     function handleFilter(e) {
         e.preventDefault();
+        setPage(1);
         search();
     }
 
@@ -383,7 +383,10 @@ function ProductSearchPage() {
                 }}
             ></div>
             <div className="filter-result-container section">
-                <div className="section-header">
+                <div
+                    className="section-header"
+                    style={{ justifyContent: "flex-end" }}
+                >
                     <button
                         className="filter-button button"
                         onClick={() => {
