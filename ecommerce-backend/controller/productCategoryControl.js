@@ -53,7 +53,7 @@ const getProductCategory = asyncHandler(async (req, res) => {
 
 const getAllProductCategory = asyncHandler(async (req, res) => {
     try {
-        const getAllCategory = await ProductCategory.find();
+        const getAllCategory = await ProductCategory.find().sort({ name: 1 });
         res.json(getAllCategory);
     } catch (error) {
         throw new Error(error);

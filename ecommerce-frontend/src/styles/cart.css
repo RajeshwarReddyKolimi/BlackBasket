@@ -9,18 +9,17 @@
     gap: 0.5rem;
 }
 .cart-products-container {
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
     gap: 1rem;
-    max-width: 500px;
 }
 .cart-card {
     display: flex;
     justify-content: space-around;
     flex-direction: row;
     width: 100%;
-    /* background-color: var(--highlight-bg-color); */
     box-shadow: var(--box-shadow-small);
     border-radius: 0.2rem;
     padding: 1rem;
@@ -43,6 +42,8 @@
 }
 .cart-card-poster-image {
     width: 100%;
+    height: 100%;
+    object-fit: contain;
 }
 .cart-card-info-container {
     width: 100%;

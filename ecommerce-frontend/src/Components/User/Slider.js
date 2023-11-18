@@ -11,21 +11,19 @@ export default function Slider() {
     const [slidePos, setSlidePos] = useState(0);
     const sliders = useSelector((state) => state.slider.sliders);
     const sliderWidth =
-        sliders && sliders.length ? `${sliders.length * 100}vw` : "0px";
+        sliders && sliders.length ? `${sliders.length * 100}` : `0`;
     const loading = useSelector((state) => state.slider.loading);
     useEffect(() => {
         if (sliderRef && sliderRef.current) {
-            sliderRef.current.style.transform = slidePos
-                ? `translateX(${slidePos}vw)`
-                : "0px";
+            sliderRef.current.style.transform = `translateX(${slidePos}vw)`;
+
             const intervalId = setInterval(() => {
-                if (slidePos > -200) {
+                if (slidePos > -300) {
                     setSlidePos(slidePos - 100);
                 } else {
                     setSlidePos(0);
                 }
-            }, 5000);
-
+            }, 4000);
             return () => {
                 clearInterval(intervalId);
             };
@@ -33,14 +31,14 @@ export default function Slider() {
     }, [slidePos]);
     useEffect(() => {
         dispatch(getSliders());
-    }, [dispatch]);
+    }, []);
     function slideprev() {
         if (slidePos < 0) {
             setSlidePos(slidePos + 100);
-        } else setSlidePos(-200);
+        } else setSlidePos(-300);
     }
     function slidenext() {
-        if (slidePos > -200) {
+        if (slidePos > -300) {
             setSlidePos(slidePos - 100);
         } else setSlidePos(0);
     }
@@ -55,7 +53,7 @@ export default function Slider() {
                         className="slider"
                         ref={sliderRef}
                         style={{
-                            width: sliderWidth,
+                            width: `${sliderWidth}vw`,
                         }}
                     >
                         {sliders.map((slider, key) => (

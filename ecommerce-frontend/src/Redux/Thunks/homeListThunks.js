@@ -21,7 +21,7 @@ export const topRated = createAsyncThunk(
     async (_, thunkAPI) => {
         try {
             const response = await axios.get(
-                `${apiUrl}/product/search?sort=ratingDesc&limit=4&page=1`,
+                `${apiUrl}/product/search?sort=discount&limit=4&page=1`,
                 {
                     headers: {
                         "Content-Type": "application/json",

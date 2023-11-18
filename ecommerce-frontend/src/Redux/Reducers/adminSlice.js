@@ -13,6 +13,7 @@ import {
 const adminSlice = createSlice({
     name: "Admin",
     initialState: {
+        loading: false,
         isAdminLogged: false,
         curUser: {},
         users: [],
@@ -20,33 +21,38 @@ const adminSlice = createSlice({
     },
     reducers: {},
     extraReducers: (builder) => {
-        const setLoadingState = (state) => {};
+        const setLoadingState = (state) => {
+            state.loading = true;
+        };
 
         builder.addCase(adminLogin.pending, setLoadingState);
         builder.addCase(adminLogin.fulfilled, (state, action) => {
             state.isAdminLogged = true;
+            state.loading = false;
         });
-        builder.addCase(adminLogin.rejected, (state, action) => {});
+        builder.addCase(adminLogin.rejected, (state, action) => {
+            state.loading = false;
+        });
         builder.addCase(adminLogout.pending, setLoadingState);
         builder.addCase(adminLogout.fulfilled, (state, action) => {
             state.isAdminLogged = false;
             state.adminData = {};
+            state.loading = false;
         });
-        builder.addCase(adminLogout.rejected, (state, action) => {});
-        builder.addCase(getAdminDetails.pending, setLoadingState);
+        builder.addCase(adminLogout.rejected, (state, action) => {
+            state.loading = false;
+        });
         builder.addCase(getAdminDetails.fulfilled, (state, action) => {
             state.isAdminLogged = true;
             state.adminData = action.payload;
         });
         builder.addCase(getAdminDetails.rejected, (state, action) => {});
 
-        builder.addCase(getUsers.pending, setLoadingState);
         builder.addCase(getUsers.fulfilled, (state, action) => {
             state.users = action.payload;
         });
         builder.addCase(getUsers.rejected, (state, action) => {});
 
-        builder.addCase(blockUser.pending, setLoadingState);
         builder.addCase(blockUser.fulfilled, (state, action) => {
             const id = action.payload.id;
             const userIndex = state.users.findIndex((user) => user._id === id);
@@ -56,7 +62,6 @@ const adminSlice = createSlice({
         });
         builder.addCase(blockUser.rejected, (state, action) => {});
 
-        builder.addCase(unblockUser.pending, setLoadingState);
         builder.addCase(unblockUser.fulfilled, (state, action) => {
             const id = action.payload.id;
             const userIndex = state.users.findIndex((user) => user._id === id);
@@ -66,14 +71,12 @@ const adminSlice = createSlice({
         });
         builder.addCase(unblockUser.rejected, (state, action) => {});
 
-        builder.addCase(deleteUser.pending, setLoadingState);
         builder.addCase(deleteUser.fulfilled, (state, action) => {
             const id = action.payload.id;
             state.users = state.users.filter((user) => user._id !== id);
         });
         builder.addCase(deleteUser.rejected, (state, action) => {});
 
-        builder.addCase(getUserById.pending, setLoadingState);
         builder.addCase(getUserById.fulfilled, (state, action) => {
             state.curUser = action.payload;
         });

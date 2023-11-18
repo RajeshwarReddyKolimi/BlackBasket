@@ -90,11 +90,9 @@
 }
 
 .home-product-card {
-    /* width: 100%; */
     flex: 1;
     display: flex;
     flex-direction: row;
-    /* background-color: var(--highlight-bg-color); */
     box-shadow: var(--box-shadow-small);
     border-radius: 0.2rem;
     padding: 1rem;
@@ -102,8 +100,8 @@
     text-align: left;
 }
 .home-product-card-image-container {
-    width: 250px;
-    height: 250px;
+    width: 200px;
+    height: 200px;
     padding: 1rem;
     display: flex;
     justify-content: center;
@@ -111,6 +109,8 @@
 }
 .home-product-card-poster-image {
     width: 100%;
+    height: 100%;
+    object-fit: contain;
 }
 .home-product-card-info-container {
     width: 100%;

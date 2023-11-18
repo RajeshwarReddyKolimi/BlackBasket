@@ -11,18 +11,33 @@ function AdminDashboard() {
         dispatch(getAdminDetails());
     }, [dispatch]);
     const data = useSelector((state) => state.admin.adminData);
-    if (!isAdminLogged) return <Navigate to="/" replace />;
+    if (!isAdminLogged) return <Navigate to="/admin/login" replace />;
     function logout() {
         dispatch(adminLogout());
     }
     return (
-        <div className="d-flex flex-column">
-            <h3>Admin Dashboard</h3>
-            <h4>Hello {data.firstName}</h4>
-            <button onClick={logout}>Logout</button>
-            <NavLink to="/admin/products"> Products </NavLink>
-            <NavLink to="/admin/users"> Users </NavLink>
-            <NavLink to="/admin/coupons"> Coupons </NavLink>
+        <div className="section">
+            <div className="section-header">
+                <div className="header-title">Dashboard</div>
+                <button onClick={logout} className="button">
+                    Logout
+                </button>
+            </div>
+            <div className="header-title">{data.firstName}</div>
+            <div className="button-container">
+                <NavLink to="/admin/products" className="button-full">
+                    {" "}
+                    Products{" "}
+                </NavLink>
+                <NavLink to="/admin/users" className="button-full">
+                    {" "}
+                    Users{" "}
+                </NavLink>
+                <NavLink to="/admin/coupons" className="button-full">
+                    {" "}
+                    Coupons{" "}
+                </NavLink>
+            </div>
         </div>
     );
 }

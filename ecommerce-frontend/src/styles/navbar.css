@@ -14,7 +14,7 @@
     align-items: center;
     background-color: var(--theme-color);
     box-shadow: 0 0 8px 1px var(--box-shadow-color);
-    overflow-x: hidden;
+    overflow: hidden;
 }
 .nav-item-left-container,
 .nav-menu-container {
@@ -206,9 +206,9 @@
 
 @media screen and (min-width: 749px) {
     .navbar-category:hover .navbar-category-dropdown {
-        max-width: 500px;
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        max-width: 400px;
+        display: flex;
+        flex-direction: column;
     }
 }
 @media screen and (max-width: 930px) {

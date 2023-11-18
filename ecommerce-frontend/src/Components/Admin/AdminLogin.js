@@ -56,13 +56,14 @@ function AdminLogin() {
 
         dispatch(adminLogin(credentials));
     };
-
+    const loading = useSelector((state) => state.admin.loading);
     const isAdminLogged = useSelector((state) => state.admin.isAdminLogged);
 
     if (isAdminLogged) return <Navigate to="/admin/dashboard" replace />;
 
     return (
-        <div>
+        <div className="login-page-overlay">
+            {loading && <div className="loading"></div>}
             <form onSubmit={login} className="login-form">
                 <div className="login-form-header">Admin Login</div>
                 <div className="login-form-item">

@@ -24,23 +24,7 @@ const createProduct = asyncHandler(async (req, res) => {
             ? req.body.category.toUpperCase()
             : "";
         const newProduct = await Product.create(req.body);
-        const brand = await Brand.find({ name: req.body.brand });
-        if (!brand)
-            updateBrand = await Brand.create({
-                name: req.body.brand,
-            });
-        const color = await Color.find({ name: req.body.color });
-        if (!color)
-            updatecolor = await Color.create({
-                name: req.body.color,
-            });
-        const category = await ProductCategory.find({
-            name: req.body.category,
-        });
-        if (!category)
-            updatecolor = await ProductCategory.create({
-                name: req.body.category,
-            });
+
         res.json(newProduct);
     } catch (error) {
         console.error(error);
@@ -112,7 +96,7 @@ const searchProducts = asyncHandler(async (req, res) => {
             ],
         };
 
-        const perPage = limit ? limit : 20;
+        const perPage = limit ? limit : 8;
         const filters = [];
         if (brands) {
             const selectedBrands = brands.split(",");

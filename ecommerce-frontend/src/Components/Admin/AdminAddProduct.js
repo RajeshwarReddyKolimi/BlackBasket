@@ -165,7 +165,7 @@ function AdminAddProduct() {
                     <label for="description" className="form-label">
                         Description
                     </label>
-                    <input
+                    <textarea
                         type="text"
                         name="description"
                         className="form-input"
@@ -187,7 +187,6 @@ function AdminAddProduct() {
                         className="form-input"
                         onChange={(e) => setUploadImages(e.target.files)}
                         multiple
-                        required
                     />
                 </div>
 

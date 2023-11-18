@@ -5,9 +5,11 @@ import { NavLink } from "react-router-dom";
 import "../../styles/coupons.css";
 import { MdContentCopy, MdDelete } from "react-icons/md";
 import { BiEdit } from "react-icons/bi";
+import ConfirmPopup from "../ConfirmPopup";
 function AdminCouponCard(props) {
     const { coupon } = props;
     const [isExpired, setIsExpired] = useState(false);
+    const [showConfirmPopup, setShowConfirmPopup] = useState(false);
     const dispatch = useDispatch();
     useEffect(() => {
         if (new Date(coupon.expiry).getTime() < Date.now()) {
@@ -35,7 +37,7 @@ function AdminCouponCard(props) {
     }
     return (
         <div>
-            {coupon ? (
+            {coupon && (
                 <div
                     className={`coupon-card ${
                         isExpired && "coupon-card-expired"
@@ -72,30 +74,28 @@ function AdminCouponCard(props) {
                     <div className="coupon-button-container">
                         <NavLink
                             to={`/admin/coupon/update/${coupon._id}`}
-                            className={` ${
-                                isExpired
-                                    ? "button-danger-full"
-                                    : "button-success-full"
-                            }`}
+                            className={` button-full
+                            `}
                         >
                             <BiEdit />
                             Edit
                         </NavLink>
                         <button
-                            className={` ${
-                                isExpired
-                                    ? "button-danger-full"
-                                    : "button-success-full"
-                            }`}
-                            onClick={deleteCpn}
+                            className={` button-danger-full`}
+                            onClick={() => setShowConfirmPopup(true)}
                         >
                             <MdDelete />
                             Delete
                         </button>
+                        {showConfirmPopup && (
+                            <ConfirmPopup
+                                action={deleteCpn}
+                                text="Are you sure you want to delete Coupon?"
+                                setShowConfirmPopup={setShowConfirmPopup}
+                            />
+                        )}
                     </div>
                 </div>
-            ) : (
-                <h4>No coupons available</h4>
             )}
         </div>
     );

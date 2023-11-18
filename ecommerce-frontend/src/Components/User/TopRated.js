@@ -5,6 +5,7 @@ import "../../styles/product.css";
 import "../../styles/home.css";
 import HomeProductCard from "./HomeProductCard";
 import { topRated } from "../../Redux/Thunks/homeListThunks";
+import { NavLink } from "react-router-dom";
 function TopRated() {
     useEffect(() => {
         search();
@@ -18,7 +19,12 @@ function TopRated() {
     }
     return (
         <div className="home-section home-section-last">
-            <span className="home-header-title">Top Rated</span>
+            <div className="section-header">
+                <div className="home-header-title">Best Deals</div>
+                <NavLink to="/product/search?id=" className="button">
+                    More
+                </NavLink>
+            </div>
             <div className="home-products-container">
                 {loading ? (
                     <div className="loading"></div>

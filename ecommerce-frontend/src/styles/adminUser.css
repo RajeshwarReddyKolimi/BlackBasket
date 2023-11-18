@@ -1,0 +1,30 @@
+.admin-users-container {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+
+.admin-user-card {
+    border-radius: 0.2rem;
+    padding: 1rem;
+    box-shadow: var(--box-shadow-small);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.user-info-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.user-info-item {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.user-info-key {
+    font-weight: 500;
+}

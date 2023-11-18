@@ -7,10 +7,14 @@ export const adminLogin = createAsyncThunk(
     "/admin/login",
     async (credentials, { dispatch, rejectWithValue }) => {
         try {
-            const response = await axios.post(`${apiUrl}/admin/login`, {
-                email: credentials.email,
-                password: credentials.password,
-            });
+            const response = await axios.post(
+                `${apiUrl}/admin/login`,
+                {
+                    email: credentials.email,
+                    password: credentials.password,
+                },
+                { withCredentials: true }
+            );
             dispatch(setSuccessMessage("Successfully Logged in"));
             return response.data;
         } catch (error) {

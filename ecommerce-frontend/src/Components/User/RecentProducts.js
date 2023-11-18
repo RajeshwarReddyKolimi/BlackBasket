@@ -5,6 +5,7 @@ import "../../styles/product.css";
 import "../../styles/home.css";
 import HomeProductCard from "./HomeProductCard";
 import { recent } from "../../Redux/Thunks/homeListThunks";
+import { NavLink } from "react-router-dom";
 function RecentProducts() {
     useEffect(() => {
         search();
@@ -17,7 +18,12 @@ function RecentProducts() {
     }
     return (
         <div className="home-section">
-            <span className="home-header-title">Recently Added</span>
+            <div className="section-header">
+                <div className="home-header-title">Recently Added</div>
+                <NavLink to="/product/search?id=" className="button">
+                    More
+                </NavLink>
+            </div>
             <div className="home-products-container">
                 {loading ? (
                     <div className="loading"></div>

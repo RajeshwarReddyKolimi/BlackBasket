@@ -26,7 +26,10 @@ const createAdmin = asyncHandler(async (req, res) => {
         );
         res.cookie("refreshToken", refreshToken, {
             httpOnly: true,
+            secure: true,
             maxAge: 3 * 24 * 60 * 60 * 1000,
+            path: "/",
+            sameSite: "None",
         });
         res.json({ token: refreshToken });
     } else {
@@ -50,7 +53,10 @@ const loginAdmin = asyncHandler(async (req, res) => {
             );
             res.cookie("refreshToken", refreshToken, {
                 httpOnly: true,
+                secure: true,
                 maxAge: 3 * 24 * 60 * 60 * 1000,
+                path: "/",
+                sameSite: "None",
             });
             res.json({
                 token: refreshToken,

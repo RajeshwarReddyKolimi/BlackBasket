@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { userLogin } from "../../Redux/Thunks/userThunks";
+import { guestLogin, userLogin } from "../../Redux/Thunks/userThunks";
 import { NavLink, Navigate } from "react-router-dom";
 import "../../styles/login.css";
 function UserLogin() {
@@ -14,7 +14,9 @@ function UserLogin() {
         email: "",
         password: "",
     });
-
+    const handleGuestLogin = () => {
+        dispatch(guestLogin());
+    };
     const validatePassword = (password) => {
         const passwordPattern =
             /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
@@ -58,11 +60,11 @@ function UserLogin() {
     };
 
     const isUserLogged = useSelector((state) => state.user.isUserLogged);
-
+    const loading = useSelector((state) => state.user.loading);
     if (isUserLogged) return <Navigate to="/user/dashboard" replace />;
-
     return (
         <div className="login-page-overlay">
+            {loading && <div className="loading"></div>}
             <form onSubmit={login} className="login-form">
                 <div className="logo">
                     Black
@@ -117,7 +119,12 @@ function UserLogin() {
                 <div className="login-form-footer">
                     Don't have an account?{" "}
                     <div className="button-container-flex">
-                        <div className="login-footer-button">Guest Login</div>
+                        <div
+                            className="login-footer-button"
+                            onClick={handleGuestLogin}
+                        >
+                            Guest Login
+                        </div>
                         <NavLink
                             to="/user/signup"
                             className="login-footer-button"

@@ -13,7 +13,6 @@
     color: var(--success-color);
 }
 .coupon-card-expired {
-    opacity: 0.7;
     color: var(--important-color);
     border: 1px solid var(--important-color) !important;
     background-color: var(--important-bg-color) !important;

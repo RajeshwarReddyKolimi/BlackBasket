@@ -5,9 +5,9 @@ const validateMongodbId = require("../utils/validateMongodbId");
 const createBrand = asyncHandler(async (req, res) => {
     const { name, images } = req.body;
     try {
-        let image = "";
-        if (images.length !== 0) image = images[0];
-        const newBrand = await Brand.create({ name, image });
+        let logo = "";
+        if (images.length !== 0) logo = images[0];
+        const newBrand = await Brand.create({ name, logo });
         res.json(newBrand);
     } catch (error) {
         throw new Error(error);
@@ -53,7 +53,7 @@ const getBrand = asyncHandler(async (req, res) => {
 
 const getAllBrand = asyncHandler(async (req, res) => {
     try {
-        const getAllCategory = await Brand.find();
+        const getAllCategory = await Brand.find().sort({ name: 1 });
         res.json(getAllCategory);
     } catch (error) {
         throw new Error(error);

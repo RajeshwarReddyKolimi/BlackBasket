@@ -188,13 +188,8 @@ function ProductPage() {
                 )}
                 <div className="product-page-color">
                     <div className="product-page-key">Color :</div>{" "}
-                    <div className="product-page-color-item">
-                        <div
-                            className="product-page-color-demo"
-                            style={{
-                                backgroundColor: product && product.color,
-                            }}
-                        ></div>
+                    <div className="product-page-value">
+                        
                         {product && product.color}
                     </div>
                 </div>

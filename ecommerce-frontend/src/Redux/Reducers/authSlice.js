@@ -27,7 +27,7 @@ import { createQuery } from "../Thunks/enquiryThunks";
 const userSlice = createSlice({
     name: "User",
     initialState: {
-        loading: true,
+        loading: false,
         couponLoading: false,
         cartLoading: false,
         orderLoading: false,
@@ -50,20 +50,24 @@ const userSlice = createSlice({
         builder.addCase(userSignup.fulfilled, (state, action) => {
             state.isUserLogged = true;
             state.userData = {};
+            state.loading = false;
         });
         builder.addCase(userSignup.rejected, (state, action) => {
             state.isUserLogged = false;
             state.userData = {};
+            state.loading = false;
         });
         builder.addCase(userLogin.pending, (state) => {
             state.loading = true;
         });
         builder.addCase(userLogin.fulfilled, (state, action) => {
             state.isUserLogged = true;
+            state.loading = false;
         });
         builder.addCase(userLogin.rejected, (state, action) => {
             state.userData = {};
             state.isUserLogged = false;
+            state.loading = false;
         });
 
         builder.addCase(guestLogin.pending, (state) => {
@@ -71,10 +75,12 @@ const userSlice = createSlice({
         });
         builder.addCase(guestLogin.fulfilled, (state, action) => {
             state.isUserLogged = true;
+            state.loading = false;
         });
         builder.addCase(guestLogin.rejected, (state, action) => {
             state.userData = {};
             state.isUserLogged = false;
+            state.loading = false;
         });
 
         builder.addCase(userLogout.pending, (state) => {
@@ -83,30 +89,26 @@ const userSlice = createSlice({
         builder.addCase(userLogout.fulfilled, (state, action) => {
             state.isUserLogged = false;
             state.userData = {};
+            state.loading = false;
         });
         builder.addCase(userLogout.rejected, (state, action) => {
             state.isUserLogged = false;
             state.userData = {};
+            state.loading = false;
         });
-        builder.addCase(getUserDetails.pending, (state) => {
-            state.loading = true;
-        });
+        builder.addCase(getUserDetails.pending, (state) => {});
         builder.addCase(getUserDetails.fulfilled, (state, action) => {
             state.isUserLogged = true;
             state.userData = action.payload;
         });
-        builder.addCase(updateUserDetails.pending, (state) => {
-            state.loading = true;
-        });
+        builder.addCase(updateUserDetails.pending, (state) => {});
         builder.addCase(updateUserDetails.fulfilled, (state, action) => {
             state.userData = action.payload;
         });
         builder.addCase(updateUserDetails.rejected, (state, action) => {
             state.userData = {};
         });
-        builder.addCase(addUserAddress.pending, (state) => {
-            state.loading = true;
-        });
+        builder.addCase(addUserAddress.pending, (state) => {});
         builder.addCase(addUserAddress.fulfilled, (state, action) => {
             state.userData = action.payload;
         });
@@ -114,9 +116,7 @@ const userSlice = createSlice({
             state.userData = {};
         });
 
-        builder.addCase(updateUserAddress.pending, (state) => {
-            state.loading = true;
-        });
+        builder.addCase(updateUserAddress.pending, (state) => {});
         builder.addCase(updateUserAddress.fulfilled, (state, action) => {
             state.userData = action.payload;
         });
@@ -131,9 +131,7 @@ const userSlice = createSlice({
                 : 0;
         });
         builder.addCase(removeFromCart.rejected, (state, action) => {});
-        builder.addCase(addToCart.pending, (state) => {
-            state.loading = true;
-        });
+        builder.addCase(addToCart.pending, (state) => {});
         builder.addCase(addToCart.fulfilled, (state, action) => {
             state.userData.cart = action.payload;
             state.userData.cartSize =
@@ -142,25 +140,19 @@ const userSlice = createSlice({
                     : 0;
         });
         builder.addCase(addToCart.rejected, (state, action) => {});
-        builder.addCase(addToSaveLater.pending, (state) => {
-            state.loading = true;
-        });
+        builder.addCase(addToSaveLater.pending, (state) => {});
         builder.addCase(addToSaveLater.fulfilled, (state, action) => {
             state.userData.wishlist = action.payload;
             state.userData.wishlistSize = state.userData.wishlist.length;
         });
         builder.addCase(addToSaveLater.rejected, (state, action) => {});
-        builder.addCase(removeFromSaveLater.pending, (state) => {
-            state.loading = true;
-        });
+        builder.addCase(removeFromSaveLater.pending, (state) => {});
         builder.addCase(removeFromSaveLater.fulfilled, (state, action) => {
             state.userData.wishlist = action.payload;
             state.userData.wishlistSize = state.userData.wishlist.length;
         });
         builder.addCase(removeFromSaveLater.rejected, (state, action) => {});
-        builder.addCase(updateCartItemQuantity.pending, (state) => {
-            state.loading = true;
-        });
+        builder.addCase(updateCartItemQuantity.pending, (state) => {});
         builder.addCase(updateCartItemQuantity.fulfilled, (state, action) => {
             state.userData.cart = action.payload;
             state.userData.cartSize =
@@ -204,17 +196,13 @@ const userSlice = createSlice({
             state.couponLoading = false;
         });
 
-        builder.addCase(applyCoupon.pending, (state) => {
-            state.loading = true;
-        });
+        builder.addCase(applyCoupon.pending, (state) => {});
         builder.addCase(applyCoupon.fulfilled, (state, action) => {
             state.userData.cart = action.payload;
         });
         builder.addCase(applyCoupon.rejected, (state, action) => {});
 
-        builder.addCase(createOrder.pending, (state) => {
-            state.loading = true;
-        });
+        builder.addCase(createOrder.pending, (state) => {});
         builder.addCase(createOrder.fulfilled, (state, action) => {});
         builder.addCase(createOrder.rejected, (state, action) => {});
 
@@ -229,25 +217,19 @@ const userSlice = createSlice({
             state.saveLaterLoading = false;
         });
 
-        builder.addCase(deleteAddress.pending, (state) => {
-            state.loading = true;
-        });
+        builder.addCase(deleteAddress.pending, (state) => {});
         builder.addCase(deleteAddress.fulfilled, (state, action) => {
             state.userData.address = action.payload;
         });
         builder.addCase(deleteAddress.rejected, (state, action) => {});
 
-        builder.addCase(deleteAccount.pending, (state) => {
-            state.loading = true;
-        });
+        builder.addCase(deleteAccount.pending, (state) => {});
         builder.addCase(deleteAccount.fulfilled, (state, action) => {
             state.userData = {};
         });
         builder.addCase(deleteAccount.rejected, (state, action) => {});
 
-        builder.addCase(createQuery.pending, (state) => {
-            state.loading = true;
-        });
+        builder.addCase(createQuery.pending, (state) => {});
         builder.addCase(createQuery.fulfilled, (state, action) => {
             state.userData.queries = action.payload;
         });

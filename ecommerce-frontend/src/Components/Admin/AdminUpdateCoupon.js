@@ -39,7 +39,10 @@ function AdminUpdateCoupon() {
         navigate(-1);
     }
     return (
-        <div>
+        <div className="section">
+            <div className="section-header">
+                <div className="header-title">Edit Coupon</div>
+            </div>
             <form
                 onSubmit={(e) => {
                     handleUpdateCoupon(e);

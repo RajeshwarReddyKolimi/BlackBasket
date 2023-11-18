@@ -76,13 +76,7 @@ function AdminProductPage() {
                 )}
                 <div className="product-page-color">
                     <div className="product-page-key">Color :</div>{" "}
-                    <div className="product-page-color-item">
-                        <div
-                            className="product-page-color-demo"
-                            style={{
-                                backgroundColor: product && product.color,
-                            }}
-                        ></div>
+                    <div className="product-page-value">
                         {product && product.color}
                     </div>
                 </div>
@@ -92,9 +86,11 @@ function AdminProductPage() {
                         className="button-full"
                     >
                         <BiEdit />
+                        Edit
                     </NavLink>
-                    <button className="button-full" onClick={deleteProd}>
+                    <button className="button-danger-full" onClick={deleteProd}>
                         <MdDelete />
+                        Delete
                     </button>
                 </div>
                 <div className="product-page-description">

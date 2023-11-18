@@ -3,35 +3,65 @@ import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { getUserById, getUsers } from "../../Redux/Thunks/adminThunks";
 import AdminUserCard from "./AdminUserCard";
-
+import { setErrorMessage } from "../../Redux/Reducers/globalSlice";
+import axios from "axios";
+import apiUrl from "../../apiUrl";
+import "../../styles/adminUser.css";
 function AdminUsers() {
     const [userId, setUserId] = useState("");
+    const [searchedUser, setSearchedUser] = useState();
     const dispatch = useDispatch();
     const usersData = useSelector((state) => state.admin.users);
-    const curUser = useSelector((state) => state.admin.curUser);
+
     useEffect(() => {
         dispatch(getUsers());
     }, [dispatch]);
-
-    function getUser(e) {
+    async function getUserById(e) {
         e.preventDefault();
-        dispatch(getUserById(userId));
+        try {
+            const response = await axios.get(`${apiUrl}/admin/user/${userId}`, {
+                withCredentials: true,
+            });
+            setSearchedUser(response.data);
+        } catch (error) {
+            dispatch(setErrorMessage(error.response.data.message));
+            console.error(error.message);
+        }
     }
     return (
-        <div>
-            <h2>Users</h2>
-            <form onSubmit={(e) => getUser(e)}>
-                <input
-                    type="text"
-                    name="userId"
-                    onChange={(e) => setUserId(e.target.value)}
-                />
-                <button>Get User</button>
-            </form>
-            {curUser && Object.keys(curUser).length !== 0 && (
-                <AdminUserCard user={curUser} />
-            )}
-            <div className="container-sm w-50 d-flex flex-row flex-wrap">
+        <div className="section">
+            <div className="section-header">
+                <div className="header-title">Users</div>
+            </div>
+            <div className="search-product-id">
+                <form
+                    onSubmit={(e) => getUserById(e)}
+                    className="button-container"
+                >
+                    <input
+                        type="text"
+                        className="form-input"
+                        onChange={(e) => {
+                            setSearchedUser(null);
+                            setUserId(e.target.value);
+                        }}
+                        placeholder="Search by Id"
+                    ></input>
+                    <button
+                        type="submit"
+                        className="button-inverse"
+                        onClick={(e) => getUserById(e)}
+                    >
+                        Search
+                    </button>
+                </form>
+                {searchedUser && (
+                    <div className="admin-users-container">
+                        <AdminUserCard user={searchedUser} />
+                    </div>
+                )}
+            </div>
+            <div className="admin-users-container">
                 {usersData &&
                     usersData.map((user, key) => (
                         <AdminUserCard key={key} user={user} />

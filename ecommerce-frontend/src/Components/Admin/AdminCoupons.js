@@ -12,11 +12,13 @@ function AdminCoupons() {
         dispatch(getCoupons());
     }, [dispatch]);
     return (
-        <div>
-            <h3>All Coupons</h3>
-            <NavLink to="/admin/coupon/add" className="button-full">
-                Add Coupon
-            </NavLink>
+        <div className="section">
+            <div className="section-header">
+                <div className="header-title">Coupons</div>
+                <NavLink to="/admin/coupon/add" className="button">
+                    Add Coupon
+                </NavLink>
+            </div>
             {couponsData && couponsData.length > 0 ? (
                 <div className="coupon-container">
                     {couponsData.map((coupon, key) => (

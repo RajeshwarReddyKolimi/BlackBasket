@@ -237,7 +237,19 @@ li {
     align-items: center;
     gap: 1rem;
 }
+.button-inverse {
+    padding: 0.5rem 1rem;
+    border-radius: 0.2rem;
+    color: white;
+    background-color: var(--highlight-color);
+    border: 2px solid var(--highlight-color);
+}
+.button-inverse:hover {
+    border-color: var(--highlight-color-dark);
+    background-color: var(--highlight-color-dark);
+}
 .button-inverse-full {
+    border-radius: 0.2rem;
     width: 100%;
     padding: 0.5rem 1rem;
     color: white;
@@ -303,6 +315,7 @@ li {
     flex-direction: column;
     gap: 1rem;
     background-color: var(--theme-color);
+    color: var(--theme-text-color);
     padding: 2rem;
     position: fixed;
     z-index: 50;

@@ -114,12 +114,14 @@ function UserSignup() {
         dispatch(userSignup(userDetails));
     };
 
+    const loading = useSelector((state) => state.user.loading);
     const isUserLogged = useSelector((state) => state.user.isUserLogged);
 
     if (isUserLogged) return <Navigate to="/user/dashboard" replace />;
 
     return (
         <div className="login-page-overlay">
+            {loading && <div className="loading"></div>}
             <form onSubmit={signup} className="login-form">
                 <div className="logo">
                     Black
@@ -254,7 +256,14 @@ function UserSignup() {
                 <button className="button-inverse-full">Signup</button>
                 <div className="login-form-footer">
                     Already have an account?{" "}
-                    <NavLink to="/user/login">Login</NavLink>
+                    <div className="button-container-flex">
+                        <NavLink
+                            to="/user/login"
+                            className="login-footer-button"
+                        >
+                            Login
+                        </NavLink>
+                    </div>
                 </div>
             </form>
         </div>
