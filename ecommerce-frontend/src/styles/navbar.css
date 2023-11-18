@@ -203,7 +203,6 @@
 .nav-item-home-right {
     display: none;
 }
-
 @media screen and (min-width: 749px) {
     .navbar-category:hover .navbar-category-dropdown {
         max-width: 400px;
@@ -311,13 +310,19 @@
     }
 }
 
-@media screen and (max-width: 375px) {
+@media screen and (max-width: 425px) {
+    .user-navbar > .flex-buffer {
+        display: none;
+    }
     .search-input {
         width: 100%;
     }
 }
 @media screen and (max-width: 325px) {
+    .user-navbar {
+        gap: 0.2rem;
+    }
     .search-input {
-        display: none;
+        /* display: none; */
     }
 }

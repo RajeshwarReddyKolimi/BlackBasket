@@ -15,6 +15,7 @@ import { AiOutlineClose } from "react-icons/ai";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
 import Empty from "../Empty";
+import UserNavSearch from "../User/UserNavSearch";
 function ProductSearchPage() {
     const dispatch = useDispatch();
     const brands = useSelector((state) => state.brand.brands);
